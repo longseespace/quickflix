@@ -1,0 +1,25 @@
+{
+  "parser"  : "babel-eslint",
+  "extends" : "airbnb",
+  "plugins" : "react",
+  "env"     : {
+    "browser" : true,
+    "node" : true,
+    "es6" : true
+  },
+  "globals" : {
+    "__DEV__"      : false,
+    "__PROD__"     : false,
+    "__DEBUG__"    : false,
+    "__DEBUG_NEW_WINDOW__" : false,
+    "__BASENAME__" : false
+  },
+  "rules": {
+    "arrow-body-style": [0, "as-needed"],
+    "semi" : [2, "always"],
+    "react/jsx-boolean-value": 0,
+    "react/self-closing-comp": 0,
+    "jsx-quotes": 0,
+    "space-before-function-paren": 0
+  }
+}

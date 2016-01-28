@@ -1,0 +1,17 @@
+.appbar {
+  background-color: #2196f3;
+}
+
+.chrome {
+  outline: none;
+  z-index: 1000;
+  position: relative;
+}
+
+.editor {
+  z-index: 0;
+  position: fixed;
+  overflow: scroll;
+  left: 0; right: 0; top: 113px; bottom: 0;
+  background: rgba(0, 0, 0, 0.06);
+}
