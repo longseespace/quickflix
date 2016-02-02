@@ -1,12 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { actions as counterActions } from '../../redux/modules/counter';
-// import classes from './HomeView.scss';
+import { actions as searchActions } from '../../redux/modules/search';
+import classes from './HomeView.scss';
 
-// import IconButton from 'material-ui/lib/icon-button';
-// import IconMenu from 'material-ui/lib/menus/icon-menu';
-// import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
-// import MenuItem from 'material-ui/lib/menus/menu-item';
+import SearchBar from 'components/SearchBar';
+import SearchSuggestionList from 'components/SearchSuggestionList';
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -14,22 +12,52 @@ import { actions as counterActions } from '../../redux/modules/counter';
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  counter: state.counter,
+  search: state.search,
 });
 export class HomeView extends React.Component {
   static propTypes = {
-    counter: PropTypes.number.isRequired,
-    doubleAsync: PropTypes.func.isRequired,
-    increment: PropTypes.func.isRequired,
+    search: PropTypes.object,
+    requestSuggestions: PropTypes.func.isRequired,
+    invalidateSuggestions: PropTypes.func.isRequired,
+    fetchSuggestions: PropTypes.func.isRequired,
+    requestSearch: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    search: {},
+    requestSuggestions: () => {},
+    invalidateSuggestions: () => {},
+    fetchSuggestions: () => {},
+    requestSearch: () => {},
   };
 
   render() {
+    const { fetchSuggestions, requestSuggestions, invalidateSuggestions, search } = this.props;
+    const showSuggestion = search.suggestions && search.suggestions.length > 0;
     return (
       <div>
-
+        <div className={classes.searchbar}>
+          <div className="container">
+            <div className="row">
+              <div className="col s8 push-s2">
+                <SearchBar
+                  keyword={search.keyword}
+                  suggest={fetchSuggestions}
+                  requestSuggestions={requestSuggestions}
+                  invalidate={invalidateSuggestions}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col s8 push-s2">
+                <SearchSuggestionList suggestions={search.suggestions} show={showSuggestion} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, counterActions)(HomeView);
+export default connect(mapStateToProps, searchActions)(HomeView);

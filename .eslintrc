@@ -15,6 +15,7 @@
     "__BASENAME__" : false
   },
   "rules": {
+    "max-len": 0,
     "arrow-body-style": [0, "as-needed"],
     "semi" : [2, "always"],
     "react/jsx-boolean-value": 0,
