@@ -22,30 +22,15 @@ export default class SearchBar extends React.Component {
   };
 
   render() {
-    const { placeholder, keywordMinLength, suggest, invalidate, keyword, requestSuggestions } = this.props;
+    const { placeholder, keywordMinLength, suggest, invalidate, keyword } = this.props;
     const onSubmit = (e) => {
       e.preventDefault();
     };
-    const buffer = (func, wait, scope) => {
-      let timer = null;
-      return function inner() {
-        if (timer) {
-          clearTimeout(timer);
-        }
-        const args = arguments;
-        timer = setTimeout(() => {
-          timer = null;
-          func.apply(scope, args);
-        }, wait);
-      };
-    };
-    const buffered = buffer(suggest, 1000);
     const onChange = (e) => {
       e.preventDefault();
       const newKeyword = e.target.value;
       if (newKeyword.length >= keywordMinLength) {
-        requestSuggestions(newKeyword);
-        buffered(newKeyword);
+        suggest(newKeyword);
       } else {
         invalidate(newKeyword);
       }
