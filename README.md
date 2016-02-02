@@ -1,21 +1,10 @@
-React Redux Starter Kit
+Quickflix
 =======================
 
-[![Join the chat at https://gitter.im/davezuko/react-redux-starter-kit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/davezuko/react-redux-starter-kit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/davezuko/react-redux-starter-kit.svg?branch=master)](https://travis-ci.org/davezuko/react-redux-starter-kit?branch=master)
-[![dependencies](https://david-dm.org/davezuko/react-redux-starter-kit.svg)](https://david-dm.org/davezuko/react-redux-starter-kit)
-[![devDependency Status](https://david-dm.org/davezuko/react-redux-starter-kit/dev-status.svg)](https://david-dm.org/davezuko/react-redux-starter-kit#info=devDependencies)
+[![Build Status](https://travis-ci.org/longseespace/quickflix.svg?branch=master)](https://travis-ci.org/longseespace/quickflix?branch=master)
+[![dependencies](https://david-dm.org/longseespace/quickflix.svg)](https://david-dm.org/longseespace/quickflix)
+[![devDependency Status](https://david-dm.org/longseespace/quickflix/dev-status.svg)](https://david-dm.org/longseespace/quickflix#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
-
-> ### This Project Recently Upgraded to Babel 6!
-> Woohoo! If you'd like to try it out, you're welcome to build directly from the master branch. However, if troubleshooting issues with Babel isn't quite your thing, just pull the [stable v0.18.0 release](https://github.com/davezuko/react-redux-starter-kit/tree/v0.18.0) and continue on your way with Babel 5.
-
-> ### Want Semicolons?
-> After installing npm dependencies, open `.eslintrc`, change the `semi` rule from `never` to `always`, and then run `npm run lint:fix` -- Easy as that! Alternatively, use the same npm script after installing and extending your preferred ESLint configuration; it's easy to customize the project's code style to suit your team's needs. See, we can coexist peacefully.
-
-This starter kit is designed to get you up and running with a bunch of awesome new front-end technologies, all on top of a configurable, feature-rich webpack build system that's already setup to provide hot reloading, CSS modules with Sass support, unit testing, code coverage reports, bundle splitting, and a whole lot more.
-
-The primary goal of this project is to remain as **unopinionated** as possible. Its purpose is not to dictate your project structure or to demonstrate a complete sample application, but to provide a set of tools intended to make front-end development robust, easy, and, most importantly, fun. Check out the full feature list below!
 
 Table of Contents
 -----------------
