@@ -33,7 +33,7 @@ export class HomeView extends React.Component {
 
   render() {
     const { fetchSuggestions, requestSuggestions, invalidateSuggestions, search } = this.props;
-    const showSuggestion = search.suggestions && search.suggestions.length > 0;
+    const showSuggestion = !search.invalidated;
     return (
       <div>
         <div className={classes.searchbar}>

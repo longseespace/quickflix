@@ -86,22 +86,23 @@ export const actions = {
 // ------------------------------------
 export default handleActions({
   [REQUEST_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, keyword: payload, isFetching: true };
+    return { ...state, keyword: payload, isFetching: true, invalidated: false };
   },
   [INVALIDATE_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, keyword: payload, isFetching: false, suggestions: [] };
+    return { ...state, keyword: payload, isFetching: false, invalidated: true };
   },
   [REQUEST_SEARCH]: (state, { payload }) => {
-    return { ...state, keyword: payload, isFetching: true };
+    return { ...state, keyword: payload, isFetching: true, invalidated: true };
   },
   [RECEIVE_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, ...payload, isFetching: false };
+    return { ...state, ...payload, isFetching: false, invalidated: false };
   },
   [RECEIVE_SEARCH_RESULTS]: (state, { payload }) => {
-    return { ...state, ...payload, isFetching: false };
+    return { ...state, ...payload, isFetching: false, invalidated: true };
   },
 }, {
   keyword: '',
+  invalidated: true,
   isFetching: false,
   suggestions: [],
 });
