@@ -33,16 +33,25 @@ export const invalidateSuggestions = createAction(INVALIDATE_SUGGESTIONS, keywor
 
 export const requestSearch = createAction(REQUEST_SEARCH, keyword => keyword);
 
-export const receiveSearchResults = createAction(RECEIVE_SEARCH_RESULTS, keyword => keyword);
+export const receiveSearchResults = createAction(RECEIVE_SEARCH_RESULTS, (keyword, searchResults) => ({
+  keyword,
+  searchResults,
+}));
 
-const doFetch = (dispatch, keyword) => {
-  dispatch(requestSuggestions(keyword));
-  const url = `${API_URL}/search?keyword=${keyword}`;
-  return fetch(url, {
+const doFetch = (dispatch, keyword, options = { limit: 5, page: 1, type: 'suggest' }) => {
+  const { limit, page, type } = options;
+  const url = `${API_URL}/search?keyword=${keyword}&limit=${limit}&page=${page}`;
+  if (type === 'search') {
+    dispatch(requestSearch(keyword));
+  } else {
+    dispatch(requestSuggestions(keyword));
+  }
+  const fetchOptions = {
     headers: {
       Authorization: API_TOKEN,
     },
-  }).then(response => response.json())
+  };
+  return fetch(url, fetchOptions).then(response => response.json())
     .then(json => {
       if (json.error) {
         // error
@@ -58,7 +67,11 @@ const doFetch = (dispatch, keyword) => {
             poster: `http://t.hdviet.com/thumbs/124x184/${item.mo_new_poster}`,
           };
         });
-        dispatch(receiveSuggestions(keyword, results));
+        if (type === 'search') {
+          dispatch(receiveSearchResults(keyword, results));
+        } else {
+          dispatch(receiveSuggestions(keyword, results));
+        }
       }
     });
 };
@@ -72,6 +85,13 @@ export const fetchSuggestions = (keyword = '') => {
   };
 };
 
+export const fetchSearchResults = (keyword = '', options = { limit: 20, page: 1 }) => {
+  return (dispatch) => {
+    dispatch(invalidateSuggestions(keyword));
+    debouncedFetch(dispatch, keyword, { ...options, type: 'search' });
+  };
+};
+
 export const actions = {
   requestSuggestions,
   invalidateSuggestions,
@@ -79,6 +99,7 @@ export const actions = {
   receiveSuggestions,
   receiveSearchResults,
   fetchSuggestions,
+  fetchSearchResults,
 };
 
 // ------------------------------------

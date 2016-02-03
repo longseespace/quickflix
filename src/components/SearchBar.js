@@ -5,7 +5,6 @@ export default class SearchBar extends React.Component {
     placeholder: PropTypes.string,
     keywordMinLength: PropTypes.number,
     suggest: PropTypes.func.isRequired,
-    requestSuggestions: PropTypes.func,
     invalidate: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     keyword: PropTypes.string,
@@ -16,15 +15,16 @@ export default class SearchBar extends React.Component {
     keyword: '',
     keywordMinLength: 3,
     suggest: () => {},
-    requestSuggestions: () => {},
     invalidate: () => {},
     search: () => {},
   };
 
   render() {
-    const { placeholder, keywordMinLength, suggest, invalidate, keyword } = this.props;
+    const { placeholder, keywordMinLength, suggest, invalidate, keyword, search } = this.props;
     const onSubmit = (e) => {
       e.preventDefault();
+      const newKeyword = this.refs.searchField.value;
+      search(newKeyword);
     };
     const onChange = (e) => {
       e.preventDefault();
@@ -38,10 +38,10 @@ export default class SearchBar extends React.Component {
     return (
       <nav>
         <div className="nav-wrapper">
-          <form onSubmit={onSubmit} onChange={onChange} autoComplete="off">
+          <form onSubmit={onSubmit} autoComplete="off">
             <div className="input-field blue-grey">
-              <input autoComplete="off" id="search" type="search" placeholder={placeholder} value={keyword} required />
-              <label htmlFor="search"><i className="material-icons">search</i></label>
+              <input ref="searchField" autoComplete="off" id="search" onChange={onChange} type="search" placeholder={placeholder} value={keyword} required />
+              <label htmlFor="search" onClick={onSubmit} style={{ cursor: 'pointer' }}><i className="material-icons">search</i></label>
               <i className="material-icons">close</i>
             </div>
           </form>

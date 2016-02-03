@@ -17,22 +17,22 @@ const mapStateToProps = (state) => ({
 export class HomeView extends React.Component {
   static propTypes = {
     search: PropTypes.object,
-    requestSuggestions: PropTypes.func.isRequired,
     invalidateSuggestions: PropTypes.func.isRequired,
     fetchSuggestions: PropTypes.func.isRequired,
+    fetchSearchResults: PropTypes.func.isRequired,
     requestSearch: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     search: {},
-    requestSuggestions: () => {},
     invalidateSuggestions: () => {},
     fetchSuggestions: () => {},
+    fetchSearchResults: () => {},
     requestSearch: () => {},
   };
 
   render() {
-    const { fetchSuggestions, requestSuggestions, invalidateSuggestions, search } = this.props;
+    const { fetchSuggestions, fetchSearchResults, invalidateSuggestions, search } = this.props;
     const showSuggestion = !search.invalidated;
     return (
       <div>
@@ -41,9 +41,9 @@ export class HomeView extends React.Component {
             <div className="row">
               <div className="col s8 push-s2">
                 <SearchBar
+                  search={fetchSearchResults}
                   keyword={search.keyword}
                   suggest={fetchSuggestions}
-                  requestSuggestions={requestSuggestions}
                   invalidate={invalidateSuggestions}
                 />
               </div>
