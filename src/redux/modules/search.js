@@ -7,7 +7,7 @@ import debounce from 'lodash.debounce';
 // Constants
 // ------------------------------------
 const API_URL = 'http://rest.hdviet.com/api/v3';
-const API_TOKEN = '42aef4b7fb334fa1a752b5ff7328c1d5';
+const API_TOKEN = 'aae07a49126f44c0a6e83a8e646ac2bc';
 const API_REQUEST_DEBOUNCE_WAIT = 250;
 
 export const REQUEST_SUGGESTIONS = 'REQUEST_SUGGESTIONS';
@@ -29,7 +29,10 @@ export const receiveSuggestions = createAction(RECEIVE_SUGGESTIONS, (keyword, su
   suggestions,
 }));
 
-export const invalidateSuggestions = createAction(INVALIDATE_SUGGESTIONS, keyword => keyword);
+export const invalidateSuggestions = createAction(INVALIDATE_SUGGESTIONS, (keyword) => ({
+  keyword,
+  suggestions: [],
+}));
 
 export const requestSearch = createAction(REQUEST_SEARCH, keyword => keyword);
 
@@ -62,9 +65,10 @@ const doFetch = (dispatch, keyword, options = { limit: 5, page: 1, type: 'sugges
             name: item.mo_name,
             releaseDate: item.mo_release_date,
             summary: item.mo_plot_vi,
-            directedBy: item.mo_director,
+            director: item.mo_director,
             imdbRating: item.mo_imdb_rating,
             poster: `http://t.hdviet.com/thumbs/124x184/${item.mo_new_poster}`,
+            backdrop: `http://t.hdviet.com/backdrops/945x530/${item.mo_backdrop}`,
           };
         });
         if (type === 'search') {
@@ -110,7 +114,7 @@ export default handleActions({
     return { ...state, keyword: payload, isFetching: true, invalidated: false };
   },
   [INVALIDATE_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, keyword: payload, isFetching: false, invalidated: true };
+    return { ...state, ...payload, isFetching: false, invalidated: true };
   },
   [REQUEST_SEARCH]: (state, { payload }) => {
     return { ...state, keyword: payload, isFetching: true, invalidated: true };

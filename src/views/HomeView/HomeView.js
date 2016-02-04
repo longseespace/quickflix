@@ -5,6 +5,7 @@ import classes from './HomeView.scss';
 
 import SearchBar from 'components/SearchBar';
 import SearchSuggestionList from 'components/SearchSuggestionList';
+import SearchResultList from 'components/SearchResultList';
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -46,14 +47,13 @@ export class HomeView extends React.Component {
                   suggest={fetchSuggestions}
                   invalidate={invalidateSuggestions}
                 />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s8 push-s2">
                 <SearchSuggestionList suggestions={search.suggestions} show={showSuggestion} />
               </div>
             </div>
           </div>
+        </div>
+        <div className={classes.content}>
+          <SearchResultList searchResults={search.searchResults} />
         </div>
       </div>
     );

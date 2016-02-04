@@ -35,14 +35,18 @@ export default class SearchBar extends React.Component {
         invalidate(newKeyword);
       }
     };
+    const close = (e) => {
+      e.preventDefault();
+      invalidate('');
+    };
     return (
       <nav>
-        <div className="nav-wrapper">
+        <div className="nav-wrapper z-depth-2">
           <form onSubmit={onSubmit} autoComplete="off">
             <div className="input-field blue-grey">
               <input ref="searchField" autoComplete="off" id="search" onChange={onChange} type="search" placeholder={placeholder} value={keyword} required />
               <label htmlFor="search" onClick={onSubmit} style={{ cursor: 'pointer' }}><i className="material-icons">search</i></label>
-              <i className="material-icons">close</i>
+              <i className="material-icons" onClick={close}>close</i>
             </div>
           </form>
         </div>
