@@ -34,7 +34,7 @@ export class HomeView extends React.Component {
 
   render() {
     const { fetchSuggestions, fetchSearchResults, invalidateSuggestions, search } = this.props;
-    const showSuggestion = !search.invalidated;
+    const showSuggestion = !search.invalidated && !search.isFetching;
     return (
       <div>
         <div className={classes.searchbar}>
@@ -46,8 +46,13 @@ export class HomeView extends React.Component {
                   keyword={search.keyword}
                   suggest={fetchSuggestions}
                   invalidate={invalidateSuggestions}
+                  isFetching={search.isFetching}
                 />
-                <SearchSuggestionList suggestions={search.suggestions} show={showSuggestion} />
+                <SearchSuggestionList
+                  suggestions={search.suggestions}
+                  show={showSuggestion}
+                  keyword={search.keyword}
+                />
               </div>
             </div>
           </div>

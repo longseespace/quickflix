@@ -4,15 +4,19 @@ export default class SearchSuggestionList extends React.Component {
   static propTypes = {
     suggestions: PropTypes.array,
     show: PropTypes.bool,
+    isFetching: PropTypes.bool,
+    keyword: PropTypes.string,
   };
 
   static defaultProps = {
     suggestions: [],
     show: false,
+    isFetching: false,
+    keyword: '',
   };
 
   render() {
-    const { suggestions, show } = this.props;
+    const { suggestions, show, keyword } = this.props;
     let suggestionItems;
     if (suggestions.length > 0) {
       suggestionItems = suggestions.map((item, key) => {
@@ -27,9 +31,14 @@ export default class SearchSuggestionList extends React.Component {
           </li>
         );
       });
+      suggestionItems.push((
+        <li key={100} className="collection-item" style={{ float: 'none', cursor: 'pointer' }}>
+          <span style={{ color: 'black' }} className="title">See all results for "<i>{keyword}</i>"</span>
+        </li>
+      ));
     } else {
       suggestionItems = (
-        <li key={0} className="collection-item" style={{ float: 'none', cursor: 'pointer' }}>
+        <li key={0} className="collection-item" style={{ float: 'none' }}>
           <span style={{ color: 'black' }} className="title">No suggested matches</span>
         </li>
       );

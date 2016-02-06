@@ -7,8 +7,8 @@ import debounce from 'lodash.debounce';
 // Constants
 // ------------------------------------
 const API_URL = 'http://rest.hdviet.com/api/v3';
-const API_TOKEN = 'aae07a49126f44c0a6e83a8e646ac2bc';
-const API_REQUEST_DEBOUNCE_WAIT = 250;
+const API_TOKEN = 'fb4b338e218b4c2cbbc2722debd3acd1';
+const API_REQUEST_DEBOUNCE_WAIT = 500;
 
 export const REQUEST_SUGGESTIONS = 'REQUEST_SUGGESTIONS';
 export const RECEIVE_SUGGESTIONS = 'RECEIVE_SUGGESTIONS';
@@ -111,7 +111,7 @@ export const actions = {
 // ------------------------------------
 export default handleActions({
   [REQUEST_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, keyword: payload, isFetching: true, invalidated: false };
+    return { ...state, requestId: state.requestId + 1, keyword: payload, isFetching: true, invalidated: false };
   },
   [INVALIDATE_SUGGESTIONS]: (state, { payload }) => {
     return { ...state, ...payload, isFetching: false, invalidated: true };
@@ -126,6 +126,7 @@ export default handleActions({
     return { ...state, ...payload, isFetching: false, invalidated: true };
   },
 }, {
+  requestId: 0,
   keyword: '',
   invalidated: true,
   isFetching: false,
