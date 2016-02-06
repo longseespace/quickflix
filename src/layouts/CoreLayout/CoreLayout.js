@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import '../../styles/core.scss';
 
-require('materialize-css/sass/materialize.scss');
+// require('materialize-css/sass/materialize.scss');
 
 // Note: Stateless/function components *will not* hot reload!
 // react-transform *only* works on component classes.

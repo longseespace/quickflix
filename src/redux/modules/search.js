@@ -64,7 +64,10 @@ const doFetch = (dispatch, keyword, options = { limit: 5, page: 1, type: 'sugges
             id: item.id,
             name: item.mo_name,
             releaseDate: item.mo_release_date,
-            summary: item.mo_plot_vi,
+            plot: {
+              vi: item.mo_plot_vi,
+              en: item.mo_plot_en,
+            },
             director: item.mo_director,
             imdbRating: item.mo_imdb_rating,
             poster: `http://t.hdviet.com/thumbs/124x184/${item.mo_new_poster}`,
