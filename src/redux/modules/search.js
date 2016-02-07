@@ -62,7 +62,10 @@ const doFetch = (dispatch, keyword, options = { limit: 5, page: 1, type: 'sugges
         const results = json.data.response.docs.map((item) => {
           return {
             id: item.id,
-            name: item.mo_name,
+            name: {
+              en: item.mo_name,
+              vi: item.mo_known_as,
+            },
             releaseDate: item.mo_release_date,
             plot: {
               vi: item.mo_plot_vi,

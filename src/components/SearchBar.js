@@ -14,7 +14,7 @@ export default class SearchBar extends React.Component {
   };
 
   static defaultProps = {
-    placeholder: 'Find Movies, TV shows, Celebrities and more...',
+    placeholder: 'Search...',
     keyword: '',
     keywordMinLength: 3,
     suggest: () => {},
@@ -47,10 +47,11 @@ export default class SearchBar extends React.Component {
     return (
       <form style={style} className={classes.root} onSubmit={onSubmit} autoComplete="off">
         <div
-          className="input-field blue accent-1"
+          className="input-field"
           style={{
             boxShadow: '0 1px 1.5px rgba(0,0,0,0.06),0 1px 1px rgba(0,0,0,0.12)',
             borderRadius: 2,
+            backgroundColor: 'rgba(255,255,255,0.25)',
           }}
         >
           <input

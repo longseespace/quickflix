@@ -47,6 +47,7 @@ export class HomeView extends React.Component {
                   </li>
                   <li className={`col m7 push-m2 ${classes.searchbar}`}>
                     <SearchBar
+                      placeholder='Find Movies or TV Show...'
                       search={fetchSearchResults}
                       keyword={search.keyword}
                       suggest={fetchSuggestions}
