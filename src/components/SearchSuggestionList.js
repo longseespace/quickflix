@@ -25,7 +25,7 @@ export default class SearchSuggestionList extends React.Component {
           <li key={key} className="collection-item avatar" style={{ float: 'none', cursor: 'pointer' }}>
             <img style={{ borderRadius: 0, height: 'auto' }} className="circle" src={item.poster} width={50} alt={item.name} />
             <span style={{ color: 'black' }} className="title">{item.name}</span> <span style={{ color: 'gray' }}>({releaseYear})</span>
-            <p style={{ color: 'gray' }} className="truncate">{item.summary}</p>
+            <p style={{ color: 'gray' }} className="truncate">{item.plot.vi}</p>
             <p style={{ color: 'gray' }}>{item.director}</p>
             <span className="secondary-content">{item.imdbRating}</span>
           </li>
@@ -33,7 +33,8 @@ export default class SearchSuggestionList extends React.Component {
       });
       suggestionItems.push((
         <li key={100} className="collection-item" style={{ float: 'none', cursor: 'pointer' }}>
-          <span style={{ color: 'black' }} className="title">See all results for "<i>{keyword}</i>"</span>
+          <span style={{ color: 'black' }} className="title">See all results for </span>
+          <span style={{ color: 'black', fontStyle: 'italic' }} className='keyword'>"{keyword}"</span>
         </li>
       ));
     } else {
@@ -44,7 +45,14 @@ export default class SearchSuggestionList extends React.Component {
       );
     }
     return (
-      <ul className="collection z-depth-2" style={{ borderRadius: 0, display: show ? 'block' : 'none' }}>
+      <ul className="collection z-depth-2"
+        style={{
+          border: 'none',
+          borderRadius: 0,
+          display: show ? 'block' : 'none',
+          top: -15,
+        }}
+      >
         {suggestionItems}
       </ul>
     );

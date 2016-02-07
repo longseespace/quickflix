@@ -37,24 +37,36 @@ export class HomeView extends React.Component {
     const showSuggestion = !search.invalidated && !search.isFetching;
     return (
       <div>
-        <div className={classes.searchbar}>
-          <div className="container">
-            <div className="row">
-              <div className="col s8 push-s2">
-                <SearchBar
-                  search={fetchSearchResults}
-                  keyword={search.keyword}
-                  suggest={fetchSuggestions}
-                  invalidate={invalidateSuggestions}
-                  isFetching={search.isFetching}
-                />
-                <SearchSuggestionList
-                  suggestions={search.suggestions}
-                  show={showSuggestion}
-                  keyword={search.keyword}
-                />
+        <div className={classes.navbar}>
+          <div className="navbar-fixed z-depth-2">
+            <nav className="blue accent-3">
+              <div className="nav-wrapper row">
+                <ul>
+                  <li>
+                    <a href="#"><i className="material-icons">menu</i></a>
+                  </li>
+                  <li className={`col m7 push-m2 ${classes.searchbar}`}>
+                    <SearchBar
+                      search={fetchSearchResults}
+                      keyword={search.keyword}
+                      suggest={fetchSuggestions}
+                      invalidate={invalidateSuggestions}
+                      isFetching={search.isFetching}
+                    />
+                    <SearchSuggestionList
+                      suggestions={search.suggestions}
+                      show={showSuggestion}
+                      keyword={search.keyword}
+                    />
+                  </li>
+                </ul>
+                <ul className="right hide-on-med-and-down">
+                  <li><a href="badges.html"><i className="material-icons">view_module</i></a></li>
+                  <li><a href="collapsible.html"><i className="material-icons">refresh</i></a></li>
+                  <li><a href="mobile.html"><i className="material-icons">more_vert</i></a></li>
+                </ul>
               </div>
-            </div>
+            </nav>
           </div>
         </div>
         <div className={classes.content}>

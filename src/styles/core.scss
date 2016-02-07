@@ -13,16 +13,11 @@
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden;
   }
 
   *,
   *:before,
   *:after {
     box-sizing: inherit;
-  }
-
-  .card-image .card-title {
-    text-shadow: 0 0 3px black;
   }
 }

@@ -1,15 +1,7 @@
-.searchbar {
-  margin-top: 20px;
-  outline: none;
-  z-index: 1000;
-  position: relative;
+.navbar {
+
 }
 
-.content {
-  z-index: 0;
-  position: fixed;
-  overflow: scroll;
-  left: 0; right: 0; top: 0; bottom: 0;
-  padding-top: 100px;
-  background: rgba(0, 0, 0, 0.06);
+.searchbar {
+  margin-top: 10px;
 }

@@ -1,0 +1,10 @@
+@import 'base';
+
+.root {
+  input {
+    @include placeholder {
+      color: white;
+      font-weight:100;
+    }
+  }
+}
