@@ -8,6 +8,13 @@ export default class SearchResultList extends React.Component {
     backdrop: PropTypes.string,
   };
 
+  componentDidMount() {
+    const $ = window.jQuery;
+    $(document).ready(() => {
+      $('.tooltipped').tooltip({ delay: 50 });
+    });
+  }
+
   render() {
     const { plot, backdrop, name } = this.props;
     const truncatedPlot = truncate(plot, {
@@ -24,7 +31,10 @@ export default class SearchResultList extends React.Component {
           <p>{truncatedPlot}</p>
         </div>
         <div className="card-action">
-          <a href="#">Detail Page</a><span className="activator" style={{ width: 48, height: 48, cursor: 'pointer' }}><i className="material-icons right">expand_less</i></span>
+          <a href="#">Detail Page</a>
+          <span className="activator" style={{ width: 48, height: 48, cursor: 'pointer' }}>
+            <i className="material-icons right tooltipped" data-position="top" data-tooltip="Show full plot">expand_less</i>
+          </span>
         </div>
         <div className="card-reveal">
           <span className="card-title grey-text text-darken-4">{name}<i className="material-icons right">close</i></span>
