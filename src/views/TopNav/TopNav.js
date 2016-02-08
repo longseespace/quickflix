@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 import { actions as searchActions } from '../../redux/modules/search';
 
@@ -15,6 +15,7 @@ export class TopNav extends React.Component {
   static propTypes = {
     search: PropTypes.object,
     invalidateSuggestions: PropTypes.func.isRequired,
+    fetchSearchResults: PropTypes.func.isRequired,
     fetchSuggestions: PropTypes.func.isRequired,
   };
 
@@ -22,9 +23,12 @@ export class TopNav extends React.Component {
     search: {},
     invalidateSuggestions: () => {},
     fetchSuggestions: () => {},
+    fetchSearchResults: () => {},
   };
 
   handleSearch = (keyword) => {
+    const { fetchSearchResults } = this.props;
+    fetchSearchResults(keyword);
     browserHistory.push(`/search/${keyword}`);
   };
 
@@ -32,7 +36,7 @@ export class TopNav extends React.Component {
     const { fetchSuggestions, invalidateSuggestions, search } = this.props;
     const showSuggestion = !search.invalidated && !search.isFetching;
     return (
-      <div className={classes.navbar}>
+      <div className={classes.root}>
         <div className="navbar-fixed z-depth-2">
           <nav className="blue accent-3">
             <div className="nav-wrapper row">
@@ -40,7 +44,12 @@ export class TopNav extends React.Component {
                 <li>
                   <a href="#"><i className="material-icons">menu</i></a>
                 </li>
-                <li className={`col m7 push-m2 ${classes.searchbar}`}>
+                <li className={classes.logo}>
+                  <Link to="/">
+                    <img src="https://www.gstatic.com/images/branding/lockups/2x/lockup_trends_light_color_142x24dp.png" />
+                  </Link>
+                </li>
+                <li className={`col m7 ${classes.searchbar}`}>
                   <SearchBar
                     placeholder='Find Movies or TV Show...'
                     search={this.handleSearch}

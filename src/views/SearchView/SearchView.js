@@ -4,7 +4,7 @@ import { actions as searchActions } from '../../redux/modules/search';
 import classes from '../HomeView/HomeView.scss';
 
 import TopNav from '../TopNav/TopNav';
-import SearchResultList from 'components/SearchResultList';
+import MovieCollection from 'components/MovieCollection';
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -29,7 +29,7 @@ export class SearchView extends React.Component {
       <div>
         <TopNav />
         <div className={classes.content}>
-          <SearchResultList searchResults={search.searchResults} />
+          <MovieCollection items={search.searchResults} />
         </div>
       </div>
     );
