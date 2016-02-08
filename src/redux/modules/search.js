@@ -25,7 +25,6 @@ export const UPDATE_KEYWORD = 'UPDATE_KEYWORD';
 export const requestSuggestions = createAction(REQUEST_SUGGESTIONS, keyword => keyword);
 
 export const receiveSuggestions = createAction(RECEIVE_SUGGESTIONS, (keyword, suggestions) => ({
-  keyword,
   suggestions,
 }));
 

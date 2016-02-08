@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { actions as searchActions } from '../../redux/modules/search';
-// import classes from './HomeView.scss';
+import classes from '../HomeView/HomeView.scss';
 
 import TopNav from '../TopNav/TopNav';
+import SearchResultList from 'components/SearchResultList';
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -13,7 +14,7 @@ import TopNav from '../TopNav/TopNav';
 const mapStateToProps = (state) => ({
   search: state.search,
 });
-export class HomeView extends React.Component {
+export class SearchView extends React.Component {
   static propTypes = {
     search: PropTypes.object,
   };
@@ -23,12 +24,16 @@ export class HomeView extends React.Component {
   };
 
   render() {
+    const { search } = this.props;
     return (
       <div>
-        <TopNav/>
+        <TopNav />
+        <div className={classes.content}>
+          <SearchResultList searchResults={search.searchResults} />
+        </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, searchActions)(HomeView);
+export default connect(mapStateToProps, searchActions)(SearchView);

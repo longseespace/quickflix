@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
+import classes from './SearchSuggestionList.scss';
 
 export default class SearchSuggestionList extends React.Component {
   static propTypes = {
@@ -33,8 +35,10 @@ export default class SearchSuggestionList extends React.Component {
       });
       suggestionItems.push((
         <li key={100} className="collection-item" style={{ float: 'none', cursor: 'pointer' }}>
-          <span style={{ color: 'black' }} className="title">See all results for </span>
-          <span style={{ color: 'black', fontStyle: 'italic' }} className='keyword'>"{keyword}"</span>
+          <Link to={`/search/${keyword}`}>
+            <span style={{ color: 'black' }} className="title">See all results for </span>
+            <span style={{ color: 'black', fontStyle: 'italic' }} className='keyword'>"{keyword}"</span>
+          </Link>
         </li>
       ));
     } else {
@@ -45,16 +49,18 @@ export default class SearchSuggestionList extends React.Component {
       );
     }
     return (
-      <ul className="collection z-depth-2"
-        style={{
-          border: 'none',
-          borderRadius: 0,
-          display: show ? 'block' : 'none',
-          top: -15,
-        }}
-      >
-        {suggestionItems}
-      </ul>
+      <span className={classes.root}>
+        <ul className="collection z-depth-2"
+          style={{
+            border: 'none',
+            borderRadius: 0,
+            display: show ? 'block' : 'none',
+            top: -15,
+          }}
+        >
+          {suggestionItems}
+        </ul>
+      </span>
     );
   }
 }
