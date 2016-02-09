@@ -7,8 +7,11 @@ export default class SearchBar extends React.Component {
     placeholder: PropTypes.string,
     keywordMinLength: PropTypes.number,
     suggest: PropTypes.func.isRequired,
-    invalidate: PropTypes.func.isRequired,
+    clear: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
+    showSuggestions: PropTypes.func.isRequired,
+    hideSuggestions: PropTypes.func.isRequired,
+    updateKeyword: PropTypes.func.isRequired,
     keyword: PropTypes.string,
     isFetching: PropTypes.bool,
     style: PropTypes.object,
@@ -19,31 +22,55 @@ export default class SearchBar extends React.Component {
     keyword: '',
     keywordMinLength: 3,
     suggest: () => {},
-    invalidate: () => {},
+    clear: () => {},
     search: () => {},
+    updateKeyword: () => {},
     isFetching: false,
     style: {},
   };
 
   render() {
-    const { placeholder, keywordMinLength, suggest, invalidate, keyword, search, isFetching, style } = this.props;
+    const {
+      placeholder,
+      keywordMinLength,
+      suggest,
+      clear,
+      search,
+      isFetching,
+      style,
+      showSuggestions,
+      hideSuggestions,
+      updateKeyword,
+      keyword,
+    } = this.props;
     const onSubmit = (e) => {
       e.preventDefault();
       const newKeyword = this.refs.searchField.value;
+      this.refs.searchField.blur();
       search(newKeyword);
     };
     const onChange = (e) => {
       e.preventDefault();
       const newKeyword = e.target.value;
+      updateKeyword(newKeyword);
       if (newKeyword.length >= keywordMinLength) {
         suggest(newKeyword);
       } else {
-        invalidate(newKeyword);
+        clear();
       }
     };
     const close = (e) => {
       e.preventDefault();
-      invalidate('');
+      updateKeyword('');
+      clear();
+    };
+    const onBlur = (e) => {
+      e.preventDefault();
+      setTimeout(hideSuggestions, 0);
+    };
+    const onFocus = (e) => {
+      e.preventDefault();
+      showSuggestions();
     };
     return (
       <form style={style} className={classes.root} onSubmit={onSubmit} autoComplete="off">
@@ -56,13 +83,15 @@ export default class SearchBar extends React.Component {
           }}
         >
           <input
+            onFocus={onFocus}
+            onBlur={onBlur}
             ref="searchField"
             autoComplete="off"
             id="search"
+            value={keyword}
             onChange={onChange}
             type="search"
             placeholder={placeholder}
-            value={keyword}
             required
             style={{
               height: '44px',

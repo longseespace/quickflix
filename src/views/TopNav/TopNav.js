@@ -14,14 +14,22 @@ const mapStateToProps = (state) => ({
 export class TopNav extends React.Component {
   static propTypes = {
     context: PropTypes.object,
-    invalidateSuggestions: PropTypes.func.isRequired,
+    showSuggestions: PropTypes.func.isRequired,
+    hideSuggestions: PropTypes.func.isRequired,
     fetchSuggestions: PropTypes.func.isRequired,
+    clearSuggestions: PropTypes.func.isRequired,
+    updateKeyword: PropTypes.func.isRequired,
+    isSuggestionsActive: PropTypes.bool,
   };
 
   static defaultProps = {
     context: {},
-    invalidateSuggestions: () => {},
+    showSuggestions: () => {},
+    hideSuggestions: () => {},
     fetchSuggestions: () => {},
+    clearSuggestions: () => {},
+    updateKeyword: () => {},
+    isSuggestionsActive: false,
   };
 
   handleSearch = (keyword) => {
@@ -29,8 +37,7 @@ export class TopNav extends React.Component {
   };
 
   render() {
-    const { fetchSuggestions, invalidateSuggestions, context } = this.props;
-    const showSuggestion = !context.invalidated && !context.isFetching;
+    const { updateKeyword, fetchSuggestions, clearSuggestions, showSuggestions, hideSuggestions, context } = this.props;
     return (
       <div className={classes.root}>
         <div className="navbar-fixed z-depth-2">
@@ -51,18 +58,21 @@ export class TopNav extends React.Component {
                     search={this.handleSearch}
                     keyword={context.keyword}
                     suggest={fetchSuggestions}
-                    invalidate={invalidateSuggestions}
+                    showSuggestions={showSuggestions}
+                    hideSuggestions={hideSuggestions}
+                    updateKeyword={updateKeyword}
+                    clear={clearSuggestions}
                     isFetching={context.isFetching}
                   />
                   <SearchSuggestionList
                     suggestions={context.suggestions}
-                    show={showSuggestion}
+                    show={context.isSuggestionsActive}
                     keyword={context.keyword}
                   />
                 </li>
               </ul>
               <ul className="right hide-on-med-and-down">
-                <li><a href="badges.html"><i className="material-icons">view_module</i></a></li>
+                <li><a href="badges.html"><i className="material-icons">apps</i></a></li>
                 <li><a href="collapsible.html"><i className="material-icons">refresh</i></a></li>
                 <li><a href="mobile.html"><i className="material-icons">more_vert</i></a></li>
               </ul>

@@ -7,27 +7,33 @@ import debounce from 'lodash.debounce';
 // ------------------------------------
 const API_REQUEST_DEBOUNCE_WAIT = 500;
 
-export const REQUEST_SUGGESTIONS = 'REQUEST_SUGGESTIONS';
-export const RECEIVE_SUGGESTIONS = 'RECEIVE_SUGGESTIONS';
-export const INVALIDATE_SUGGESTIONS = 'INVALIDATE_SUGGESTIONS';
-export const RECEIVE_ERRORS = 'RECEIVE_ERRORS';
+export const REQUEST_SUGGESTIONS = 'TOPNAV:REQUEST_SUGGESTIONS';
+export const RECEIVE_SUGGESTIONS = 'TOPNAV:RECEIVE_SUGGESTIONS';
+export const CLEAR_SUGGESTIONS = 'TOPNAV:CLEAR_SUGGESTIONS';
+export const SHOW_SUGGESTIONS = 'TOPNAV:SHOW_SUGGESTIONS';
+export const HIDE_SUGGESTIONS = 'TOPNAV:HIDE_SUGGESTIONS';
+export const RECEIVE_ERRORS = 'TOPNAV:RECEIVE_ERRORS';
+export const UPDATE_KEYWORD = 'TOPNAV:UPDATE_KEYWORD';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const requestSuggestions = createAction(REQUEST_SUGGESTIONS, keyword => keyword);
+export const requestSuggestions = createAction(REQUEST_SUGGESTIONS);
 
-export const receiveSuggestions = createAction(RECEIVE_SUGGESTIONS, (keyword, suggestions) => ({ suggestions }));
+export const updateKeyword = createAction(UPDATE_KEYWORD, keyword => ({ keyword }));
 
-export const invalidateSuggestions = createAction(INVALIDATE_SUGGESTIONS, (keyword) => ({
-  keyword,
-  suggestions: [],
-}));
+export const receiveSuggestions = createAction(RECEIVE_SUGGESTIONS, suggestions => ({ suggestions }));
 
-export const receiveErrors = createAction(RECEIVE_ERRORS, (message) => ({ message }));
+export const clearSuggestions = createAction(CLEAR_SUGGESTIONS);
 
-const doFetch = (dispatch, keyword) => {
-  dispatch(requestSuggestions(keyword));
+export const showSuggestions = createAction(SHOW_SUGGESTIONS);
+
+export const hideSuggestions = createAction(HIDE_SUGGESTIONS);
+
+export const receiveErrors = createAction(RECEIVE_ERRORS, message => ({ message }));
+
+const doFetch = (dispatch, getState, keyword) => {
+  dispatch(requestSuggestions());
   hdviet.search(keyword, { limit: 5 })
     .then(data => {
       return data.docs.map((item) => {
@@ -50,7 +56,12 @@ const doFetch = (dispatch, keyword) => {
       });
     })
     .then(movies => {
-      dispatch(receiveSuggestions(keyword, movies));
+      const currentKeyword = getState().topnav.keyword;
+      if (keyword === currentKeyword) {
+        dispatch(receiveSuggestions(movies));
+      } else {
+        dispatch(clearSuggestions());
+      }
     })
     .catch(error => {
       dispatch(receiveErrors(error.message));
@@ -59,37 +70,58 @@ const doFetch = (dispatch, keyword) => {
 
 const debouncedFetch = debounce(doFetch, API_REQUEST_DEBOUNCE_WAIT);
 
-export const fetchSuggestions = (keyword = '') => {
-  return (dispatch) => {
-    dispatch(invalidateSuggestions(keyword));
-    debouncedFetch(dispatch, keyword);
+export function fetchSuggestions(keyword = '') {
+  return (dispatch, getState) => {
+    debouncedFetch(dispatch, getState, keyword);
   };
-};
+}
 
 export const actions = {
   requestSuggestions,
-  invalidateSuggestions,
+  clearSuggestions,
   receiveSuggestions,
   fetchSuggestions,
+  showSuggestions,
+  hideSuggestions,
+  updateKeyword,
 };
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default handleActions({
-  [REQUEST_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, requestId: state.requestId + 1, keyword: payload, isFetching: true, invalidated: false };
-  },
-  [INVALIDATE_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, ...payload, isFetching: false, invalidated: true };
-  },
-  [RECEIVE_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, ...payload, isFetching: false, invalidated: false };
-  },
+  [UPDATE_KEYWORD]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
+  [REQUEST_SUGGESTIONS]: (state) => ({
+    ...state,
+    requestId: state.requestId + 1,
+    isFetching: true,
+  }),
+  [CLEAR_SUGGESTIONS]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+    suggestions: [],
+    isFetching: false,
+  }),
+  [RECEIVE_SUGGESTIONS]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+    isFetching: false,
+  }),
+  [SHOW_SUGGESTIONS]: (state) => ({
+    ...state,
+    isSuggestionsActive: true,
+  }),
+  [HIDE_SUGGESTIONS]: (state) => ({
+    ...state,
+    isSuggestionsActive: false,
+  }),
 }, {
   requestId: 0,
   keyword: '',
-  invalidated: true,
   isFetching: false,
+  isSuggestionsActive: false,
   suggestions: [],
 });

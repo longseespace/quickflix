@@ -41,7 +41,7 @@ export default class SearchSuggestionList extends React.Component {
           </Link>
         </li>
       ));
-    } else {
+    } else if (keyword.length > 0) {
       suggestionItems = (
         <li key={0} className="collection-item" style={{ float: 'none' }}>
           <span style={{ color: 'black' }} className="title">No suggested matches</span>
