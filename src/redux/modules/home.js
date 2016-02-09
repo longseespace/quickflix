@@ -4,24 +4,26 @@ import hdviet from '../utils/hdviet';
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const REQUEST_MOVIES = 'REQUEST_MOVIES';
-export const RECEIVE_MOVIES = 'RECEIVE_MOVIES';
+export const REQUEST_MOVIES = 'HOME:REQUEST_MOVIES';
+export const RECEIVE_MOVIES = 'HOME:RECEIVE_MOVIES';
+export const RECEIVE_ERRORS = 'HOME:RECEIVE_ERRORS';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const requestMovies = createAction(REQUEST_MOVIES);
 export const receiveMovies = createAction(RECEIVE_MOVIES, (movies) => ({ movies }));
+export const receiveErrors = createAction(RECEIVE_ERRORS, (message) => ({ message }));
 
 // This is a thunk, meaning it is a function that immediately
 // returns a function for lazy evaluation. It is incredibly useful for
 // creating async actions, especially when combined with redux-thunk!
 export function getMoviesByTag(tag = 'hot-trong-thang') {
   return (dispatch, getState) => {
-    if (getState().movie.isFetching) {
+    if (getState().home.isFetching) {
       return;
     }
-    const page = getState().movie.page + 1;
+    const page = getState().home.page + 1;
     dispatch(requestMovies());
     hdviet.getMoviesByTag(tag, { page })
       .then(data => {
@@ -68,12 +70,23 @@ export default handleActions({
     movies.push(...state.movies);
     movies.push(...payload.movies);
     return {
+      ...state,
       page: state.page + 1,
       movies,
       isFetching: false,
+      error: false,
+      errorMessage: '',
     };
   },
+  [RECEIVE_ERRORS]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    error: true,
+    errorMessage: payload.message,
+  }),
 }, {
+  error: false,
+  errorMessage: '',
   isFetching: false,
   page: 0,
   limit: 20,

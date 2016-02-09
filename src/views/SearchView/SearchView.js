@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { actions as topnavAction } from '../../redux/modules/topnav';
 import { actions as searchActions } from '../../redux/modules/search';
 import classes from '../HomeView/HomeView.scss';
 
 import TopNav from '../TopNav/TopNav';
+import Preloader from 'components/Preloader';
 import MovieCollection from 'components/MovieCollection';
 
 // We define mapStateToProps where we'd normally use
@@ -12,28 +14,62 @@ import MovieCollection from 'components/MovieCollection';
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  search: state.search,
+  topnav: state.topnav,
+  context: state.search,
 });
 export class SearchView extends React.Component {
   static propTypes = {
-    search: PropTypes.object,
+    searchMovies: PropTypes.func,
+    invalidateSuggestions: PropTypes.func,
+    context: PropTypes.object,
+    topnav: PropTypes.object,
+    params: PropTypes.object,
+    itemsPerPage: PropTypes.number,
   };
 
   static defaultProps = {
-    search: {},
+    searchMovies: () => {},
+    invalidateSuggestions: () => {},
+    context: {},
+    topnav: {},
+    params: { keyword: '' },
+    itemsPerPage: 20,
+  };
+
+  componentDidMount() {
+    const { searchMovies, params, context } = this.props;
+    if (context.movies.length === 0) {
+      searchMovies(params.keyword);
+    }
+  }
+
+  loadMore = () => {
+    const { searchMovies, params } = this.props;
+    searchMovies(params.keyword);
   };
 
   render() {
-    const { search } = this.props;
+    const { context } = this.props;
+    if (context.error) {
+      // TODO: handle error
+    }
     return (
       <div>
         <TopNav />
         <div className={classes.content}>
-          <MovieCollection movies={search.searchResults} />
+          <MovieCollection
+            movies={context.movies}
+            onScrollBottom={this.loadMore}
+          />
+          <div className="valign-wrapper">
+            <div className={classes.preloader}>
+              <Preloader show={context.isFetching} />
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, searchActions)(SearchView);
+export default connect(mapStateToProps, { ...topnavAction, ...searchActions })(SearchView);

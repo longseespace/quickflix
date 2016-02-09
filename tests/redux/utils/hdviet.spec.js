@@ -10,10 +10,6 @@ describe('(Utils) HDViet API', () => {
     it('Should return a "Promise"', () => {
       return hdviet.search('wolf').should.be.a('Promise');
     });
-
-    it('Should be rejected for incorrect AccessToken', () => {
-      return hdviet.search('the', { accessToken: 'asd' }).should.be.rejected;
-    });
   });
 
   describe('getMovie()', () => {

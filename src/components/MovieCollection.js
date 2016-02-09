@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import MovieCard from './MovieCard';
 
 export default class MovieCollection extends React.Component {
@@ -27,15 +28,19 @@ export default class MovieCollection extends React.Component {
     });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   render() {
     const { movies } = this.props;
     let cards;
     if (movies.length > 0) {
       cards = movies.map((item, key) => {
-        const { plot, backdrop, name } = item;
+        const { id, plot, backdrop, name } = item;
         return (
           <div key={key} className="col s12 m3">
-            <MovieCard plot={plot.vi} backdrop={backdrop} name={name.vi} />
+            <MovieCard id={id} plot={plot.vi} backdrop={backdrop} name={name.vi} />
           </div>
         );
       });

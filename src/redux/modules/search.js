@@ -1,66 +1,35 @@
 import { createAction, handleActions } from 'redux-actions';
-require('es6-promise').polyfill();
-import fetch from 'isomorphic-fetch';
-import debounce from 'lodash.debounce';
+import hdviet from '../utils/hdviet';
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-const API_URL = 'http://rest.hdviet.com/api/v3';
-const API_TOKEN = 'fb4b338e218b4c2cbbc2722debd3acd1';
-const API_REQUEST_DEBOUNCE_WAIT = 500;
-
-export const REQUEST_SUGGESTIONS = 'REQUEST_SUGGESTIONS';
-export const RECEIVE_SUGGESTIONS = 'RECEIVE_SUGGESTIONS';
-export const INVALIDATE_SUGGESTIONS = 'INVALIDATE_SUGGESTIONS';
-
-export const REQUEST_SEARCH = 'REQUEST_SEARCH';
-export const RECEIVE_SEARCH_RESULTS = 'RECEIVE_SEARCH_RESULTS';
-
-export const UPDATE_KEYWORD = 'UPDATE_KEYWORD';
+export const REQUEST_MOVIES = 'SEARCH:REQUEST_MOVIES';
+export const RECEIVE_MOVIES = 'SEARCH:RECEIVE_MOVIES';
+export const RECEIVE_ERRORS = 'SEARCH:RECEIVE_ERRORS';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const requestSuggestions = createAction(REQUEST_SUGGESTIONS, keyword => keyword);
+export const requestMovies = createAction(REQUEST_MOVIES);
+export const receiveMovies = createAction(RECEIVE_MOVIES, (movies) => ({ movies }));
+export const receiveErrors = createAction(RECEIVE_ERRORS, (message) => ({ message }));
 
-export const receiveSuggestions = createAction(RECEIVE_SUGGESTIONS, (keyword, suggestions) => ({
-  suggestions,
-}));
-
-export const invalidateSuggestions = createAction(INVALIDATE_SUGGESTIONS, (keyword) => ({
-  keyword,
-  suggestions: [],
-}));
-
-export const requestSearch = createAction(REQUEST_SEARCH, keyword => keyword);
-
-export const receiveSearchResults = createAction(RECEIVE_SEARCH_RESULTS, (keyword, searchResults) => ({
-  keyword,
-  searchResults,
-}));
-
-const doFetch = (dispatch, keyword, options = { limit: 5, page: 1, type: 'suggest' }) => {
-  const { limit, page, type } = options;
-  const url = `${API_URL}/search?keyword=${keyword}&limit=${limit}&page=${page}`;
-  if (type === 'search') {
-    dispatch(requestSearch(keyword));
-  } else {
-    dispatch(requestSuggestions(keyword));
-  }
-  const fetchOptions = {
-    headers: {
-      Authorization: API_TOKEN,
-    },
-  };
-  return fetch(url, fetchOptions).then(response => response.json())
-    .then(json => {
-      if (json.error) {
-        // error
-      } else {
-        const results = json.data.response.docs.map((item) => {
+// This is a thunk, meaning it is a function that immediately
+// returns a function for lazy evaluation. It is incredibly useful for
+// creating async actions, especially when combined with redux-thunk!
+export function searchMovies(keyword) {
+  return (dispatch, getState) => {
+    if (getState().search.isFetching) {
+      return;
+    }
+    const page = getState().search.page + 1;
+    dispatch(requestMovies());
+    hdviet.search(keyword, { page })
+      .then(data => {
+        return data.docs.map((item) => {
           return {
-            id: item.id,
+            id: +item.id,
             name: {
               en: item.mo_name,
               vi: item.mo_known_as,
@@ -76,64 +45,49 @@ const doFetch = (dispatch, keyword, options = { limit: 5, page: 1, type: 'sugges
             backdrop: `http://t.hdviet.com/backdrops/945x530/${item.mo_backdrop}`,
           };
         });
-        if (type === 'search') {
-          dispatch(receiveSearchResults(keyword, results));
-        } else {
-          dispatch(receiveSuggestions(keyword, results));
-        }
-      }
-    });
-};
-
-const debouncedFetch = debounce(doFetch, API_REQUEST_DEBOUNCE_WAIT);
-
-export const fetchSuggestions = (keyword = '') => {
-  return (dispatch) => {
-    dispatch(invalidateSuggestions(keyword));
-    debouncedFetch(dispatch, keyword);
+      })
+      .then(movies => {
+        dispatch(receiveMovies(movies));
+      })
+      .catch(error => {
+        dispatch(receiveErrors(error.message));
+      });
   };
-};
-
-export const fetchSearchResults = (keyword = '', options = { limit: 20, page: 1 }) => {
-  return (dispatch) => {
-    dispatch(invalidateSuggestions(keyword));
-    debouncedFetch(dispatch, keyword, { ...options, type: 'search' });
-  };
-};
+}
 
 export const actions = {
-  requestSuggestions,
-  invalidateSuggestions,
-  requestSearch,
-  receiveSuggestions,
-  receiveSearchResults,
-  fetchSuggestions,
-  fetchSearchResults,
+  searchMovies,
 };
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export default handleActions({
-  [REQUEST_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, requestId: state.requestId + 1, keyword: payload, isFetching: true, invalidated: false };
+  [REQUEST_MOVIES]: (state) => ({ ...state, isFetching: true }),
+  [RECEIVE_MOVIES]: (state, { payload }) => {
+    const movies = [];
+    movies.push(...state.movies);
+    movies.push(...payload.movies);
+    return {
+      ...state,
+      page: state.page + 1,
+      movies,
+      isFetching: false,
+      error: false,
+      errorMessage: '',
+    };
   },
-  [INVALIDATE_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, ...payload, isFetching: false, invalidated: true };
-  },
-  [REQUEST_SEARCH]: (state, { payload }) => {
-    return { ...state, keyword: payload, isFetching: true, invalidated: true };
-  },
-  [RECEIVE_SUGGESTIONS]: (state, { payload }) => {
-    return { ...state, ...payload, isFetching: false, invalidated: false };
-  },
-  [RECEIVE_SEARCH_RESULTS]: (state, { payload }) => {
-    return { ...state, ...payload, isFetching: false, invalidated: true };
-  },
+  [RECEIVE_ERRORS]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    error: true,
+    errorMessage: payload.message,
+  }),
 }, {
-  requestId: 0,
-  keyword: '',
-  invalidated: true,
+  error: false,
+  errorMessage: '',
   isFetching: false,
-  suggestions: [],
+  page: 0,
+  limit: 20,
+  movies: [],
 });

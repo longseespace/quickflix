@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { actions as movieActions } from '../../redux/modules/movie';
+import { actions as homeActions } from '../../redux/modules/home';
 import classes from './HomeView.scss';
 
 import MovieCollection from 'components/MovieCollection';
@@ -13,44 +13,46 @@ import TopNav from '../TopNav/TopNav';
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  movie: state.movie,
+  context: state.home,
 });
 export class HomeView extends React.Component {
   static propTypes = {
     getHomeMovies: PropTypes.func,
-    movie: PropTypes.object,
+    context: PropTypes.object,
     itemsPerPage: PropTypes.number,
   };
 
   static defaultProps = {
     getHomeMovies: () => {},
-    movie: {},
+    context: {},
     itemsPerPage: 20,
   };
 
   componentDidMount() {
-    const { getHomeMovies } = this.props;
-    getHomeMovies();
+    const { getHomeMovies, context } = this.props;
+    if (context.movies.length === 0) {
+      getHomeMovies();
+    }
   }
 
   loadMore = () => {
     const { getHomeMovies } = this.props;
-    getHomeMovies(true);
+    getHomeMovies();
   };
 
   render() {
-    const { movie } = this.props;
+    const { context } = this.props;
     return (
       <div>
         <TopNav/>
         <div className={classes.content}>
           <MovieCollection
-            movies={movie.movies}
+            movies={context.movies}
             onScrollBottom={this.loadMore}
           />
           <div className="valign-wrapper">
             <div className={classes.preloader}>
-              <Preloader show={movie.isFetching} />
+              <Preloader show={context.isFetching} />
             </div>
           </div>
         </div>
@@ -59,4 +61,4 @@ export class HomeView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, movieActions)(HomeView);
+export default connect(mapStateToProps, homeActions)(HomeView);

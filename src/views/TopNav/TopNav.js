@@ -2,39 +2,35 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 
-import { actions as searchActions } from '../../redux/modules/search';
+import { actions as topnavActions } from '../../redux/modules/topnav';
 
 import SearchBar from 'components/SearchBar';
 import SearchSuggestionList from 'components/SearchSuggestionList';
 import classes from './TopNav.scss';
 
 const mapStateToProps = (state) => ({
-  search: state.search,
+  context: state.topnav,
 });
 export class TopNav extends React.Component {
   static propTypes = {
-    search: PropTypes.object,
+    context: PropTypes.object,
     invalidateSuggestions: PropTypes.func.isRequired,
-    fetchSearchResults: PropTypes.func.isRequired,
     fetchSuggestions: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    search: {},
+    context: {},
     invalidateSuggestions: () => {},
     fetchSuggestions: () => {},
-    fetchSearchResults: () => {},
   };
 
   handleSearch = (keyword) => {
-    const { fetchSearchResults } = this.props;
-    fetchSearchResults(keyword);
     browserHistory.push(`/search/${keyword}`);
   };
 
   render() {
-    const { fetchSuggestions, invalidateSuggestions, search } = this.props;
-    const showSuggestion = !search.invalidated && !search.isFetching;
+    const { fetchSuggestions, invalidateSuggestions, context } = this.props;
+    const showSuggestion = !context.invalidated && !context.isFetching;
     return (
       <div className={classes.root}>
         <div className="navbar-fixed z-depth-2">
@@ -53,15 +49,15 @@ export class TopNav extends React.Component {
                   <SearchBar
                     placeholder='Find Movies or TV Show...'
                     search={this.handleSearch}
-                    keyword={search.keyword}
+                    keyword={context.keyword}
                     suggest={fetchSuggestions}
                     invalidate={invalidateSuggestions}
-                    isFetching={search.isFetching}
+                    isFetching={context.isFetching}
                   />
                   <SearchSuggestionList
-                    suggestions={search.suggestions}
+                    suggestions={context.suggestions}
                     show={showSuggestion}
-                    keyword={search.keyword}
+                    keyword={context.keyword}
                   />
                 </li>
               </ul>
@@ -78,4 +74,4 @@ export class TopNav extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, searchActions)(TopNav);
+export default connect(mapStateToProps, topnavActions)(TopNav);

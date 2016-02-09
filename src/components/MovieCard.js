@@ -1,25 +1,31 @@
 import React, { PropTypes } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import truncate from 'lodash.truncate';
 import LazyLoad from 'react-lazy-load';
 import Image from './Image';
 
-export default class SearchResultList extends React.Component {
+export default class MovieCard extends React.Component {
   static propTypes = {
-    plot: PropTypes.string,
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    plot: PropTypes.string,
     backdrop: PropTypes.string,
     lazyload: PropTypes.bool,
   };
 
   static defaultProps = {
+    id: 0,
+    name: '',
     lazyload: true,
   };
 
   componentDidMount() {
     const $ = window.jQuery;
-    $(document).ready(() => {
-      $('.tooltipped').tooltip({ delay: 50 });
-    });
+    $('.tooltipped').tooltip({ delay: 50 });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   render() {
