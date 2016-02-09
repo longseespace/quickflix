@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import classes from './SearchBar.scss';
+import Preloader from './Preloader';
 
 export default class SearchBar extends React.Component {
   static propTypes = {
@@ -80,26 +81,15 @@ export default class SearchBar extends React.Component {
             onClick={close}
             style={{ display: isFetching ? 'none' : 'block', height: '44px', lineHeight: '44px' }}
           >close</i>
-          <div
-            className="preloader-wrapper small active"
+          <Preloader
+            show={isFetching}
             style={{
-              display: isFetching ? 'block' : 'none',
               position: 'absolute',
               top: '0.2rem',
               right: '0.8rem',
               transition: '.3s color',
             }}
-          >
-            <div className="spinner-layer spinner-blue-only">
-              <div className="circle-clipper left">
-                <div className="circle"></div>
-              </div><div className="gap-patch">
-                <div className="circle"></div>
-              </div><div className="circle-clipper right">
-                <div className="circle"></div>
-              </div>
-            </div>
-          </div>
+          />
         </div>
       </form>
     );

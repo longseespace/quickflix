@@ -29,7 +29,7 @@ export class SearchView extends React.Component {
       <div>
         <TopNav />
         <div className={classes.content}>
-          <MovieCollection items={search.searchResults} />
+          <MovieCollection movies={search.searchResults} />
         </div>
       </div>
     );

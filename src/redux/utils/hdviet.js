@@ -58,9 +58,9 @@ export function getRelatedMovies(id, options = { accessToken: API_TOKEN, limit: 
     });
 }
 
-const filterOptions = {
+const defaultFilterOptions = {
   accessToken: API_TOKEN,
-  isCinema: '',
+  isCinema: 'wtf',
   tag: '',
   genre: '',
   imdb: '',
@@ -68,8 +68,9 @@ const filterOptions = {
   limit: 20,
   page: 1,
 };
-export function getMovies(options = filterOptions) {
-  const { limit, page, accessToken, isCinema, tag, genre, imdb, year } = options;
+export function getMovies(options) {
+  const newOptions = { ...defaultFilterOptions, ...options };
+  const { limit, page, accessToken, isCinema, tag, genre, imdb, year } = newOptions;
   const url = `${API_URL}/movie/filter?limit=${limit}&page=${page}&isCinema=${isCinema}&tag=${tag}&genre=${genre}&imdb=${imdb}&year=${year}`;
   const fetchOptions = {
     headers: {
@@ -86,9 +87,29 @@ export function getMovies(options = filterOptions) {
     });
 }
 
+export function getMoviesByTag(tag = '', options = { accessToken: API_TOKEN, page: 1, limit: 20 }) {
+  return getMovies({ ...options, tag });
+}
+
+export function getMoviesByGenre(genre = '', options = { accessToken: API_TOKEN, page: 1, limit: 20 }) {
+  return getMovies({ ...options, genre });
+}
+
+export function getMoviesByImdb(imdb = '', options = { accessToken: API_TOKEN, page: 1, limit: 20 }) {
+  return getMovies({ ...options, imdb });
+}
+
+export function getMoviesByYear(year = '', options = { accessToken: API_TOKEN, page: 1, limit: 20 }) {
+  return getMovies({ ...options, year });
+}
+
 export default {
   search,
   getMovie,
   getRelatedMovies,
   getMovies,
+  getMoviesByTag,
+  getMoviesByGenre,
+  getMoviesByImdb,
+  getMoviesByYear,
 };

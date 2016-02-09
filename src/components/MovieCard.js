@@ -1,11 +1,18 @@
 import React, { PropTypes } from 'react';
 import truncate from 'lodash.truncate';
+import LazyLoad from 'react-lazy-load';
+import Image from './Image';
 
 export default class SearchResultList extends React.Component {
   static propTypes = {
     plot: PropTypes.string,
     name: PropTypes.string.isRequired,
     backdrop: PropTypes.string,
+    lazyload: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    lazyload: true,
   };
 
   componentDidMount() {
@@ -24,7 +31,9 @@ export default class SearchResultList extends React.Component {
     return (
       <div className="card hoverable medium">
         <div className="card-image">
-          <img src={backdrop} />
+          <LazyLoad height={189}>
+            <Image src={backdrop} />
+          </LazyLoad>
           <span className="card-title">{name}</span>
         </div>
         <div className="card-content">
