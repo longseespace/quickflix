@@ -3,6 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import truncate from 'lodash.truncate';
 import LazyLoad from 'react-lazy-load';
 import Image from './Image';
+import classes from './MovieCard.scss';
 
 export default class MovieCard extends React.Component {
   static propTypes = {
@@ -40,7 +41,8 @@ export default class MovieCard extends React.Component {
           <LazyLoad height={189}>
             <Image src={backdrop} />
           </LazyLoad>
-          <span className="card-title">{name}</span>
+          <div className={classes.mask}></div>
+          <span className="card-title truncate" style={{ maxWidth: '100%' }}>{name}</span>
         </div>
         <div className="card-content">
           <p>{truncatedPlot}</p>
