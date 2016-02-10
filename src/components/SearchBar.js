@@ -66,7 +66,7 @@ export default class SearchBar extends React.Component {
     };
     const onBlur = (e) => {
       e.preventDefault();
-      setTimeout(hideSuggestions, 0);
+      setTimeout(hideSuggestions, 10);
     };
     const onFocus = (e) => {
       e.preventDefault();

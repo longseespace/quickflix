@@ -16,9 +16,9 @@ export default class MovieCollection extends React.Component {
   };
 
   componentDidMount() {
-    const $ = window.$;
     const { onScrollTop, onScrollBottom } = this.props;
-    $(window).scroll(() => {
+    const $ = window.$;
+    $(window).on('scroll', () => {
       if ($(window).scrollTop() + $(window).height() === $(document).height()) {
         onScrollBottom();
       }
@@ -30,6 +30,11 @@ export default class MovieCollection extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
+  }
+
+  componentWillUnmount() {
+    const $ = window.$;
+    $(window).off('scroll');
   }
 
   render() {

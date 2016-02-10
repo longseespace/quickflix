@@ -20,8 +20,8 @@ export default class MovieCard extends React.Component {
   };
 
   componentDidMount() {
-    const $ = window.jQuery;
-    $('.tooltipped').tooltip({ delay: 50 });
+    // const $ = window.jQuery;
+    // $('.tooltipped').tooltip({ delay: 50 });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
