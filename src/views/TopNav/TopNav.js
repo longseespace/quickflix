@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 
 import { actions as topnavActions } from '../../redux/modules/topnav';
 
@@ -22,6 +22,10 @@ export class TopNav extends React.Component {
     isSuggestionsActive: PropTypes.bool,
   };
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
+  };
+
   static defaultProps = {
     context: {},
     showSuggestions: () => {},
@@ -33,7 +37,7 @@ export class TopNav extends React.Component {
   };
 
   handleSearch = (keyword) => {
-    browserHistory.push(`/search/${keyword}`);
+    this.context.router.push(`/search/${keyword}`);
   };
 
   render() {
@@ -68,6 +72,7 @@ export class TopNav extends React.Component {
                     suggestions={context.suggestions}
                     show={context.isSuggestionsActive}
                     keyword={context.keyword}
+                    limit={3}
                   />
                 </li>
               </ul>

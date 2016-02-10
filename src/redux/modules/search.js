@@ -5,13 +5,15 @@ import hdviet from '../utils/hdviet';
 // Constants
 // ------------------------------------
 export const REQUEST_MOVIES = 'SEARCH:REQUEST_MOVIES';
+export const CLEAR_RESULTS = 'SEARCH:CLEAR_RESULTS';
 export const RECEIVE_MOVIES = 'SEARCH:RECEIVE_MOVIES';
 export const RECEIVE_ERRORS = 'SEARCH:RECEIVE_ERRORS';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const requestMovies = createAction(REQUEST_MOVIES);
+export const requestMovies = createAction(REQUEST_MOVIES, keyword => ({ keyword }));
+export const clearResults = createAction(CLEAR_RESULTS);
 export const receiveMovies = createAction(RECEIVE_MOVIES, (movies) => ({ movies }));
 export const receiveErrors = createAction(RECEIVE_ERRORS, (message) => ({ message }));
 
@@ -20,11 +22,16 @@ export const receiveErrors = createAction(RECEIVE_ERRORS, (message) => ({ messag
 // creating async actions, especially when combined with redux-thunk!
 export function searchMovies(keyword) {
   return (dispatch, getState) => {
-    if (getState().search.isFetching) {
+    const state = getState().search;
+    if (state.isFetching) {
       return;
     }
+    if (state.keyword !== keyword) {
+      dispatch(clearResults());
+    }
+    // after dispatching `clearResults()` we got new state
     const page = getState().search.page + 1;
-    dispatch(requestMovies());
+    dispatch(requestMovies(keyword));
     hdviet.search(keyword, { page })
       .then(data => {
         return data.docs.map((item) => {
@@ -63,7 +70,8 @@ export const actions = {
 // Reducer
 // ------------------------------------
 export default handleActions({
-  [REQUEST_MOVIES]: (state) => ({ ...state, isFetching: true }),
+  [REQUEST_MOVIES]: (state, { payload }) => ({ ...state, ...payload, isFetching: true }),
+  [CLEAR_RESULTS]: (state) => ({ ...state, isFetching: false, movies: [], page: 0 }),
   [RECEIVE_MOVIES]: (state, { payload }) => {
     const movies = [];
     movies.push(...state.movies);
@@ -84,6 +92,7 @@ export default handleActions({
     errorMessage: payload.message,
   }),
 }, {
+  keyword: '',
   error: false,
   errorMessage: '',
   isFetching: false,

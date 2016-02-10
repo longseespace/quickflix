@@ -8,6 +8,7 @@ export default class SearchSuggestionList extends React.Component {
     show: PropTypes.bool,
     isFetching: PropTypes.bool,
     keyword: PropTypes.string,
+    limit: PropTypes.number,
   };
 
   static defaultProps = {
@@ -15,13 +16,14 @@ export default class SearchSuggestionList extends React.Component {
     show: false,
     isFetching: false,
     keyword: '',
+    limit: 5,
   };
 
   render() {
-    const { suggestions, show, keyword } = this.props;
+    const { suggestions, show, keyword, limit } = this.props;
     let suggestionItems;
     if (suggestions.length > 0) {
-      suggestionItems = suggestions.map((item, key) => {
+      suggestionItems = suggestions.filter((item, index) => index < limit).map((item, key) => {
         const releaseYear = new Date(item.releaseDate).getFullYear();
         return (
           <li key={key} className="collection-item avatar" style={{ float: 'none', cursor: 'pointer' }}>

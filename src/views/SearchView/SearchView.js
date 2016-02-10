@@ -16,6 +16,7 @@ import MovieCollection from 'components/MovieCollection';
 const mapStateToProps = (state) => ({
   topnav: state.topnav,
   context: state.search,
+  router: state.router,
 });
 export class SearchView extends React.Component {
   static propTypes = {
@@ -39,6 +40,13 @@ export class SearchView extends React.Component {
   componentDidMount() {
     const { searchMovies, params, context } = this.props;
     if (context.movies.length === 0) {
+      searchMovies(params.keyword);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { searchMovies, params, context } = nextProps;
+    if (context.movies.length === 0 || params.keyword !== this.props.params.keyword) {
       searchMovies(params.keyword);
     }
   }
