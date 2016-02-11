@@ -25,3 +25,9 @@ body {
 .card-image .card-title {
   text-shadow: 0 0 3px black;
 }
+
+.center-inside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -77,7 +77,7 @@ export class TopNav extends React.Component {
     return (
       <div className={classes.root}>
         <div className="navbar-fixed z-depth-2">
-          <nav className="blue accent-3">
+          <nav className="red darken-3">
             <div className="nav-wrapper row">
               <ul>
                 <li>
@@ -105,12 +105,11 @@ export class TopNav extends React.Component {
                     suggestions={context.suggestions}
                     show={context.isSuggestionsActive}
                     keyword={context.keyword}
-                    limit={3}
                   />
                 </li>
               </ul>
               <ul className="right">
-                <li><a id={classes.moreActivator} data-activates={classes.moreMenu} data-beloworigin="true">{displayName}<i className="material-icons right">arrow_drop_down</i></a></li>
+                <li><a id={classes.moreActivator} className="truncate" data-activates={classes.moreMenu} data-beloworigin="true">{displayName}<i className="material-icons right">arrow_drop_down</i></a></li>
               </ul>
             </div>
           </nav>

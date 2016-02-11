@@ -3,7 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import truncate from 'lodash.truncate';
 import LazyLoad from 'react-lazy-load';
 import Image from './Image';
-import classes from './MovieCard.scss';
+import styles from './MovieCard.scss';
 
 export default class MovieCard extends React.Component {
   static propTypes = {
@@ -20,6 +20,11 @@ export default class MovieCard extends React.Component {
     lazyload: true,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = { hover: false };
+  }
+
   componentDidMount() {
     // const $ = window.jQuery;
     // $('.tooltipped').tooltip({ delay: 50 });
@@ -29,29 +34,63 @@ export default class MovieCard extends React.Component {
     return shallowCompare(this, nextProps, nextState);
   }
 
+  onMouseOver = (e) => {
+    e.preventDefault();
+    this.setState({
+      hover: true,
+    });
+  };
+
+  onMouseOut = (e) => {
+    e.preventDefault();
+    this.setState({
+      hover: false,
+    });
+  };
+
   render() {
     const { id, plot, backdrop, name } = this.props;
+    const { hover } = this.state;
     const truncatedPlot = truncate(plot, {
-      length: 200,
+      length: hover ? 200 : 300,
       separator: ' ',
     });
+    const maskClassName = hover ? `${styles.maskHover}  center-inside` : `${styles.mask} center-inside`;
     return (
-      <div className="card hoverable medium" id={`movie-${id}`}>
+      <div
+        onMouseOver={this.onMouseOver}
+        onMouseOut={this.onMouseOut}
+        className="card hoverable medium"
+        id={`movie-${id}`}
+        style={{ overflow: 'hidden' }}
+      >
         <div className="card-image">
           <LazyLoad height={189}>
             <Image src={backdrop} />
           </LazyLoad>
-          <div className={classes.mask}></div>
+          <div className={maskClassName}>
+            <a style={{ opacity: hover ? 1 : 0 }} className="btn-floating btn-large waves-effect waves-light red accent-4" title="Watch" alt="Watch">
+              <i style={{ fontSize: 36 }} className="material-icons">play_arrow</i>
+            </a>
+          </div>
           <span className="card-title truncate" style={{ maxWidth: '100%' }}>{name}</span>
         </div>
-        <div className="card-content">
+        <div style={{ maxHeight: hover ? '40%' : '60%' }} className="card-content">
           <p>{truncatedPlot}</p>
         </div>
-        <div className="card-action">
-          <a href="#">Detail Page</a>
-          <span className="activator" style={{ width: 48, height: 48, cursor: 'pointer' }}>
+        <div style={{ bottom: hover ? 0 : -100, transitionDelay: hover ? '0s' : '1s' }} className={`${styles.actions} card-action`}>
+          <a className="waves-effect waves-red btn-flat" title="Info" alt="Info">
+            <i className="material-icons">info_outline</i>
+          </a>
+          <a className="waves-effect waves-red btn-flat" title="Trailer" alt="Trailer">
+            <i className="material-icons">ondemand_video</i>
+          </a>
+          <a className="waves-effect waves-red btn-flat" title="Add to Favorite" alt="Add to Favorite">
+            <i className="material-icons">favorite_border</i>
+          </a>
+          <a title="Show full plot" alt="Show full plot" className="activator">
             <i className="material-icons right tooltipped" data-position="top" data-tooltip="Show full plot">expand_less</i>
-          </span>
+          </a>
         </div>
         <div className="card-reveal">
           <span className="card-title grey-text text-darken-4">{name}<i className="material-icons right">close</i></span>

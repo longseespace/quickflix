@@ -11,7 +11,7 @@ export default class Preloader extends React.Component {
   static defaultProps = {
     style: {},
     size: 'small',
-    color: 'blue',
+    color: 'red',
     show: true,
   };
 
