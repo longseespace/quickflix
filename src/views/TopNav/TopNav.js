@@ -1,19 +1,30 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { Base64 } from 'js-base64';
 
 import { actions as topnavActions } from '../../redux/modules/topnav';
+import { actions as authActions } from '../../redux/modules/auth';
 
 import SearchBar from 'components/SearchBar';
 import SearchSuggestionList from 'components/SearchSuggestionList';
 import classes from './TopNav.scss';
+import logo from './logo.png';
 
 const mapStateToProps = (state) => ({
   context: state.topnav,
+  auth: state.auth,
 });
+const actions = {
+  ...topnavActions,
+  ...authActions,
+};
 export class TopNav extends React.Component {
   static propTypes = {
     context: PropTypes.object,
+    auth: PropTypes.object,
+    login: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
     showSuggestions: PropTypes.func.isRequired,
     hideSuggestions: PropTypes.func.isRequired,
     fetchSuggestions: PropTypes.func.isRequired,
@@ -28,6 +39,9 @@ export class TopNav extends React.Component {
 
   static defaultProps = {
     context: {},
+    auth: {},
+    login: () => {},
+    logout: () => {},
     showSuggestions: () => {},
     hideSuggestions: () => {},
     fetchSuggestions: () => {},
@@ -36,12 +50,27 @@ export class TopNav extends React.Component {
     isSuggestionsActive: false,
   };
 
+  componentDidMount() {
+    window.$(`#${classes.moreActivator}`).dropdown();
+  }
+
   handleSearch = (keyword) => {
     this.context.router.push(`/search/${keyword}`);
   };
 
   render() {
-    const { updateKeyword, fetchSuggestions, clearSuggestions, showSuggestions, hideSuggestions, context } = this.props;
+    const {
+      updateKeyword,
+      fetchSuggestions,
+      clearSuggestions,
+      showSuggestions,
+      hideSuggestions,
+      context,
+      auth,
+      logout,
+    } = this.props;
+    const displayName = auth.creds.display_name;
+    const token = Base64.encode(auth.creds.access_token);
     return (
       <div className={classes.root}>
         <div className="navbar-fixed z-depth-2">
@@ -52,8 +81,8 @@ export class TopNav extends React.Component {
                   <a href="#"><i className="material-icons">menu</i></a>
                 </li>
                 <li className={classes.logo}>
-                  <Link to="/">
-                    <img src="https://www.gstatic.com/images/branding/lockups/2x/lockup_trends_light_color_142x24dp.png" />
+                  <Link alt="Quickflix" title="Quickflix" to="/">
+                    <img src={logo} />
                   </Link>
                 </li>
                 <li className={`col m7 ${classes.searchbar}`}>
@@ -78,18 +107,21 @@ export class TopNav extends React.Component {
                 </li>
               </ul>
               <ul className="right">
-                <li><a href="collapsible.html"><i className="material-icons">refresh</i></a></li>
-                <li><a className="dropdown-button" data-activates={classes.moreMenu} data-beloworigin="true"><i className="material-icons">more_vert</i></a></li>
+                <li><a id={classes.moreActivator} data-activates={classes.moreMenu} data-beloworigin="true">{displayName}<i className="material-icons right">arrow_drop_down</i></a></li>
               </ul>
             </div>
           </nav>
         </div>
         <ul id={classes.moreMenu} className='dropdown-content'>
-          <li><a href="#!">Login</a></li>
+          <li><a href={`https://id.hdviet.com/cap-nhat-thong-tin/?token=${token}`} target="_blank">Profile <i className="material-icons right">open_in_new</i></a></li>
+          <li><a href={`https://id.hdviet.com/lich-su-giao-dich/?token=${token}`} target="_blank">Transactions <i className="material-icons right">open_in_new</i></a></li>
+          <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target="_blank">Password <i className="material-icons right">open_in_new</i></a></li>
+          <li className="divider"></li>
+          <li><a onClick={logout}>Logout</a></li>
         </ul>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, topnavActions)(TopNav);
+export default connect(mapStateToProps, actions)(TopNav);

@@ -4,15 +4,26 @@
   }
 }
 
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 .logo {
+  margin-right: 100px;
   img {
-    width: 142px;
+    height: 46px;
     vertical-align: middle;
+    &:hover {
+      animation: spin 4s linear infinite;
+    }
   }
 }
 
 .searchbar {
   margin-top: 10px;
+}
+
+#moreActivator {
+  min-width: 200px;
+  text-align: right;
 }
 
 #moreMenu {

@@ -14,9 +14,17 @@ export default class AuthenticatedView extends React.Component {
   };
 
   componentWillMount() {
-    const { auth } = this.props;
+    this.redirectIfNotAuthenticated(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.redirectIfNotAuthenticated(nextProps);
+  }
+
+  redirectIfNotAuthenticated = (props) => {
+    const { auth } = props;
     if (!auth.isAuthenticated) {
       this.context.router.push('/auth');
     }
-  }
+  };
 }

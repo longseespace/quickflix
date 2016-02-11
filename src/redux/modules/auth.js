@@ -39,8 +39,10 @@ export function login(email, password, key, captcha) {
 }
 
 export function logout() {
-  localStorage.removeItem(STORAGE_KEY);
-  requestLogout();
+  return (dispatch) => {
+    localStorage.removeItem(STORAGE_KEY);
+    dispatch(requestLogout());
+  };
 }
 
 export const actions = {
