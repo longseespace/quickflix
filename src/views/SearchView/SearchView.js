@@ -4,6 +4,8 @@ import { actions as topnavAction } from '../../redux/modules/topnav';
 import { actions as searchActions } from '../../redux/modules/search';
 import classes from '../HomeView/HomeView.scss';
 
+import AuthenticatedView from '../AuthenticatedView/AuthenticatedView';
+
 import TopNav from '../TopNav/TopNav';
 import Preloader from 'components/Preloader';
 import MovieCollection from 'components/MovieCollection';
@@ -17,8 +19,9 @@ const mapStateToProps = (state) => ({
   topnav: state.topnav,
   context: state.search,
   router: state.router,
+  auth: state.auth,
 });
-export class SearchView extends React.Component {
+export class SearchView extends AuthenticatedView {
   static propTypes = {
     searchMovies: PropTypes.func,
     invalidateSuggestions: PropTypes.func,

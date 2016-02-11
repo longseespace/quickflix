@@ -58,6 +58,7 @@ export class TopNav extends React.Component {
                 </li>
                 <li className={`col m7 ${classes.searchbar}`}>
                   <SearchBar
+                    className="hide-on-med-and-down"
                     placeholder='Find Movies or TV Show...'
                     search={this.handleSearch}
                     keyword={context.keyword}
@@ -76,14 +77,16 @@ export class TopNav extends React.Component {
                   />
                 </li>
               </ul>
-              <ul className="right hide-on-med-and-down">
-                <li><a href="badges.html"><i className="material-icons">apps</i></a></li>
+              <ul className="right">
                 <li><a href="collapsible.html"><i className="material-icons">refresh</i></a></li>
-                <li><a href="mobile.html"><i className="material-icons">more_vert</i></a></li>
+                <li><a className="dropdown-button" data-activates={classes.moreMenu} data-beloworigin="true"><i className="material-icons">more_vert</i></a></li>
               </ul>
             </div>
           </nav>
         </div>
+        <ul id={classes.moreMenu} style={{ width: 200, left: 'auto', right: 0 }} className='dropdown-content'>
+          <li><a href="#!">Login</a></li>
+        </ul>
       </div>
     );
   }

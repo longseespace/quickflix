@@ -22,17 +22,21 @@ export const receiveErrors = createAction(RECEIVE_ERRORS, (message) => ({ messag
 // creating async actions, especially when combined with redux-thunk!
 export function searchMovies(keyword) {
   return (dispatch, getState) => {
-    const state = getState().search;
-    if (state.isFetching) {
+    if (getState().search.isFetching) {
       return;
     }
-    if (state.keyword !== keyword) {
+    if (getState().search.keyword !== keyword) {
       dispatch(clearResults());
     }
+    if (!getState().auth.isAuthenticated) {
+      // should dispatch an action that ask user to login
+      return;
+    }
+    const creds = getState().auth.creds;
     // after dispatching `clearResults()` we got new state
     const page = getState().search.page + 1;
     dispatch(requestMovies(keyword));
-    hdviet.search(keyword, { page })
+    hdviet.search(keyword, { accessToken: creds.access_token, page })
       .then(data => {
         return data.docs.map((item) => {
           return {

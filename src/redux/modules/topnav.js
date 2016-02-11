@@ -33,8 +33,13 @@ export const hideSuggestions = createAction(HIDE_SUGGESTIONS);
 export const receiveErrors = createAction(RECEIVE_ERRORS, message => ({ message }));
 
 const doFetch = (dispatch, getState, keyword) => {
+  if (!getState().auth.isAuthenticated) {
+    // should dispatch an action that ask user to login
+    return;
+  }
+  const creds = getState().auth.creds;
   dispatch(requestSuggestions());
-  hdviet.search(keyword, { limit: 5 })
+  hdviet.search(keyword, { accessToken: creds.access_token, limit: 5 })
     .then(data => {
       return data.docs.map((item) => {
         return {

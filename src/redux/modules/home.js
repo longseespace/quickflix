@@ -23,9 +23,14 @@ export function getMoviesByTag(tag = 'hot-trong-thang') {
     if (getState().home.isFetching) {
       return;
     }
+    if (!getState().auth.isAuthenticated) {
+      // should dispatch an action that ask user to login
+      return;
+    }
+    const creds = getState().auth.creds;
     const page = getState().home.page + 1;
     dispatch(requestMovies());
-    hdviet.getMoviesByTag(tag, { page })
+    hdviet.getMoviesByTag(tag, { accessToken: creds.access_token, page })
       .then(data => {
         return data.lists.map((item) => {
           return {

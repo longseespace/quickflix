@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { actions as homeActions } from '../../redux/modules/home';
 import classes from './HomeView.scss';
 
+import AuthenticatedView from '../AuthenticatedView/AuthenticatedView';
+
 import MovieCollection from 'components/MovieCollection';
 import Preloader from 'components/Preloader';
 import TopNav from '../TopNav/TopNav';
@@ -14,8 +16,9 @@ import TopNav from '../TopNav/TopNav';
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
   context: state.home,
+  auth: state.auth,
 });
-export class HomeView extends React.Component {
+export class HomeView extends AuthenticatedView {
   static propTypes = {
     getHomeMovies: PropTypes.func,
     context: PropTypes.object,

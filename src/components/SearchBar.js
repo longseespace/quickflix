@@ -13,6 +13,7 @@ export default class SearchBar extends React.Component {
     hideSuggestions: PropTypes.func.isRequired,
     updateKeyword: PropTypes.func.isRequired,
     keyword: PropTypes.string,
+    className: PropTypes.string,
     isFetching: PropTypes.bool,
     style: PropTypes.object,
   };
@@ -20,6 +21,7 @@ export default class SearchBar extends React.Component {
   static defaultProps = {
     placeholder: 'Search...',
     keyword: '',
+    className: '',
     keywordMinLength: 3,
     suggest: () => {},
     clear: () => {},
@@ -42,6 +44,7 @@ export default class SearchBar extends React.Component {
       hideSuggestions,
       updateKeyword,
       keyword,
+      className,
     } = this.props;
     const onSubmit = (e) => {
       e.preventDefault();
@@ -73,7 +76,7 @@ export default class SearchBar extends React.Component {
       showSuggestions();
     };
     return (
-      <form style={style} className={classes.root} onSubmit={onSubmit} autoComplete="off">
+      <form style={style} className={`${classes.root} ${className}`} onSubmit={onSubmit} autoComplete="off">
         <div
           className="input-field"
           style={{

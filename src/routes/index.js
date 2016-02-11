@@ -10,10 +10,12 @@ import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import HomeView from 'views/HomeView/HomeView';
 import SearchView from 'views/SearchView/SearchView';
 import NotFoundView from 'views/NotFoundView/NotFoundView';
+import AuthView from 'views/AuthView/AuthView';
 
 export default (
   <Route path='/' component={CoreLayout}>
     <IndexRoute component={HomeView} />
+    <Route path='/auth' component={AuthView} />
     <Route path='/search/' component={SearchView}>
       <Route path=':keyword' component={SearchView} />
     </Route>

@@ -30,13 +30,13 @@ export default class MovieCard extends React.Component {
   }
 
   render() {
-    const { plot, backdrop, name } = this.props;
+    const { id, plot, backdrop, name } = this.props;
     const truncatedPlot = truncate(plot, {
       length: 200,
       separator: ' ',
     });
     return (
-      <div className="card hoverable medium">
+      <div className="card hoverable medium" id={`movie-${id}`}>
         <div className="card-image">
           <LazyLoad height={189}>
             <Image src={backdrop} />

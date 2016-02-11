@@ -14,3 +14,13 @@
 .searchbar {
   margin-top: 10px;
 }
+
+#moreMenu {
+  a {
+    color: #2979ff;
+    &:hover {
+      color: white;
+      background: #2979ff;
+    }
+  }
+}
