@@ -51,7 +51,9 @@ export class TopNav extends React.Component {
   };
 
   componentDidMount() {
-    window.$(`#${classes.moreActivator}`).dropdown();
+    if (window.$) {
+      window.$(`#${classes.moreActivator}`).dropdown();
+    }
   }
 
   handleSearch = (keyword) => {
@@ -69,8 +71,9 @@ export class TopNav extends React.Component {
       auth,
       logout,
     } = this.props;
-    const displayName = auth.creds.display_name;
-    const token = Base64.encode(auth.creds.access_token);
+    const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymouse';
+    const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : '';
+    const token = Base64.encode(accessToken);
     return (
       <div className={classes.root}>
         <div className="navbar-fixed z-depth-2">
