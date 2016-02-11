@@ -84,7 +84,7 @@ export class TopNav extends React.Component {
             </div>
           </nav>
         </div>
-        <ul id={classes.moreMenu} style={{ width: 200, left: 'auto', right: 0 }} className='dropdown-content'>
+        <ul id={classes.moreMenu} className='dropdown-content'>
           <li><a href="#!">Login</a></li>
         </ul>
       </div>

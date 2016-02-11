@@ -42,14 +42,38 @@ export class AuthView extends React.Component {
     const { login } = this.props;
     const email = this.refs.email.value;
     const password = this.refs.password.value;
+    const key = this.refs.key ? this.refs.key.value : false;
+    const captcha = this.refs.captcha ? this.refs.captcha.value : false;
     if (email.length > 0 && password.length > 0) {
-      login(email, password);
+      login(email, password, key, captcha);
     }
   };
 
   render() {
     const { auth } = this.props;
     const buttonText = auth.isFetching ? 'Logging in...' : 'Login';
+    let errorMessage;
+
+    let passwordClassName = 'validate';
+    if (auth.hasError && auth.error && auth.error.error === 25) {
+      passwordClassName = 'validate invalid';
+      errorMessage = 'Invalid password';
+    }
+
+    let captchaNode;
+    if (auth.error.error === 27) {
+      errorMessage = 'Invalid captcha';
+      captchaNode = (
+        <div className="row">
+          <div className={`input-field col m10 push-m1 s10 push-s1 ${classes.captcha}`}>
+            <input type="hidden" ref="key" value={auth.error.data.key} />
+            <input id="captcha" ref="captcha" type="text" className='validate invalid' required aria-required="true" />
+            <label htmlFor="captcha">Captcha</label>
+            <img src={`https://id.hdviet.com/${auth.error.data.img_url}`} />
+          </div>
+        </div>
+      );
+    }
     return (
       <div className={classes.root}>
         <div className="container">
@@ -60,6 +84,7 @@ export class AuthView extends React.Component {
             <form action="post" onSubmit={this.onSubmit} className="card grey lighten-4 col m4 push-m4 s6 push-s3">
               <div className="row">
                 <div className="input-field col m10 push-m1 s10 push-s1">
+                  <span className={classes.error}>{errorMessage}</span>
                 </div>
               </div>
               <div className="row">
@@ -70,10 +95,11 @@ export class AuthView extends React.Component {
               </div>
               <div className="row">
                 <div className="input-field col m10 push-m1 s10 push-s1">
-                  <input id="password" ref="password" type="password" className="validate" required aria-required="true" />
+                  <input id="password" ref="password" type="password" className={passwordClassName} required aria-required="true" />
                   <label htmlFor="password">Password</label>
                 </div>
               </div>
+              {captchaNode}
               <div className="row">
                 <div className="input-field col m10 push-m1 s10 push-s1">
                   <button className="btn waves-effect waves-light" type="submit" name="action">{buttonText}</button>

@@ -16,21 +16,24 @@ export const RECEIVE_ERRORS = 'AUTH:RECEIVE_ERRORS';
 export const requestLogin = createAction(LOGIN);
 export const requestLogout = createAction(LOGOUT);
 export const receiveTokens = createAction(RECEIVE_TOKENS, (creds) => ({ creds }));
-export const receiveErrors = createAction(RECEIVE_ERRORS, (message) => ({ message }));
+export const receiveErrors = createAction(RECEIVE_ERRORS, (error) => ({ error }));
 
 // This is a thunk, meaning it is a function that immediately
 // returns a function for lazy evaluation. It is incredibly useful for
 // creating async actions, especially when combined with redux-thunk!
-export function login(email, password) {
+export function login(email, password, key, captcha) {
   return (dispatch, getState) => {
     if (getState().auth.isFetching) {
       return;
     }
     dispatch(requestLogin());
-    hdviet.login(email, password)
+    hdviet.login(email, password, key, captcha)
       .then(creds => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(creds));
         dispatch(receiveTokens(creds));
+      })
+      .catch(error => {
+        dispatch(receiveErrors(error));
       });
   };
 }
@@ -65,19 +68,18 @@ export default handleActions({
     creds: payload.creds,
     isFetching: false,
     isAuthenticated: true,
-    error: false,
-    errorMessage: '',
+    hasError: false,
   }),
   [RECEIVE_ERRORS]: (state, { payload }) => ({
     ...state,
     isFetching: false,
     isAuthenticated: false,
-    error: true,
-    errorMessage: payload.message,
+    hasError: true,
+    error: payload.error.body,
   }),
 }, {
-  error: false,
-  errorMessage: '',
+  hasError: false,
+  error: {},
   isFetching: false,
   isAuthenticated: localStorage.getItem(STORAGE_KEY) ? true : false,
   creds: localStorage.getItem(STORAGE_KEY) ? JSON.parse(localStorage.getItem(STORAGE_KEY)) : {},

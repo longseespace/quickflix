@@ -3,14 +3,31 @@ import fetch from 'isomorphic-fetch';
 
 const API_URL = 'http://rest.hdviet.com/api/v3';
 
-export function login(email, password) {
+export function login(email, password, key, captcha) {
   const url = 'https://id.hdviet.com/authentication/login';
+  const encodedEmail = encodeURIComponent(email);
+  const encodedPassword = encodeURIComponent(password);
+  let body = `email=${encodedEmail}&password=${encodedPassword}`;
+  if (key && key.length > 0 && captcha && captcha.length > 0) {
+    body = `${body}&key=${key}&captcha=${captcha}`;
+  }
   return fetch(url, {
     method: 'POST',
-    body: JSON.stringify({ email, password }),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body,
   })
   .then(response => response.json())
-  .then(json => json.data);
+  .then(json => {
+    if (json.error) {
+      const e = new Error(json.message);
+      e.body = json;
+      throw e;
+    } else {
+      return json.data;
+    }
+  });
 }
 
 export function search(keyword = '', options = { limit: 20, page: 1 }) {
