@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import classes from './AuthView.scss';
+import styles from './AuthView.scss';
 import { actions as authActions } from '../../redux/modules/auth';
 import logo from './logo.png';
 
@@ -65,7 +65,7 @@ export class AuthView extends React.Component {
       errorMessage = 'Invalid captcha';
       captchaNode = (
         <div className="row">
-          <div className={`input-field col m10 push-m1 s10 push-s1 ${classes.captcha}`}>
+          <div className={`input-field col m10 push-m1 s10 push-s1 ${styles.captcha}`}>
             <input type="hidden" ref="key" value={auth.error.data.key} />
             <input id="captcha" ref="captcha" type="text" className='validate invalid' required aria-required="true" />
             <label htmlFor="captcha">Captcha</label>
@@ -75,16 +75,18 @@ export class AuthView extends React.Component {
       );
     }
     return (
-      <div className={classes.root}>
+      <div className={styles.root}>
         <div className="container">
           <div className="row">
             <div className="logo center-align">
-              <img src={logo} width={150} />
+              <div id={styles.logo}>
+                <img src={logo} width={150} />
+              </div>
             </div>
             <form action="post" onSubmit={this.onSubmit} className="card grey lighten-4 col m4 push-m4 s10 push-s1">
               <div className="row">
                 <div className="input-field col m10 push-m1 s10 push-s1">
-                  <span className={classes.error}>{errorMessage}</span>
+                  <span className={styles.error}>{errorMessage}</span>
                 </div>
               </div>
               <div className="row">

@@ -5,6 +5,12 @@
   left: 0;
   right: 0;
 
+  #logo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+  }
+
   form {
     .error {
       color: #F44336;
