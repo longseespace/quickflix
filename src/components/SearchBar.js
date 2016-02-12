@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import classes from './SearchBar.scss';
+import styles from './SearchBar.scss';
 import Preloader from './Preloader';
 
 export default class SearchBar extends React.Component {
@@ -12,9 +12,11 @@ export default class SearchBar extends React.Component {
     showSuggestions: PropTypes.func.isRequired,
     hideSuggestions: PropTypes.func.isRequired,
     updateKeyword: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
     keyword: PropTypes.string,
     className: PropTypes.string,
     isFetching: PropTypes.bool,
+    requestForcus: PropTypes.bool,
     style: PropTypes.object,
   };
 
@@ -25,93 +27,98 @@ export default class SearchBar extends React.Component {
     keywordMinLength: 3,
     suggest: () => {},
     clear: () => {},
+    onClose: () => {},
     search: () => {},
     updateKeyword: () => {},
     isFetching: false,
     style: {},
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { search } = this.props;
+    const newKeyword = this.refs.searchField.value;
+    this.refs.searchField.blur();
+    search(newKeyword);
+  };
+
+  onChange = (e) => {
+    e.preventDefault();
+    const { keywordMinLength, suggest, clear, updateKeyword } = this.props;
+    const newKeyword = e.target.value;
+    updateKeyword(newKeyword);
+    if (newKeyword.length >= keywordMinLength) {
+      suggest(newKeyword);
+    } else {
+      clear();
+    }
+  };
+
+  onBlur = (e) => {
+    e.preventDefault();
+    const { hideSuggestions } = this.props;
+    setTimeout(hideSuggestions, 10);
+  };
+
+  onFocus = (e) => {
+    e.preventDefault();
+    const { showSuggestions } = this.props;
+    showSuggestions();
+  };
+
+  isMobile() {
+    const deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    return deviceWidth < 600;
+  }
+
   render() {
     const {
       placeholder,
-      keywordMinLength,
-      suggest,
-      clear,
-      search,
       isFetching,
       style,
-      showSuggestions,
-      hideSuggestions,
-      updateKeyword,
       keyword,
       className,
+      onClose,
     } = this.props;
-    const onSubmit = (e) => {
+    const isFocused = this.refs.searchField === document.activeElement;
+    const handleClose = (e) => {
+      onClose(isFocused);
+
       e.preventDefault();
-      const newKeyword = this.refs.searchField.value;
-      this.refs.searchField.blur();
-      search(newKeyword);
-    };
-    const onChange = (e) => {
-      e.preventDefault();
-      const newKeyword = e.target.value;
-      updateKeyword(newKeyword);
-      if (newKeyword.length >= keywordMinLength) {
-        suggest(newKeyword);
-      } else {
-        clear();
-      }
-    };
-    const close = (e) => {
-      e.preventDefault();
+      const { clear, updateKeyword } = this.props;
       updateKeyword('');
       clear();
     };
-    const onBlur = (e) => {
-      e.preventDefault();
-      setTimeout(hideSuggestions, 10);
-    };
-    const onFocus = (e) => {
-      e.preventDefault();
-      showSuggestions();
-    };
     return (
-      <form style={style} className={`${classes.root} ${className}`} onSubmit={onSubmit} autoComplete="off">
+      <form style={style} className={`${styles.root} ${className}`} onSubmit={this.onSubmit} autoComplete="off">
         <div
           className="input-field"
-          style={{
-            boxShadow: '0 1px 1.5px rgba(0,0,0,0.06),0 1px 1px rgba(0,0,0,0.12)',
-            borderRadius: 2,
-            backgroundColor: 'rgba(255,255,255,0.25)',
-          }}
         >
           <input
-            onFocus={onFocus}
-            onBlur={onBlur}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
             ref="searchField"
             autoComplete="off"
             id="search"
             value={keyword}
-            onChange={onChange}
+            onChange={this.onChange}
             type="search"
             placeholder={placeholder}
             required
-            style={{
-              height: '44px',
-              lineHeight: '44px',
-            }}
           />
           <label
             htmlFor="search"
-            onClick={onSubmit}
-            style={{ cursor: 'pointer', height: '44px', lineHeight: '44px' }}
+            onClick={this.onSubmit}
           >
-            <i className="material-icons" style={{ cursor: 'pointer', height: '44px', lineHeight: '44px' }}>search</i>
+            <i className="material-icons">search</i>
           </label>
           <i
-            className="material-icons"
-            onClick={close}
-            style={{ display: isFetching ? 'none' : 'block', height: '44px', lineHeight: '44px' }}
+            className={`${styles.close} material-icons`}
+            onClick={handleClose}
+            style={{
+              display: isFetching ? 'none' : 'block',
+              color: !isFocused && this.isMobile() ? 'white' : '',
+            }}
           >close</i>
           <Preloader
             show={isFetching}

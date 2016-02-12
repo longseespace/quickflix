@@ -81,7 +81,7 @@ export class AuthView extends React.Component {
             <div className="logo center-align">
               <img src={logo} width={150} />
             </div>
-            <form action="post" onSubmit={this.onSubmit} className="card grey lighten-4 col m4 push-m4 s6 push-s3">
+            <form action="post" onSubmit={this.onSubmit} className="card grey lighten-4 col m4 push-m4 s10 push-s1">
               <div className="row">
                 <div className="input-field col m10 push-m1 s10 push-s1">
                   <span className={classes.error}>{errorMessage}</span>

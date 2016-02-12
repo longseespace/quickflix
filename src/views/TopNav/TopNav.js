@@ -8,7 +8,7 @@ import { actions as authActions } from '../../redux/modules/auth';
 
 import SearchBar from 'components/SearchBar';
 import SearchSuggestionList from 'components/SearchSuggestionList';
-import classes from './TopNav.scss';
+import styles from './TopNav.scss';
 import logo from './logo.png';
 
 const mapStateToProps = (state) => ({
@@ -50,47 +50,77 @@ export class TopNav extends React.Component {
     isSuggestionsActive: false,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      searching: false,
+    };
+  }
+
   componentDidMount() {
     if (window.$) {
-      window.$(`#${classes.moreActivator}`).dropdown();
+      window.$(`#${styles.moreActivator}`).dropdown();
+      window.$(`#${styles.moreActivatorMobile}`).dropdown();
     }
   }
 
+  onSearchBarClose = (focused) => {
+    if (!focused && this.isMobile()) {
+      this.toggleSearchBar();
+    }
+  };
+
   handleSearch = (keyword) => {
     this.context.router.push(`/search/${keyword}`);
+  };
+
+  isMobile() {
+    const deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    return deviceWidth < 600;
+  }
+
+  toggleSearchBar = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    const { searching } = this.state;
+    this.setState({
+      searching: !searching,
+    });
   };
 
   render() {
     const {
       updateKeyword,
       fetchSuggestions,
-      clearSuggestions,
       showSuggestions,
       hideSuggestions,
+      clearSuggestions,
       context,
       auth,
       logout,
     } = this.props;
+    const { searching } = this.state;
     const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymouse';
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : '';
     const token = Base64.encode(accessToken);
     return (
-      <div className={classes.root}>
+      <div className={styles.root}>
         <div className="navbar-fixed z-depth-2">
           <nav className="red darken-3">
             <div className="nav-wrapper row">
               <ul>
-                <li>
+                <li className={searching ? 'hide' : ''}>
                   <a href="#"><i className="material-icons">menu</i></a>
                 </li>
-                <li className={classes.logo}>
+                <li className={searching ? 'hide' : styles.logo}>
                   <Link alt="Quickflix" title="Quickflix" to="/">
                     <img src={logo} />
                   </Link>
                 </li>
-                <li className={`col m7 ${classes.searchbar}`}>
+                <li className={searching ? styles.searchbar : `col s12 m7 hide-on-med-and-down ${styles.searchbar}`}>
                   <SearchBar
-                    className="hide-on-med-and-down"
+                    requestFocus={ searching ? true : false}
                     placeholder='Find Movies or TV Show...'
                     search={this.handleSearch}
                     keyword={context.keyword}
@@ -100,6 +130,7 @@ export class TopNav extends React.Component {
                     updateKeyword={updateKeyword}
                     clear={clearSuggestions}
                     isFetching={context.isFetching}
+                    onClose={this.onSearchBarClose}
                   />
                   <SearchSuggestionList
                     suggestions={context.suggestions}
@@ -109,15 +140,46 @@ export class TopNav extends React.Component {
                 </li>
               </ul>
               <ul className="right">
-                <li><a id={classes.moreActivator} className="truncate" data-activates={classes.moreMenu} data-beloworigin="true">{displayName}<i className="material-icons right">arrow_drop_down</i></a></li>
+                <li className="hide-on-small-only">
+                  <a
+                    id={styles.moreActivator}
+                    className="truncate"
+                    data-activates={styles.moreMenu}
+                    data-beloworigin="true"
+                  >
+                    {displayName}<i className="material-icons right">arrow_drop_down</i>
+                  </a>
+                </li>
+                <li className={searching ? 'hide' : 'hide-on-med-and-up'}>
+                  <a className="searchOpen" onClick={this.toggleSearchBar}>
+                    <i className="material-icons">search</i>
+                  </a>
+                </li>
+                <li className={searching ? 'hide' : 'hide-on-med-and-up'}>
+                  <a
+                    id={styles.moreActivatorMobile}
+                    data-activates={styles.moreMenuMobile}
+                    data-beloworigin="true"
+                    data-constrainwidth="false"
+                  >
+                    <i className="material-icons">more_vert</i>
+                  </a>
+                </li>
               </ul>
             </div>
           </nav>
         </div>
-        <ul id={classes.moreMenu} className='dropdown-content'>
+        <ul id={styles.moreMenu} className='dropdown-content'>
           <li><a href={`https://id.hdviet.com/cap-nhat-thong-tin/?token=${token}`} target="_blank">Profile <i className="material-icons right">open_in_new</i></a></li>
           <li><a href={`https://id.hdviet.com/lich-su-giao-dich/?token=${token}`} target="_blank">Transactions <i className="material-icons right">open_in_new</i></a></li>
           <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target="_blank">Password <i className="material-icons right">open_in_new</i></a></li>
+          <li className="divider"></li>
+          <li><a onClick={logout}>Logout</a></li>
+        </ul>
+        <ul id={styles.moreMenuMobile} className='dropdown-content'>
+          <li><a href={`https://id.hdviet.com/cap-nhat-thong-tin/?token=${token}`} target="_blank">Profile</a></li>
+          <li><a href={`https://id.hdviet.com/lich-su-giao-dich/?token=${token}`} target="_blank">Transactions</a></li>
+          <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target="_blank">Password</a></li>
           <li className="divider"></li>
           <li><a onClick={logout}>Logout</a></li>
         </ul>

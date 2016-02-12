@@ -48,6 +48,24 @@ export default class MovieCard extends React.Component {
     });
   };
 
+  onTouchTap = (e) => {
+    const $ = window.$;
+    const isTargetAButton = $(e.target).hasClass('material-icons');
+    const deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    const isOnMobile = deviceWidth < 600;
+    if (!isTargetAButton && isOnMobile) {
+      const { hover } = this.state;
+      this.setState({
+        hover: !hover,
+      });
+    }
+  };
+
+  play = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   render() {
     const { id, plot, backdrop, name } = this.props;
     const { hover } = this.state;
@@ -58,6 +76,7 @@ export default class MovieCard extends React.Component {
     const maskClassName = hover ? `${styles.maskHover}  center-inside` : `${styles.mask} center-inside`;
     return (
       <div
+        onTouchTap={this.onTouchTap}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         className="card hoverable medium"
@@ -69,7 +88,13 @@ export default class MovieCard extends React.Component {
             <Image src={backdrop} />
           </LazyLoad>
           <div className={maskClassName}>
-            <a style={{ opacity: hover ? 1 : 0 }} className="btn-floating btn-large waves-effect waves-light red accent-4" title="Watch" alt="Watch">
+            <a
+              onClick={this.play}
+              style={{ opacity: hover ? 1 : 0 }}
+              className="btn-floating btn-large waves-effect waves-light red accent-4"
+              title="Watch"
+              alt="Watch"
+            >
               <i style={{ fontSize: 36 }} className="material-icons">play_arrow</i>
             </a>
           </div>
@@ -78,7 +103,7 @@ export default class MovieCard extends React.Component {
         <div style={{ maxHeight: hover ? '40%' : '60%' }} className="card-content">
           <p>{truncatedPlot}</p>
         </div>
-        <div style={{ bottom: hover ? 0 : -100, transitionDelay: hover ? '0s' : '1s' }} className={`${styles.actions} card-action`}>
+        <div style={{ bottom: hover ? 0 : -100 }} className={`${styles.actions} card-action`}>
           <a className="waves-effect waves-red btn-flat" title="Info" alt="Info">
             <i className="material-icons">info_outline</i>
           </a>
