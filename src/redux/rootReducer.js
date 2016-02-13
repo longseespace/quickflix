@@ -5,6 +5,7 @@ import topnav from './modules/topnav';
 import home from './modules/home';
 import search from './modules/search';
 import auth from './modules/auth';
+import movie from './modules/movie';
 
 export default combineReducers({
   router,
@@ -12,4 +13,5 @@ export default combineReducers({
   home,
   search,
   auth,
+  movie,
 });

@@ -8,18 +8,19 @@
 
 .logo {
 
+  &:hover img {
+    animation: spin 4s linear infinite;
+  }
+
   img {
     height: 46px;
     vertical-align: middle;
-    &:hover {
-      animation: spin 4s linear infinite;
-    }
   }
 }
 
 @media only (min-width: 601px) {
   .logo {
-    margin-right: 100px;
+    margin-right: 180px;
   }
 }
 

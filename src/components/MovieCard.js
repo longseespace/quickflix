@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import shallowCompare from 'react-addons-shallow-compare';
 import truncate from 'lodash.truncate';
 import LazyLoad from 'react-lazy-load';
@@ -88,15 +89,14 @@ export default class MovieCard extends React.Component {
             <Image src={backdrop} />
           </LazyLoad>
           <div className={maskClassName}>
-            <a
-              onClick={this.play}
+            <Link to={`/movie/${id}`}
               style={{ opacity: hover ? 1 : 0 }}
               className="btn-floating btn-large waves-effect waves-light red accent-4"
               title="Watch"
               alt="Watch"
             >
               <i style={{ fontSize: 36 }} className="material-icons">play_arrow</i>
-            </a>
+            </Link>
           </div>
           <span className="card-title truncate" style={{ maxWidth: '100%' }}>{name}</span>
         </div>
@@ -104,9 +104,9 @@ export default class MovieCard extends React.Component {
           <p>{truncatedPlot}</p>
         </div>
         <div style={{ bottom: hover ? 0 : -100 }} className={`${styles.actions} card-action`}>
-          <a className="waves-effect waves-red btn-flat" title="Info" alt="Info">
+          <Link to={`/movie/${id}`} className="waves-effect waves-red btn-flat" title="Info" alt="Info">
             <i className="material-icons">info_outline</i>
-          </a>
+          </Link>
           <a className="waves-effect waves-red btn-flat" title="Trailer" alt="Trailer">
             <i className="material-icons">ondemand_video</i>
           </a>

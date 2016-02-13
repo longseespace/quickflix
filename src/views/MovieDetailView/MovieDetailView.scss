@@ -1,0 +1,29 @@
+.root {
+
+}
+
+.preloader {
+  margin: 20px auto;
+}
+
+.theater {
+  top: 64px;
+  bottom: 0;
+  overflow: hidden;
+  background: black;
+  width: 100%;
+  display:flex;justify-content:center;align-items:center;
+  position: absolute;
+}
+
+.placeholder {
+  width: 960px;
+  position: relative;
+  margin: 0 auto;
+
+  img {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+  }
+}

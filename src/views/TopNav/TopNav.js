@@ -101,7 +101,7 @@ export class TopNav extends React.Component {
       logout,
     } = this.props;
     const { searching } = this.state;
-    const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymouse';
+    const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : '';
     const token = Base64.encode(accessToken);
     return (

@@ -11,6 +11,7 @@ import HomeView from 'views/HomeView/HomeView';
 import SearchView from 'views/SearchView/SearchView';
 import NotFoundView from 'views/NotFoundView/NotFoundView';
 import AuthView from 'views/AuthView/AuthView';
+import MovieDetailView from 'views/MovieDetailView/MovieDetailView';
 
 export default (
   <Route path='/' component={CoreLayout}>
@@ -19,6 +20,7 @@ export default (
     <Route path='/search/' component={SearchView}>
       <Route path=':keyword' component={SearchView} />
     </Route>
+    <Route path='/movie/:id' component={MovieDetailView} />
     <Route path='/404' component={NotFoundView} />
     <Redirect from='*' to='/404' />
   </Route>

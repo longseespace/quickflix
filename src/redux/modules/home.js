@@ -39,6 +39,7 @@ export function getMoviesByTag(tag = 'hot-trong-thang') {
               en: item.MovieName,
               vi: item.KnownAs,
             },
+            trailer: item.Trailer,
             releaseDate: item.ReleaseDate,
             plot: {
               vi: item.PlotVI,

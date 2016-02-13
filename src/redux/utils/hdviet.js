@@ -2,16 +2,32 @@ import { polyfill } from 'es6-promise'; polyfill();
 import fetch from 'isomorphic-fetch';
 
 const API_URL = 'http://rest.hdviet.com/api/v3';
+const AUTH_API_URL = 'https://id.hdviet.com/authentication/login';
+
+export function loginAnonymously() {
+  return fetch(AUTH_API_URL, {
+    method: 'POST',
+  })
+  .then(response => response.json())
+  .then(json => {
+    if (json.error) {
+      const e = new Error(json.message);
+      e.body = json;
+      throw e;
+    } else {
+      return json.data;
+    }
+  });
+}
 
 export function login(email, password, key, captcha) {
-  const url = 'https://id.hdviet.com/authentication/login';
   const encodedEmail = encodeURIComponent(email);
   const encodedPassword = encodeURIComponent(password);
   let body = `email=${encodedEmail}&password=${encodedPassword}`;
   if (key && key.length > 0 && captcha && captcha.length > 0) {
     body = `${body}&key=${key}&captcha=${captcha}`;
   }
-  return fetch(url, {
+  return fetch(AUTH_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -51,9 +67,29 @@ export function search(keyword = '', options = { limit: 20, page: 1 }) {
     });
 }
 
-export function getMovie(id, options = { episode: 0 }) {
-  const { accessToken, episode = 0 } = options;
-  const url = `${API_URL}/movie/${id}?episode=${episode}`;
+export function getMovie(id, options = { sequence: 0 }) {
+  const { accessToken, sequence = 0 } = options;
+  const url = `${API_URL}/movie/${id}?sequence=${sequence}`;
+  const fetchOptions = {
+    headers: {
+      Authorization: accessToken,
+    },
+  };
+  return fetch(url, fetchOptions).then(response => response.json())
+    .then(json => {
+      if (json.error) {
+        const e = new Error(json.message);
+        e.body = json;
+        throw e;
+      } else {
+        return json.data;
+      }
+    });
+}
+
+export function getPlaylist(id, options = { sequence: 0 }) {
+  const { accessToken, sequence = 0 } = options;
+  const url = `${API_URL}/playlist/${id}?sequence=${sequence}`;
   const fetchOptions = {
     headers: {
       Authorization: accessToken,
@@ -141,6 +177,7 @@ export default {
   login,
   search,
   getMovie,
+  getPlaylist,
   getRelatedMovies,
   getMovies,
   getMoviesByTag,

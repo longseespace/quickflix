@@ -105,6 +105,9 @@ export default class SearchBar extends React.Component {
             type="search"
             placeholder={placeholder}
             required
+            style={{
+              lineHeight: 44,
+            }}
           />
           <label
             htmlFor="search"
