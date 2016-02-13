@@ -101,7 +101,7 @@ export class TopNav extends React.Component {
       logout,
     } = this.props;
     const { searching } = this.state;
-    const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
+    // const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : '';
     const token = Base64.encode(accessToken);
     return (
@@ -140,29 +140,19 @@ export class TopNav extends React.Component {
                 </li>
               </ul>
               <ul className="right">
-                <li className="hide-on-med-and-down">
-                  <a
-                    id={styles.moreActivator}
-                    className="truncate"
-                    data-activates={styles.moreMenu}
-                    data-beloworigin="true"
-                  >
-                    {displayName}<i className="material-icons right">arrow_drop_down</i>
-                  </a>
-                </li>
                 <li className={searching ? 'hide' : 'hide-on-med-and-up'}>
                   <a className="searchOpen" onClick={this.toggleSearchBar}>
                     <i className="material-icons">search</i>
                   </a>
                 </li>
-                <li className={searching ? 'hide' : 'hide-on-large-only'}>
+                <li className={searching ? 'hide' : ''}>
                   <a
-                    id={styles.moreActivatorMobile}
-                    data-activates={styles.moreMenuMobile}
+                    id={styles.moreActivator}
+                    data-activates={styles.moreMenu}
                     data-beloworigin="true"
                     data-constrainwidth="false"
                   >
-                    <i className="material-icons">more_vert</i>
+                    <i className="material-icons">account_circle</i>
                   </a>
                 </li>
               </ul>
@@ -170,13 +160,6 @@ export class TopNav extends React.Component {
           </nav>
         </div>
         <ul id={styles.moreMenu} className='dropdown-content'>
-          <li><a href={`https://id.hdviet.com/cap-nhat-thong-tin/?token=${token}`} target="_blank">Profile <i className="material-icons right">open_in_new</i></a></li>
-          <li><a href={`https://id.hdviet.com/lich-su-giao-dich/?token=${token}`} target="_blank">Transactions <i className="material-icons right">open_in_new</i></a></li>
-          <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target="_blank">Password <i className="material-icons right">open_in_new</i></a></li>
-          <li className="divider"></li>
-          <li><a onClick={logout}>Logout</a></li>
-        </ul>
-        <ul id={styles.moreMenuMobile} className='dropdown-content'>
           <li><a href={`https://id.hdviet.com/cap-nhat-thong-tin/?token=${token}`} target="_blank">Profile</a></li>
           <li><a href={`https://id.hdviet.com/lich-su-giao-dich/?token=${token}`} target="_blank">Transactions</a></li>
           <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target="_blank">Password</a></li>

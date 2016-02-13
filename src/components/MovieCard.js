@@ -50,9 +50,10 @@ export default class MovieCard extends React.Component {
     const cardHeight = this.refs.card.scrollHeight;
     const windowScrollTop = $(window).scrollTop();
     const offsetTop = this.refs.card.offsetTop;
+    const OFFSET = 400;
 
-    if ((windowScrollTop <= offsetTop && offsetTop <= windowScrollTop + windowHeight)
-      || (windowScrollTop <= offsetTop + cardHeight && offsetTop + cardHeight <= windowScrollTop + windowHeight)) {
+    if ((windowScrollTop - OFFSET <= offsetTop && offsetTop <= windowScrollTop + windowHeight + OFFSET)
+      || (windowScrollTop - OFFSET <= offsetTop + cardHeight && offsetTop + cardHeight <= windowScrollTop + windowHeight + OFFSET)) {
       // in
       this.setState({
         ...this.state,
