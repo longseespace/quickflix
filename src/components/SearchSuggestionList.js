@@ -27,11 +27,13 @@ export default class SearchSuggestionList extends React.Component {
         const releaseYear = new Date(item.releaseDate).getFullYear();
         return (
           <li key={key} className="collection-item avatar" style={{ float: 'none', cursor: 'pointer' }}>
-            <img style={{ borderRadius: 0, height: 'auto' }} className="circle" src={item.poster} width={50} alt={item.name} />
-            <span style={{ color: 'black' }} className="title">{item.name.vi}</span> <span style={{ color: 'gray' }}>({releaseYear})</span>
-            <p style={{ color: 'gray' }} className="truncate">{item.plot.vi}</p>
-            <p style={{ color: 'gray' }}>{item.director}</p>
-            <span className="secondary-content">{item.imdbRating}</span>
+            <Link to={`/movie/${item.id}`}>
+              <img style={{ borderRadius: 0, height: 'auto' }} className="circle" src={item.poster} width={50} alt={item.name} />
+              <span style={{ color: 'black' }} className="title">{item.name.vi}</span> <span style={{ color: 'gray' }}>({releaseYear})</span>
+              <p style={{ color: 'gray' }} className="truncate">{item.plot.vi}</p>
+              <p style={{ color: 'gray' }}>{item.director}</p>
+              <span className="secondary-content">{item.imdbRating}</span>
+            </Link>
           </li>
         );
       });
