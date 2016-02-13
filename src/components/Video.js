@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import cx from 'classnames';
 const vjs = window.videojs;
 import _debounce from 'lodash.debounce';
-import _forEach from 'lodash.forEach';
+import _forEach from 'lodash.foreach';
 
 const DEFAULT_HEIGHT = 540;
 const DEFAULT_WIDTH = 960;

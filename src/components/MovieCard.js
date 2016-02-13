@@ -23,21 +23,54 @@ export default class MovieCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { hover: false };
+    this.state = {
+      hover: false,
+      withinViewport: true,
+    };
   }
 
   componentDidMount() {
-    // const $ = window.jQuery;
+    const $ = window.$;
     // $('.tooltipped').tooltip({ delay: 50 });
+    $(window).on('scroll', this.onScroll);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   }
 
+  componentWillUnmount() {
+    const $ = window.$;
+    $(window).off('scroll', this.onScroll);
+  }
+
+  onScroll = () => {
+    const $ = window.$;
+    const windowHeight = $(window).height();
+    const cardHeight = this.refs.card.scrollHeight;
+    const windowScrollTop = $(window).scrollTop();
+    const offsetTop = this.refs.card.offsetTop;
+
+    if ((windowScrollTop <= offsetTop && offsetTop <= windowScrollTop + windowHeight)
+      || (windowScrollTop <= offsetTop + cardHeight && offsetTop + cardHeight <= windowScrollTop + windowHeight)) {
+      // in
+      this.setState({
+        ...this.state,
+        withinViewport: true,
+      });
+    } else {
+      // out
+      this.setState({
+        ...this.state,
+        withinViewport: false,
+      });
+    }
+  };
+
   onMouseOver = (e) => {
     e.preventDefault();
     this.setState({
+      ...this.state,
       hover: true,
     });
   };
@@ -45,6 +78,7 @@ export default class MovieCard extends React.Component {
   onMouseOut = (e) => {
     e.preventDefault();
     this.setState({
+      ...this.state,
       hover: false,
     });
   };
@@ -57,6 +91,7 @@ export default class MovieCard extends React.Component {
     if (!isTargetAButton && isOnMobile) {
       const { hover } = this.state;
       this.setState({
+        ...this.state,
         hover: !hover,
       });
     }
@@ -69,7 +104,7 @@ export default class MovieCard extends React.Component {
 
   render() {
     const { id, plot, backdrop, name } = this.props;
-    const { hover } = this.state;
+    const { hover, withinViewport } = this.state;
     const truncatedPlot = truncate(plot, {
       length: hover ? 200 : 300,
       separator: ' ',
@@ -77,12 +112,16 @@ export default class MovieCard extends React.Component {
     const maskClassName = hover ? `${styles.maskHover}  center-inside` : `${styles.mask} center-inside`;
     return (
       <div
+        ref='card'
         onTouchTap={this.onTouchTap}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         className="card hoverable medium"
         id={`movie-${id}`}
-        style={{ overflow: 'hidden' }}
+        style={{
+          overflow: 'hidden',
+          visibility: withinViewport ? 'visible' : 'hidden',
+        }}
       >
         <div className="card-image">
           <LazyLoad height={189}>

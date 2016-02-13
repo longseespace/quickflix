@@ -20,7 +20,13 @@
 
 @media only (min-width: 601px) {
   .logo {
-    margin-right: 180px;
+    margin-right: 5%;
+  }
+}
+
+@media only (min-width: 1200px) {
+  .logo {
+    margin-right: 12.5%;
   }
 }
 
@@ -36,7 +42,7 @@
 }
 
 #moreActivator {
-  min-width: 100px;
+  min-width: 180px;
 }
 
 #moreActivatorMobile {

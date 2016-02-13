@@ -118,7 +118,7 @@ export class TopNav extends React.Component {
                     <img src={logo} />
                   </Link>
                 </li>
-                <li className={searching ? styles.searchbar : `col s12 m7 hide-on-med-and-down ${styles.searchbar}`}>
+                <li className={searching ? styles.searchbar : `col s12 m7 hide-on-small-only ${styles.searchbar}`}>
                   <SearchBar
                     requestFocus={ searching ? true : false}
                     placeholder='Find Movies or TV Show...'
@@ -140,7 +140,7 @@ export class TopNav extends React.Component {
                 </li>
               </ul>
               <ul className="right">
-                <li className="hide-on-small-only">
+                <li className="hide-on-med-and-down">
                   <a
                     id={styles.moreActivator}
                     className="truncate"
@@ -155,7 +155,7 @@ export class TopNav extends React.Component {
                     <i className="material-icons">search</i>
                   </a>
                 </li>
-                <li className={searching ? 'hide' : 'hide-on-med-and-up'}>
+                <li className={searching ? 'hide' : 'hide-on-large-only'}>
                   <a
                     id={styles.moreActivatorMobile}
                     data-activates={styles.moreMenuMobile}

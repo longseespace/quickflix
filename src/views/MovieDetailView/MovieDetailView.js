@@ -77,6 +77,7 @@ export class MovieDetailView extends AuthenticatedView {
         tracks={tracks}
         height={480}
         options={{
+          preload: 'none',
           poster: detail.background,
           autoplay: false,
         }}
