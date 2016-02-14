@@ -174,7 +174,11 @@ export default class ReactVideoJsComponent extends React.Component {
 
   unmountVideoPlayer() {
     this.removeResizeEventListener();
-    this._player.dispose();
+    try {
+      this._player.dispose();
+    } catch (e) {
+      // ignore
+    }
   }
 
   addEndlessMode() {
