@@ -60,9 +60,10 @@ export class MovieDetailView extends AuthenticatedView {
     }
 
     const { detail, playlist } = context.movie;
+    const proxy = 'https://crossorigin.me'; // TODO: make this configurable
     const tracks = playlist.subtitle.map((item) => ({
       kind: 'captions',
-      src: item.source,
+      src: `${proxy}/${item.source}`,
       srclang: item.sub === 'VIE' ? 'vi' : 'en',
       label: item.sub === 'VIE' ? 'Tiếng Việt' : 'English',
       default: item.sub === 'VIE' ? false : true,
