@@ -42,10 +42,19 @@ export default class MovieCollection extends React.Component {
     let cards;
     if (movies.length > 0) {
       cards = movies.map((item, key) => {
-        const { id, plot, backdrop, name } = item;
+        const { id, plot, backdrop, name, bitrate, season, episode, sequence } = item;
         return (
           <div key={key} className="col s12 m3">
-            <MovieCard id={id} plot={plot.vi} backdrop={backdrop} name={name.vi} />
+            <MovieCard
+              bitrate={bitrate}
+              id={id}
+              plot={plot.vi}
+              backdrop={backdrop}
+              name={name.en}
+              season={season}
+              episode={episode}
+              sequence={sequence}
+            />
           </div>
         );
       });

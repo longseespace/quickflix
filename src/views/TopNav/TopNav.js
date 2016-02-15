@@ -114,7 +114,7 @@ export class TopNav extends React.Component {
                   <a href="#"><i className="material-icons">menu</i></a>
                 </li>
                 <li className={searching ? 'hide' : styles.logo}>
-                  <Link alt="Quickflix" title="Quickflix" to="/">
+                  <Link to="/">
                     <img src={logo} />
                   </Link>
                 </li>

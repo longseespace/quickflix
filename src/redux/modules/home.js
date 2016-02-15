@@ -47,6 +47,11 @@ export function getMoviesByTag(tag = 'hot-trong-thang') {
             },
             director: item.Director,
             imdbRating: item.ImdbRating,
+            bitrate: item.BitRate,
+            season: item.Season,
+            isTVSerie: item.Season > 0 ? true : false,
+            episode: item.Episode,
+            sequence: item.Sequence,
             poster: `http://t.hdviet.com/thumbs/124x184/${item.NewPoster}`,
             backdrop: `http://t.hdviet.com/backdrops/945x530/${item.Backdrop}`,
           };
@@ -59,7 +64,7 @@ export function getMoviesByTag(tag = 'hot-trong-thang') {
 }
 
 export function getHomeMovies() {
-  return getMoviesByTag('hot-trong-thang', ...arguments);
+  return getMoviesByTag('moi-cap-nhat', ...arguments);
 }
 
 export const actions = {

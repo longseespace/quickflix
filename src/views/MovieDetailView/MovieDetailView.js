@@ -59,7 +59,7 @@ export class MovieDetailView extends AuthenticatedView {
       );
     }
 
-    const { detail, playlist, overview } = context.movie;
+    const { detail, playlist } = context.movie;
     const tracks = playlist.subtitle.map((item) => ({
       kind: 'captions',
       src: item.source,
@@ -81,10 +81,10 @@ export class MovieDetailView extends AuthenticatedView {
           poster: detail.background,
           autoplay: false,
           plugins: {
-            Resume: {
-              uuid: `${overview.MovieID}-${overview.Season}-${overview.currentSequence}`,
-              playbackOffset: 5, // begin playing video this number of seconds before it otherwise would.
-            },
+            // Resume: {
+            //   uuid: `${overview.MovieID}-${overview.Season}-${overview.currentSequence}`,
+            //   playbackOffset: 5, // begin playing video this number of seconds before it otherwise would.
+            // },
           },
         }}
       >

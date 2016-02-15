@@ -12,13 +12,19 @@ export default class MovieCard extends React.Component {
     name: PropTypes.string.isRequired,
     plot: PropTypes.string,
     backdrop: PropTypes.string,
+    bitrate: PropTypes.string,
     lazyload: PropTypes.bool,
+    season: PropTypes.number,
+    sequence: PropTypes.number,
   };
 
   static defaultProps = {
     id: 0,
     name: '',
+    bitrate: '',
     lazyload: true,
+    season: 0,
+    sequence: 0,
   };
 
   constructor(props) {
@@ -104,13 +110,29 @@ export default class MovieCard extends React.Component {
   };
 
   render() {
-    const { id, plot, backdrop, name } = this.props;
+    const { id, plot, backdrop, name, bitrate, season, sequence, lazyload } = this.props;
     const { hover, withinViewport } = this.state;
     const truncatedPlot = truncate(plot, {
       length: hover ? 200 : 300,
       separator: ' ',
     });
+    const imageNode = lazyload ? (
+      <LazyLoad height={189}>
+        <Image src={backdrop} />
+      </LazyLoad>
+    ) : (<Image src={backdrop} />);
     const maskClassName = hover ? `${styles.maskHover}  center-inside` : `${styles.mask} center-inside`;
+    const isHD = bitrate.includes('5700') || bitrate.includes('2700');
+    const HDText = bitrate.includes('5700') ? '1080p' : '720p';
+    const qualityNode = isHD ? (
+      <a className="waves-effect waves-red btn-flat" title={HDText} alt={HDText}>
+        <i className="material-icons">hd</i>
+      </a>
+    ) : null;
+    const serieText = season > 0 ? `${sequence}` : '';
+    const serieNode = season > 0 ? (
+      <span>{serieText}</span>
+    ) : null;
     return (
       <div
         ref='card'
@@ -125,9 +147,10 @@ export default class MovieCard extends React.Component {
         }}
       >
         <div className="card-image">
-          <LazyLoad height={189}>
-            <Image src={backdrop} />
-          </LazyLoad>
+          {imageNode}
+          <div className={styles.tags}>
+            {serieNode}
+          </div>
           <div className={maskClassName}>
             <Link to={`/movie/${id}`}
               style={{ opacity: hover ? 1 : 0 }}
@@ -153,6 +176,7 @@ export default class MovieCard extends React.Component {
           <a className="waves-effect waves-red btn-flat" title="Add to Favorite" alt="Add to Favorite">
             <i className="material-icons">favorite_border</i>
           </a>
+          {qualityNode}
           <a title="Show full plot" alt="Show full plot" className="activator">
             <i className="material-icons right tooltipped" data-position="top" data-tooltip="Show full plot">expand_less</i>
           </a>

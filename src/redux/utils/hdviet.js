@@ -67,6 +67,27 @@ export function search(keyword = '', options = { limit: 20, page: 1 }) {
     });
 }
 
+export function favorite(id, options = {}) {
+  const { accessToken } = options;
+  const url = `${API_URL}/user/favorite`;
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      Authorization: accessToken,
+    },
+  };
+  return fetch(url, fetchOptions).then(response => response.json())
+    .then(json => {
+      if (json.error) {
+        const e = new Error(json.message);
+        e.body = json;
+        throw e;
+      } else {
+        return json.data;
+      }
+    });
+}
+
 export function getMovie(id, options = { sequence: 0 }) {
   const { accessToken, sequence = 0 } = options;
   const url = `${API_URL}/movie/${id}?sequence=${sequence}`;
@@ -87,9 +108,9 @@ export function getMovie(id, options = { sequence: 0 }) {
     });
 }
 
-export function getPlaylist(id, options = { sequence: 0 }) {
-  const { accessToken, sequence = 0 } = options;
-  const url = `${API_URL}/playlist/${id}?sequence=${sequence}`;
+export function getPlaylist(id, options = { w: 1920, sequence: 0 }) {
+  const { accessToken, sequence = 0, w = 1920 } = options;
+  const url = `${API_URL}/playlist/${id}?sequence=${sequence}&w=${w}`;
   const fetchOptions = {
     headers: {
       Authorization: accessToken,

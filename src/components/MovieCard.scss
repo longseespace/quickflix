@@ -15,6 +15,23 @@
   background: rgba(0, 0, 0, 0.6);
 }
 
+.tags {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  span {
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    width: 32px;
+    height: 32px;
+    display: block;
+    text-align: center;
+    border-radius: 32px;
+    line-height: 32px;
+  }
+}
+
 .actions {
   transition: bottom .3s ease-out;
   padding: 10px !important;
