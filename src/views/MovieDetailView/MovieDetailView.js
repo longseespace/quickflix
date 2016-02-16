@@ -42,9 +42,33 @@ export class MovieDetailView extends AuthenticatedView {
     }
   }
 
+  componentDidMount() {
+    const $ = window.$;
+    const $window = $(window);
+
+    $window.on('resize', () => {
+      const video = this.refs.video;
+      const player = video.getVideoPlayer();
+      const windowWidth = $window.width();
+      if (windowWidth >= 960) {
+        player.width(960);
+        player.height(480);
+      } else if (windowWidth >= 480) {
+        player.width(480);
+        player.height(240);
+      } else {
+        player.width(windowWidth);
+        player.height(windowWidth / 2);
+      }
+    });
+  }
+
   componentWillUnmount() {
     const { clearMovie } = this.props;
     clearMovie();
+    const $ = window.$;
+    const $window = $(window);
+    $window.off('resize');
   }
 
   renderInner() {
@@ -68,6 +92,17 @@ export class MovieDetailView extends AuthenticatedView {
       label: item.sub === 'VIE' ? 'Tiếng Việt' : 'English',
       default: item.sub === 'VIE' ? false : true,
     }));
+    let width = 960;
+    let height = 480;
+    const $ = window.$;
+    const windowWidth = $(window).width();
+    if (windowWidth < 960 && windowWidth >= 480) {
+      width = 480;
+      height = 240;
+    } else if (windowWidth < 480) {
+      width = windowWidth;
+      height = windowWidth / 2;
+    }
     const video = (
       <Video
         ref="video"
@@ -76,7 +111,8 @@ export class MovieDetailView extends AuthenticatedView {
           type: 'application/x-mpegURL',
         }}
         tracks={tracks}
-        height={480}
+        width={width}
+        height={height}
         options={{
           preload: 'none',
           poster: detail.background,

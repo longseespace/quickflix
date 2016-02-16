@@ -16,6 +16,7 @@ export default class MovieCard extends React.Component {
     lazyload: PropTypes.bool,
     season: PropTypes.number,
     sequence: PropTypes.number,
+    imdbRating: PropTypes.number,
   };
 
   static defaultProps = {
@@ -25,6 +26,7 @@ export default class MovieCard extends React.Component {
     lazyload: true,
     season: 0,
     sequence: 0,
+    imdbRating: 0,
   };
 
   constructor(props) {
@@ -110,7 +112,7 @@ export default class MovieCard extends React.Component {
   };
 
   render() {
-    const { id, plot, backdrop, name, bitrate, season, sequence, lazyload } = this.props;
+    const { id, plot, backdrop, name, bitrate, season, sequence, lazyload, imdbRating } = this.props;
     const { hover, withinViewport } = this.state;
     const truncatedPlot = truncate(plot, {
       length: hover ? 200 : 300,
@@ -133,6 +135,12 @@ export default class MovieCard extends React.Component {
     const serieNode = season > 0 ? (
       <span>{serieText}</span>
     ) : null;
+
+    // const infoNode = (
+    //   <Link to={`/movie/${id}`} className="waves-effect waves-red btn-flat" title="Info" alt="Info">
+    //     <i className="material-icons">info_outline</i>
+    //   </Link>
+    // );
     return (
       <div
         ref='card'
@@ -167,9 +175,6 @@ export default class MovieCard extends React.Component {
           <p>{truncatedPlot}</p>
         </div>
         <div style={{ bottom: hover ? 0 : -100 }} className={`${styles.actions} card-action`}>
-          <Link to={`/movie/${id}`} className="waves-effect waves-red btn-flat" title="Info" alt="Info">
-            <i className="material-icons">info_outline</i>
-          </Link>
           <a className="waves-effect waves-red btn-flat" title="Trailer" alt="Trailer">
             <i className="material-icons">ondemand_video</i>
           </a>
@@ -177,6 +182,9 @@ export default class MovieCard extends React.Component {
             <i className="material-icons">favorite_border</i>
           </a>
           {qualityNode}
+          <a className="waves-effect waves-red btn-flat" title={`IMDB ${imdbRating}`} alt={`IMDB ${imdbRating}`}>
+            <div className={styles.imdb}><span>{imdbRating}</span></div>
+          </a>
           <a title="Show full plot" alt="Show full plot" className="activator">
             <i className="material-icons right tooltipped" data-position="top" data-tooltip="Show full plot">expand_less</i>
           </a>

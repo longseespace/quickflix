@@ -234,15 +234,10 @@ export default class ReactVideoJsComponent extends React.Component {
     this._player = vjs(playerEl, options);
 
     const player = this._player;
-
     const tracks = this.props.tracks;
     _forEach(tracks, (track) => {
       player.addRemoteTextTrack(track);
     });
-
-    if (this.props.crossOrigin) {
-      playerEl.crossOrigin = this.props.crossOrigin;
-    }
 
     player.ready(this.handleVideoPlayerReady.bind(this));
 
@@ -274,9 +269,11 @@ export default class ReactVideoJsComponent extends React.Component {
       videoPlayerClasses = `${videoPlayerClasses} ${this.props.className}`;
     }
 
+    const crossOrigin = this.props.crossOrigin ? this.props.crossOrigin : '';
+
     return (
-      <video ref="videoPlayer" className={videoPlayerClasses}>
-        {this.props.children || this.renderDefaultWarning()}
+      <video ref="videoPlayer" crossOrigin={crossOrigin} className={videoPlayerClasses}>
+        {this.props.children}
       </video>
     );
   }
