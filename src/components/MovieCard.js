@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import shallowCompare from 'react-addons-shallow-compare';
 import truncate from 'lodash.truncate';
 import LazyLoad from 'react-lazy-load';
+import sanitize from 'sanitize-html';
+
 import Image from './Image';
 import styles from './MovieCard.scss';
 
@@ -114,10 +116,6 @@ export default class MovieCard extends React.Component {
   render() {
     const { id, plot, backdrop, name, bitrate, season, sequence, lazyload, imdbRating } = this.props;
     const { hover, withinViewport } = this.state;
-    const truncatedPlot = truncate(plot, {
-      length: hover ? 200 : 300,
-      separator: ' ',
-    });
     const imageNode = lazyload ? (
       <LazyLoad height={189}>
         <Image src={backdrop} />
@@ -135,6 +133,20 @@ export default class MovieCard extends React.Component {
     const serieNode = season > 0 ? (
       <span>{serieText}</span>
     ) : null;
+    const imdbRatingText = imdbRating ? parseFloat(imdbRating).toFixed(1) : '';
+    const imdbNode = imdbRating ? (
+      <a className="waves-effect waves-red btn-flat" title={`IMDB ${imdbRatingText}`} alt={`IMDB ${imdbRatingText}`}>
+        <div className={styles.imdb}><span>{imdbRatingText}</span></div>
+      </a>
+    ) : null;
+    const plotText = sanitize(plot, {
+      allowedTags: [],
+      allowedAttributes: [],
+    });
+    const truncatedPlot = truncate(plotText, {
+      length: hover ? 200 : 300,
+      separator: ' ',
+    });
 
     // const infoNode = (
     //   <Link to={`/movie/${id}`} className="waves-effect waves-red btn-flat" title="Info" alt="Info">
@@ -182,16 +194,14 @@ export default class MovieCard extends React.Component {
             <i className="material-icons">favorite_border</i>
           </a>
           {qualityNode}
-          <a className="waves-effect waves-red btn-flat" title={`IMDB ${imdbRating}`} alt={`IMDB ${imdbRating}`}>
-            <div className={styles.imdb}><span>{imdbRating}</span></div>
-          </a>
+          {imdbNode}
           <a title="Show full plot" alt="Show full plot" className="activator">
             <i className="material-icons right tooltipped" data-position="top" data-tooltip="Show full plot">expand_less</i>
           </a>
         </div>
         <div className="card-reveal">
           <span className="card-title grey-text text-darken-4">{name}<i className="material-icons right">close</i></span>
-          <p>{plot}</p>
+          <p>{plotText}</p>
         </div>
       </div>
     );
