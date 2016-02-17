@@ -5,6 +5,7 @@ timestamp=$(date +%s)
 
 # go to the out directory and create a *new* Git repo
 cd dist
+git init
 
 # add CNAME record
 echo "quickflix.long.ninja" > CNAME
