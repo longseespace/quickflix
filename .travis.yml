@@ -15,7 +15,7 @@ script:
   - NODE_ENV=development npm run deploy
   - NODE_ENV=staging npm run deploy
   - NODE_ENV=production npm run deploy
-  - ./deploy.sh
+  - chmod +x ./deploy.sh && ./deploy.sh
 
 env:
   global:
