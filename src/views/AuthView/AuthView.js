@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import styles from './AuthView.scss';
 import { actions as authActions } from '../../redux/modules/auth';
+
+import RaisedButton from 'components/RaisedButton';
 import logo from './logo.png';
+import styles from './AuthView.scss';
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
@@ -52,8 +54,8 @@ export class AuthView extends React.Component {
   render() {
     const { auth } = this.props;
     const buttonText = auth.isFetching ? 'Logging in...' : 'Login';
-    let errorMessage;
 
+    let errorMessage;
     let passwordClassName = 'validate';
     if (auth.hasError && auth.error && auth.error.error === 25) {
       passwordClassName = 'validate invalid';
@@ -83,6 +85,8 @@ export class AuthView extends React.Component {
                 <img src={logo} width={150} />
               </div>
             </div>
+          </div>
+          <div className="row">
             <form action="post" onSubmit={this.onSubmit} className="card grey lighten-4 col m4 push-m4 s10 push-s1">
               <div className="row">
                 <div className="input-field col m10 push-m1 s10 push-s1">
@@ -104,7 +108,7 @@ export class AuthView extends React.Component {
               {captchaNode}
               <div className="row">
                 <div className="input-field col m10 push-m1 s10 push-s1">
-                  <button className="btn waves-effect waves-light" type="submit" name="action">{buttonText}</button>
+                  <RaisedButton disabled={auth.isFetching} type="submit" name="action">{buttonText}</RaisedButton>
                 </div>
               </div>
             </form>
