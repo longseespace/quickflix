@@ -1,6 +1,8 @@
 Quickflix
 =======================
 
+[![Join the chat at https://gitter.im/longseespace/quickflix](https://badges.gitter.im/longseespace/quickflix.svg)](https://gitter.im/longseespace/quickflix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/longseespace/quickflix.svg?branch=master)](https://travis-ci.org/longseespace/quickflix?branch=master)
 [![dependencies](https://david-dm.org/longseespace/quickflix.svg)](https://david-dm.org/longseespace/quickflix)
 [![devDependency Status](https://david-dm.org/longseespace/quickflix/dev-status.svg)](https://david-dm.org/longseespace/quickflix#info=devDependencies)
