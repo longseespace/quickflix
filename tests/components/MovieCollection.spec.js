@@ -5,6 +5,8 @@ import MovieCard from 'components/MovieCard'
 import sinon from 'sinon'
 import fakeEvent from 'simulant'
 import range from 'lodash.range'
+import $ from 'jquery'
+window.$ = $
 
 describe('(Component) MovieCollection', () => {
   it('renders as a <div>', () => {

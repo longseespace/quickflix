@@ -40,8 +40,9 @@ export default class MovieCard extends React.Component {
   }
 
   componentDidMount () {
+    const $ = window.$
     // $('.tooltipped').tooltip({ delay: 50 });
-    window.addEventListener('scroll', this.onScroll)
+    $(window).on('scroll', this.onScroll)
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -49,13 +50,15 @@ export default class MovieCard extends React.Component {
   }
 
   componentWillUnmount () {
-    window.removeEventListener('scroll', this.onScroll)
+    const $ = window.$
+    $(window).off('scroll', this.onScroll)
   }
 
   onScroll = () => {
-    const windowHeight = window.outerHeight
+    const $ = window.$
+    const windowHeight = $(window).height()
     const cardHeight = this.refs.card.scrollHeight
-    const windowScrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop
+    const windowScrollTop = $(window).scrollTop()
     const offsetTop = this.refs.card.offsetTop
     const OFFSET = 400
 

@@ -16,20 +16,16 @@ export default class MovieCollection extends React.Component {
   };
 
   componentDidMount () {
-    window.addEventListener('scroll', this.onScroll)
-  }
-
-  onScroll = () => {
     const { onScrollTop, onScrollBottom } = this.props
-    const windowScrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop
-    const windowHeight = window.outerHeight
-    const documentHeight = document.body.clientHeight
-    if (windowScrollTop + windowHeight === documentHeight) {
-      onScrollBottom()
-    }
-    if (windowScrollTop === 0) {
-      onScrollTop()
-    }
+    const $ = window.$
+    $(window).on('scroll', () => {
+      if ($(window).scrollTop() + $(window).height() === $(document).height()) {
+        onScrollBottom()
+      }
+      if ($(window).scrollTop() === 0) {
+        onScrollTop()
+      }
+    })
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -37,7 +33,8 @@ export default class MovieCollection extends React.Component {
   }
 
   componentWillUnmount () {
-    window.removeEventListener('scroll', this.onScroll)
+    const $ = window.$
+    $(window).off('scroll')
   }
 
   render () {
