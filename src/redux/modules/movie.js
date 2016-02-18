@@ -18,9 +18,9 @@ export const requestMovies = (): Action => ({
 export const clearMovies = (): Action => ({
   type: CLEAR_MOVIES
 })
-export const receiveMovies = (movies: Object): Action => ({
+export const receiveMovies = (movie: Object): Action => ({
   type: RECEIVE_MOVIES,
-  payload: { movies }
+  payload: { movie }
 })
 export const receiveErrors = (error: Error): Action => ({
   type: RECEIVE_ERRORS,
