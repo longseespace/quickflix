@@ -20,7 +20,7 @@ export function loginAnonymously () {
   })
 }
 
-export function login (email, password, key, captcha) {
+export function login (email: String, password: String, key: String, captcha: String) {
   const encodedEmail = encodeURIComponent(email)
   const encodedPassword = encodeURIComponent(password)
   let body = `email=${encodedEmail}&password=${encodedPassword}`
@@ -46,7 +46,7 @@ export function login (email, password, key, captcha) {
   })
 }
 
-export function search (keyword = '', options = { limit: 20, page: 1 }) {
+export function search (keyword: String = '', options = { limit: 20, page: 1 }) {
   const { limit = 20, page = 1, accessToken } = options
   const url = `${API_URL}/search?keyword=${keyword}&limit=${limit}&page=${page}`
   const fetchOptions = {
@@ -67,7 +67,7 @@ export function search (keyword = '', options = { limit: 20, page: 1 }) {
     })
 }
 
-export function favorite (id, options = {}) {
+export function favorite (id: Number, options = {}) {
   const { accessToken } = options
   const url = `${API_URL}/user/favorite`
   const fetchOptions = {
@@ -76,7 +76,8 @@ export function favorite (id, options = {}) {
       Authorization: accessToken
     }
   }
-  return fetch(url, fetchOptions).then((response) => response.json())
+  return fetch(url, fetchOptions)
+    .then((response) => response.json())
     .then((json) => {
       if (json.error) {
         const e = new Error(json.message)
@@ -109,7 +110,7 @@ export function getMovie (id, options = { sequence: 0 }) {
     })
 }
 
-export function getPlaylist (id, options = { w: 1920, sequence: 0 }) {
+export function getPlaylist (id: Number, options = { w: 1920, sequence: 0 }) {
   const { accessToken, sequence = 0, w = 1920 } = options
   const url = `${API_URL}/playlist/${id}?sequence=${sequence}&w=${w}`
   const fetchOptions = {
@@ -117,7 +118,8 @@ export function getPlaylist (id, options = { w: 1920, sequence: 0 }) {
       Authorization: accessToken
     }
   }
-  return fetch(url, fetchOptions).then((response) => response.json())
+  return fetch(url, fetchOptions)
+    .then((response) => response.json())
     .then((json) => {
       if (json.error) {
         const e = new Error(json.message)
@@ -129,7 +131,7 @@ export function getPlaylist (id, options = { w: 1920, sequence: 0 }) {
     })
 }
 
-export function getRelatedMovies (id, options = { limit: 20, page: 1 }) {
+export function getRelatedMovies (id: Number, options = { limit: 20, page: 1 }) {
   const { limit, page, accessToken } = options
   const url = `${API_URL}/movie/${id}?limit=${limit}&page=${page}`
   const fetchOptions = {
@@ -161,8 +163,7 @@ const defaultFilterOptions = {
 export function getMovies (options) {
   const newOptions = { ...defaultFilterOptions, ...options }
   const { limit, page, accessToken, isCinema, tag, genre, imdb, year } = newOptions
-  const url = `${API_URL}/movie/filter?limit=${limit}&page=${page}&isCinema=${isCinema}
-                &tag=${tag}&genre=${genre}&imdb=${imdb}&year=${year}`
+  const url = `${API_URL}/movie/filter?limit=${limit}&page=${page}&isCinema=${isCinema}&tag=${tag}&genre=${genre}&imdb=${imdb}&year=${year}`
   const fetchOptions = {
     headers: {
       Authorization: accessToken
@@ -198,6 +199,7 @@ export function getMoviesByYear (year = '', options = { page: 1, limit: 20 }) {
 }
 
 export default {
+  loginAnonymously,
   login,
   search,
   getMovie,

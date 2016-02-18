@@ -152,7 +152,7 @@ export class TopNav extends React.Component {
                     data-beloworigin='true'
                     data-constrainwidth='false'
                   >
-                    <i className='material-icons'>account_circle</i>
+                    <i className='material-icons'>more_vert</i>
                   </a>
                 </li>
               </ul>
