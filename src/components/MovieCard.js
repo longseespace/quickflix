@@ -40,9 +40,8 @@ export default class MovieCard extends React.Component {
   }
 
   componentDidMount () {
-    const $ = window.$
     // $('.tooltipped').tooltip({ delay: 50 });
-    $(window).on('scroll', this.onScroll)
+    window.addEventListener('scroll', this.onScroll)
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -50,15 +49,13 @@ export default class MovieCard extends React.Component {
   }
 
   componentWillUnmount () {
-    const $ = window.$
-    $(window).off('scroll', this.onScroll)
+    window.removeEventListener('scroll', this.onScroll)
   }
 
   onScroll = () => {
-    const $ = window.$
-    const windowHeight = $(window).height()
+    const windowHeight = window.outerHeight
     const cardHeight = this.refs.card.scrollHeight
-    const windowScrollTop = $(window).scrollTop()
+    const windowScrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop
     const offsetTop = this.refs.card.offsetTop
     const OFFSET = 400
 
@@ -123,8 +120,8 @@ export default class MovieCard extends React.Component {
       </LazyLoad>
     ) : (<Image src={backdrop} />)
     const maskClassName = hover ? `${styles.maskHover}  center-inside` : `${styles.mask} center-inside`
-    const isHD = bitrate.includes('5700') || bitrate.includes('2700')
-    const HDText = bitrate.includes('5700') ? '1080p' : '720p'
+    const isHD = bitrate.indexOf('5700') > -1 || bitrate.indexOf('2700') > -1
+    const HDText = bitrate.indexOf('5700') > -1 ? '1080p' : '720p'
     const qualityNode = isHD ? (
       <a className='waves-effect waves-red btn-flat' title={HDText} alt={HDText}>
         <i className='material-icons'>hd</i>

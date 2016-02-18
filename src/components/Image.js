@@ -18,14 +18,15 @@ export default class Image extends React.Component {
     this.state = {
       opacity: 0
     }
+    this.fadeIn = this.fadeIn.bind(this)
   }
 
-  fadeIn = () => {
+  fadeIn () {
     this.setState({ opacity: 1 })
-  };
+  }
 
   render () {
-    const { style, speed, src } = this.props
+    const { style, speed } = this.props
     const newStyle = {
       ...style,
       transition: `opacity ${speed}s`,
@@ -35,7 +36,6 @@ export default class Image extends React.Component {
       <img
         {...this.props}
         style={newStyle}
-        src={src}
         onLoad={this.fadeIn}
       />
     )
