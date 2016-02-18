@@ -1,0 +1,68 @@
+@import 'base';
+
+.root {
+  >div {
+    box-shadow: 0 1px 1.5px rgba(0,0,0,0.06),0 1px 1px rgba(0,0,0,0.12);
+    border-radius: 2px;
+    background-color: rgba(255,255,255,0.25);
+  }
+  input {
+    height: 44px !important;
+    line-height: 44px !important;
+
+    @include placeholder {
+      color: white;
+      font-weight:100;
+    }
+  }
+
+  label {
+    cursor: pointer;
+    height: 44px;
+    line-height: 44px;
+
+    i {
+      cursor: pointer;
+      height: 44px;
+      line-height: 44px;
+    }
+  }
+
+  .close {
+    cursor: pointer;
+    height: 44px;
+    line-height: 44px;
+  }
+}
+
+@media only (max-width: 600px) {
+  .root {
+    >div {
+      box-shadow: none;
+      border-radius: 0;
+      background-color: transparent;
+    }
+    input {
+      height: 56px !important;
+      line-height: 56px !important;
+    }
+
+    label {
+      cursor: pointer;
+      height: 56px;
+      line-height: 56px;
+
+      i {
+        cursor: pointer;
+        height: 56px;
+        line-height: 56px;
+      }
+    }
+
+    .close {
+      cursor: pointer;
+      height: 56px;
+      line-height: 56px;
+    }
+  }
+}

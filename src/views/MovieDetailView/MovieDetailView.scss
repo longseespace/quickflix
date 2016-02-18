@@ -1,0 +1,31 @@
+.root {
+
+}
+
+.preloader {
+  margin: 20px auto;
+}
+
+.theater {
+  overflow: hidden;
+  background: black;
+  width: 100%;
+}
+
+.placeholder {
+  width: 960px;
+  position: relative;
+  margin: 10px auto 0;
+
+  img {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+  }
+}
+
+@media only (max-width: 960px) {
+  .placeholder {
+    width: 480px;
+  }
+}

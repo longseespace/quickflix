@@ -1,0 +1,10 @@
+.root {
+  li {
+    &:hover {
+      background: #e3f2fd;
+    }
+  }
+  a:hover {
+    background: none;
+  }
+}

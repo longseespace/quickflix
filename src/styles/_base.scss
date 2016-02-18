@@ -1,0 +1,33 @@
+/*
+Application Settings Go Here
+------------------------------------
+This file acts as a bundler for all variables/mixins/themes, so they
+can easily be swapped out without `core.scss` ever having to know.
+
+For example:
+
+@import './variables/colors'
+@import './variables/components'
+@import './themes/default'
+*/
+
+body {
+  background: #eee;
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
+
+.card-image .card-title {
+  text-shadow: 0 0 3px black;
+}
+
+.center-inside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
