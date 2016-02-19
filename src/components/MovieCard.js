@@ -35,7 +35,8 @@ export default class MovieCard extends React.Component {
     super(props)
     this.state = {
       hover: false,
-      withinViewport: true
+      withinViewport: true,
+      placeholderHeight: 189
     }
   }
 
@@ -98,8 +99,7 @@ export default class MovieCard extends React.Component {
   onTouchTap = (e) => {
     const $ = window.$
     const isTargetAButton = $(e.target).hasClass('material-icons')
-    const deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width
-    const isOnMobile = deviceWidth < 600
+    const isOnMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     if (!isTargetAButton && isOnMobile) {
       const { hover } = this.state
       this.setState({
@@ -114,11 +114,18 @@ export default class MovieCard extends React.Component {
     e.stopPropagation()
   };
 
+  onContentVisible = () => {
+    this.setState({
+      ...this.state,
+      placeholderHeight: 'auto'
+    })
+  };
+
   render () {
     const { id, plot, backdrop, name, bitrate, season, sequence, lazyload, imdbRating } = this.props
-    const { hover, withinViewport } = this.state
+    const { hover, withinViewport, placeholderHeight } = this.state
     const imageNode = lazyload ? (
-      <LazyLoad height={189}>
+      <LazyLoad onContentVisible={this.onContentVisible} height={placeholderHeight}>
         <Image src={backdrop} />
       </LazyLoad>
     ) : (<Image src={backdrop} />)
@@ -157,7 +164,6 @@ export default class MovieCard extends React.Component {
     return (
       <div
         ref='card'
-        onTouchTap={this.onTouchTap}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         className='card hoverable medium'
@@ -167,14 +173,14 @@ export default class MovieCard extends React.Component {
           visibility: withinViewport ? 'visible' : 'hidden'
         }}
       >
-        <div className='card-image'>
+        <div className='card-image' onTouchTap={this.onTouchTap}>
           {imageNode}
           <div className={styles.tags}>
             {serieNode}
           </div>
           <div className={maskClassName}>
             <Link to={`/movie/${id}`}
-              style={{ opacity: hover ? 1 : 0 }}
+              style={{ opacity: hover ? 1 : 0, transition: 'none' }}
               className='btn-floating btn-large waves-effect waves-light red accent-4'
               title='Watch'
               alt='Watch'
@@ -184,7 +190,7 @@ export default class MovieCard extends React.Component {
           </div>
           <span className='card-title truncate' style={{ maxWidth: '100%' }}>{name}</span>
         </div>
-        <div style={{ maxHeight: hover ? '40%' : '60%' }} className='card-content'>
+        <div style={{ maxHeight: hover ? '40%' : '60%' }} className='card-content' onTouchTap={this.onTouchTap}>
           <p>{truncatedPlot}</p>
         </div>
         <div style={{ bottom: hover ? 0 : -100 }} className={`${styles.actions} card-action`}>
