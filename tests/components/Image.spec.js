@@ -15,10 +15,15 @@ describe('(Component) Image', () => {
   })
 
   it('fades in once image loaded', () => {
-    sinon.spy(Image.prototype, 'fadeIn')
     const wrapper = shallow(<Image />)
     wrapper.find('img').simulate('load')
-    expect(Image.prototype.fadeIn.calledOnce).to.be.true
     expect(wrapper.find('img').props().style.opacity).to.equal(1)
+  })
+
+  it('triggers props.onLoad() once image loaded', () => {
+    const onLoad = sinon.spy()
+    const wrapper = shallow(<Image onLoad={onLoad} />)
+    wrapper.find('img').simulate('load')
+    expect(onLoad.calledOnce).to.be.true
   })
 })
