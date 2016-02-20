@@ -4,6 +4,7 @@ Quickflix
 [![Build Status](https://travis-ci.org/longseespace/quickflix.svg?branch=master)](https://travis-ci.org/longseespace/quickflix?branch=master)
 [![dependencies](https://david-dm.org/longseespace/quickflix.svg)](https://david-dm.org/longseespace/quickflix)
 [![devDependency Status](https://david-dm.org/longseespace/quickflix/dev-status.svg)](https://david-dm.org/longseespace/quickflix#info=devDependencies)
+[![Coverage Status](https://codecov.io/github/longseespace/quickflix/coverage.svg?branch=master)](https://codecov.io/github/longseespace/quickflix?branch=master)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 > ### Want Semicolons?
