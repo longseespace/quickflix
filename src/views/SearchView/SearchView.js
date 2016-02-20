@@ -18,7 +18,6 @@ import MovieCollection from 'components/MovieCollection'
 const mapStateToProps = (state) => ({
   topnav: state.topnav,
   context: state.search,
-  router: state.router,
   auth: state.auth
 })
 export class SearchView extends AuthenticatedView {
