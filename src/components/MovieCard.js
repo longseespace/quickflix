@@ -42,7 +42,6 @@ export default class MovieCard extends React.Component {
 
   componentDidMount () {
     const $ = window.$
-    // $('.tooltipped').tooltip({ delay: 50 });
     $(window).on('scroll', this.onScroll)
   }
 

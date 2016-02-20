@@ -96,15 +96,15 @@ const ACTION_HANDLERS = {
       page: state.page + 1,
       movies,
       isFetching: false,
-      error: false,
-      errorMessage: ''
+      hasError: false,
+      error: {}
     }
   },
   [RECEIVE_ERRORS]: (state, { payload }) => ({
     ...state,
     isFetching: false,
-    error: true,
-    errorMessage: payload.message
+    hasError: true,
+    error: payload.error
   })
 }
 // ------------------------------------
@@ -112,8 +112,8 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const INITIAL_STATE = {
   keyword: '',
-  error: false,
-  errorMessage: '',
+  hasError: false,
+  error: {},
   isFetching: false,
   page: 0,
   limit: 20,

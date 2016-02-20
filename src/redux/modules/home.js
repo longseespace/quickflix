@@ -18,9 +18,9 @@ export const receiveMovies = (movies: Object): Action => ({
   type: RECEIVE_MOVIES,
   payload: { movies }
 })
-export const receiveErrors = (message: String): Action => ({
+export const receiveErrors = (error: Error): Action => ({
   type: RECEIVE_ERRORS,
-  payload: { message }
+  payload: { error }
 })
 
 // This is a thunk, meaning it is a function that immediately
@@ -93,15 +93,15 @@ const ACTION_HANDLERS = {
       page: state.page + 1,
       movies,
       isFetching: false,
-      error: false,
-      errorMessage: ''
+      hasError: false,
+      error: {}
     }
   },
   [RECEIVE_ERRORS]: (state, { payload }) => ({
     ...state,
     isFetching: false,
-    error: true,
-    errorMessage: payload.message
+    hasError: true,
+    error: payload.error
   })
 }
 
@@ -109,8 +109,8 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const INITIAL_STATE = {
-  error: false,
-  errorMessage: '',
+  hasError: false,
+  error: {},
   isFetching: false,
   page: 0,
   limit: 20,
