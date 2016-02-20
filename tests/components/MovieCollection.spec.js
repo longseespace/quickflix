@@ -34,13 +34,13 @@ describe('(Component) MovieCollection', () => {
     const onScrollTop = sinon.spy()
     mount(<MovieCollection onScrollTop={onScrollTop} />)
     fakeEvent.fire(window, fakeEvent('scroll'))
-    expect(onScrollTop.calledOnce).to.be.true
+    expect(onScrollTop.called).to.be.true
   })
 
   it('calls onScrollBottom', () => {
     const onScrollBottom = sinon.spy()
     mount(<MovieCollection onScrollBottom={onScrollBottom} />)
     fakeEvent.fire(window, fakeEvent('scroll'))
-    expect(onScrollBottom.calledOnce).to.be.true
+    expect(onScrollBottom.called).to.be.true
   })
 })

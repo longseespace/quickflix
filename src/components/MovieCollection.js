@@ -52,6 +52,8 @@ export default class MovieCollection extends React.Component {
         cardSize: 'm6'
       })
     }
+
+    this.onScroll()
   };
 
   componentDidMount () {
