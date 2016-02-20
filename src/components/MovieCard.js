@@ -114,10 +114,10 @@ export default class MovieCard extends React.Component {
     e.stopPropagation()
   };
 
-  onContentVisible = () => {
+  onImageLoad = () => {
     this.setState({
       ...this.state,
-      placeholderHeight: 'auto'
+      placeholderHeight: '100%'
     })
   };
 
@@ -125,8 +125,8 @@ export default class MovieCard extends React.Component {
     const { id, plot, backdrop, name, bitrate, season, sequence, lazyload, imdbRating } = this.props
     const { hover, withinViewport, placeholderHeight } = this.state
     const imageNode = lazyload ? (
-      <LazyLoad onContentVisible={this.onContentVisible} height={placeholderHeight}>
-        <Image src={backdrop} />
+      <LazyLoad height={placeholderHeight}>
+        <Image onLoad={this.onImageLoad} ref='image' src={backdrop} />
       </LazyLoad>
     ) : (<Image src={backdrop} />)
     const maskClassName = hover ? `${styles.maskHover}  center-inside` : `${styles.mask} center-inside`

@@ -4,13 +4,15 @@ export default class Image extends React.Component {
   static propTypes = {
     style: PropTypes.object,
     speed: PropTypes.number,
-    src: PropTypes.string.isRequired
+    src: PropTypes.string.isRequired,
+    onLoad: PropTypes.func
   };
 
   static defaultProps = {
     style: {},
     speed: 1,
-    src: ''
+    src: '',
+    onLoad: () => {}
   };
 
   constructor () {
@@ -18,11 +20,26 @@ export default class Image extends React.Component {
     this.state = {
       opacity: 0
     }
-    this.fadeIn = this.fadeIn.bind(this)
+    this.onLoad = this.onLoad.bind(this)
   }
 
-  fadeIn () {
-    this.setState({ opacity: 1 })
+  onLoad () {
+    this.setState({
+      ...this.state,
+      opacity: 1
+    })
+    const { onLoad } = this.props
+    onLoad()
+  }
+
+  getClientWidth = () => {
+    const img = this.refs.img
+    return img.clientWidth
+  }
+
+  getClientHeight = () => {
+    const img = this.refs.img
+    return img.clientHeight
   }
 
   render () {
@@ -34,9 +51,10 @@ export default class Image extends React.Component {
     }
     return (
       <img
+        ref='img'
         {...this.props}
         style={newStyle}
-        onLoad={this.fadeIn}
+        onLoad={this.onLoad}
       />
     )
   }
