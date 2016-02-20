@@ -9,6 +9,7 @@
   input {
     height: 44px !important;
     line-height: 44px !important;
+    -webkit-appearance: none;
 
     @include placeholder {
       color: white;
