@@ -30,7 +30,6 @@ export function getMoviesByTag (tag: String = 'hot-trong-thang') {
   return (dispatch: Function, getState: Function): void => {
     const namespace = `tag:${tag}`
     if (getState()[namespace].isFetching) {
-      console.log('fetching')
       return
     }
     if (!getState().auth.isAuthenticated) {
@@ -69,6 +68,9 @@ export function getMoviesByTag (tag: String = 'hot-trong-thang') {
       })
       .then((movies) => {
         dispatch(receiveMovies(tag, movies))
+      })
+      .catch((error) => {
+        dispatch(receiveErrors(tag, error))
       })
   }
 }

@@ -23,6 +23,7 @@ export default (store) => (
     </Route>
     <Route path='/category/:tag' component={TagView} />
     <Route path='/movie/:id' component={MovieDetailView} />
+    <Route path='/movie/:id/:episode' component={MovieDetailView} />
     <Route path='/404' component={NotFoundView} />
     <Redirect from='*' to='/404' />
   </Route>

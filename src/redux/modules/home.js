@@ -54,14 +54,14 @@ export function getMoviesByTag (tag: String = 'hot-trong-thang') {
               en: item.PlotEN
             },
             director: item.Director,
-            imdbRating: item.ImdbRating,
-            bitrate: item.BitRate,
-            season: item.Season,
-            isTVSerie: item.Season > 0,
-            episode: item.Episode,
-            sequence: item.Sequence,
+            imdbRating: +item.ImdbRating,
             poster: `http://t.hdviet.com/thumbs/124x184/${item.NewPoster}`,
-            backdrop: `http://t.hdviet.com/backdrops/945x530/${item.Backdrop}`
+            backdrop: `http://t.hdviet.com/backdrops/945x530/${item.Backdrop}`,
+            bitrate: item.BitRate,
+            season: +item.Season,
+            isTVSerie: item.Season > 0,
+            episode: +item.Episode,
+            sequence: +item.Sequence
           }
         })
       })

@@ -38,7 +38,7 @@ export class MovieDetailView extends AuthenticatedView {
     super.componentWillMount()
     const { getMovie, params, context } = this.props
     if (!context.isFetched) {
-      getMovie(params.id)
+      getMovie(params.id, params.episode)
     }
   }
 

@@ -101,7 +101,7 @@ export function favorite (id: Number, options = {}) {
     })
 }
 
-export function getMovie (id: Number, options = { }) {
+export function getMovie (id: Number, options = {}) {
   const { accessToken, sequence } = options
   const params = qs.stringify({
     sequence
