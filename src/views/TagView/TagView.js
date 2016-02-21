@@ -42,6 +42,12 @@ export class TagView extends AuthenticatedView {
 
   componentWillReceiveProps (nextProps) {
     this.redirectIfNotFound(nextProps)
+
+    const { getMoviesByTag, params, globalState } = this.props
+    const context = globalState[`tag:${params.tag}`]
+    if ((context && context.movies.length === 0) || params.tag !== this.props.params.tag) {
+      getMoviesByTag(params.tag)
+    }
   }
 
   redirectIfNotFound = (props) => {

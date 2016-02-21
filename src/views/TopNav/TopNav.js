@@ -61,6 +61,9 @@ export class TopNav extends React.Component {
     if (window.$) {
       window.$(`#${styles.moreActivator}`).dropdown()
       window.$(`#${styles.moreActivatorMobile}`).dropdown()
+      window.$(`#${styles.sidenavActivator}`).sideNav({
+        closeOnClick: true
+      })
     }
   }
 
@@ -104,6 +107,11 @@ export class TopNav extends React.Component {
     // const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : ''
     const token = Base64.encode(accessToken)
+    const tags = 'xu-huong|hanh-dong|co-trang|hinh-su-toi-pham|hai|tinh-cam|kinh-di|khoa-hoc-vien-tuong|vo-thuat|chien-tranh|than-thoai|hoat-hinh|anime|am-nhac|the-thao|tam-ly|bat-ky|au-my|trung-quoc|hong-kong|han-quoc|an-do|viet-nam|thai-lan|nuoc-khac'.split('|')
+    const titles = 'Xu Hướng|Hành Động|Cổ Trang|Hình Sự Tội Phạm|Hài|Tình Cảm|Kinh Dị|Khoa Học Viễn Tưởng|Võ Thuật|Chiến Tranh|Thần Thoại|Hoạt Hình|Anime|Âm Nhạc|Thể Thao|Tâm Lý|Bất Kỳ|Âu Mỹ|Trung Quốc|Hồng Kông|Hàn Quốc|Ấn Độ|Việt Nam|Thái Lan|Nước Khác'.split('|')
+    const catNodes = tags.map((tag, key) => (
+      <li key={key}><Link to={`/category/${tag}`}>{titles[key]}</Link></li>
+    ))
     return (
       <div className={styles.root}>
         <div className='navbar-fixed z-depth-2'>
@@ -111,7 +119,7 @@ export class TopNav extends React.Component {
             <div className='nav-wrapper row'>
               <ul>
                 <li className={searching ? 'hide' : ''}>
-                  <a href='#'><i className='material-icons'>menu</i></a>
+                  <a id={styles.sidenavActivator} data-activates={styles.sidenav}><i className='material-icons'>menu</i></a>
                 </li>
                 <li className={searching ? 'hide' : styles.logo}>
                   <Link to='/'>
@@ -165,6 +173,9 @@ export class TopNav extends React.Component {
           <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target='_blank'>Password</a></li>
           <li className='divider'></li>
           <li><a onClick={logout}>Logout</a></li>
+        </ul>
+        <ul id={styles.sidenav} className='side-nav'>
+          {catNodes}
         </ul>
       </div>
     )
