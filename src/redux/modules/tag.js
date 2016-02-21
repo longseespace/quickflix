@@ -30,6 +30,7 @@ export function getMoviesByTag (tag: String = 'hot-trong-thang') {
   return (dispatch: Function, getState: Function): void => {
     const namespace = `tag:${tag}`
     if (getState()[namespace].isFetching) {
+      console.log('fetching')
       return
     }
     if (!getState().auth.isAuthenticated) {
@@ -88,10 +89,12 @@ const ACTION_HANDLERS = (tag) => ({
     const movies = []
     movies.push(...state.movies)
     movies.push(...payload.movies)
+    const canLoadMore = payload.movies.length > 0
     return {
       ...state,
       page: state.page + 1,
       movies,
+      canLoadMore,
       isFetching: false,
       hasError: false,
       error: {}
@@ -114,6 +117,7 @@ const INITIAL_STATE = {
   isFetching: false,
   page: 0,
   limit: 20,
+  canLoadMore: true,
   movies: []
 }
 

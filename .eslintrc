@@ -20,6 +20,7 @@
     "__BASENAME__" : false
   },
   "rules": {
+    "no-console": 1,
     "semi" : [2, "never"],
     "space-infix-ops": 0,
     "max-len": 0,
