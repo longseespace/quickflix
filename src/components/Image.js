@@ -32,16 +32,6 @@ export default class Image extends React.Component {
     onLoad()
   }
 
-  getClientWidth = () => {
-    const img = this.refs.img
-    return img.clientWidth
-  }
-
-  getClientHeight = () => {
-    const img = this.refs.img
-    return img.clientHeight
-  }
-
   render () {
     const { style, speed } = this.props
     const newStyle = {
