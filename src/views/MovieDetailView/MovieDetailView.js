@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import range from 'lodash.range'
+import capitalize from 'lodash.capitalize'
+import moment from 'moment'
+import sanitize from 'sanitize-html'
 
 import styles from './MovieDetailView.scss'
 import { actions as movieActions } from '../../redux/modules/movie'
@@ -116,7 +119,7 @@ export class MovieDetailView extends AuthenticatedView {
     this.context.router.push(`/movie/${params.id}/${episode}`)
   }
 
-  renderInner () {
+  renderVideo () {
     const { context, params } = this.props
     if (!context.isFetched) {
       return (
@@ -191,12 +194,115 @@ export class MovieDetailView extends AuthenticatedView {
     )
   }
 
+  renderInfo () {
+    const { context } = this.props
+    if (!context.isFetched) {
+      return (
+        <div></div>
+      )
+    }
+    const { overview, detail } = context.movie
+    const posterUrl = `http://t.hdviet.com/thumbs/124x184/${overview.NewPoster}`
+    const releaseDate = moment(overview.ReleaseDate).format('LL')
+    let quality = 'SD'
+    if (overview.BitRate.indexOf('5700') > -1) {
+      quality = '1080p'
+    } else {
+      quality = '720p'
+    }
+    const tag = detail.tag.split(',').map((tag) => capitalize(tag)).join(' / ')
+    const plotText = sanitize(overview.PlotVI, {
+      allowedTags: [],
+      allowedAttributes: []
+    })
+    return (
+      <div className='container'>
+        <div className='row'>
+          <div className='col s12 m12 l8'>
+            <div className='card'>
+              <div className='row card-content'>
+                <div className='col s12 m3'>
+                  <img src={posterUrl} />
+                </div>
+                <div className='col s12 m9'>
+                  <span className='card-title'>{overview.MovieName}</span>
+                  <p>{plotText}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='col s12 m12 l4'>
+            <div className='card'>
+              <div className='row card-content'>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td className={styles.label}>IMDB:</td>
+                      <td>&nbsp;</td>
+                      <td>{`${overview.ImdbRating} (${overview.ImdbVotes} votes)`}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Known As:</td>
+                      <td>&nbsp;</td>
+                      <td>{overview.KnownAs}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Director:</td>
+                      <td>&nbsp;</td>
+                      <td>{overview.Director}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Writer:</td>
+                      <td>&nbsp;</td>
+                      <td>{overview.Writer}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Cast:</td>
+                      <td>&nbsp;</td>
+                      <td>{overview.Cast}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Release Date:</td>
+                      <td>&nbsp;</td>
+                      <td>{releaseDate}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Country:</td>
+                      <td>&nbsp;</td>
+                      <td>{overview.Country}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>MPAA:</td>
+                      <td>&nbsp;</td>
+                      <td>{overview.MPAA}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Quality:</td>
+                      <td>&nbsp;</td>
+                      <td>{quality}</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.label}>Tag:</td>
+                      <td>&nbsp;</td>
+                      <td>{tag}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className={styles.root}>
         <TopNav/>
         <div className={styles.content}>
-          {this.renderInner()}
+          {this.renderVideo()}
+          {this.renderInfo()}
         </div>
       </div>
     )
