@@ -26,7 +26,7 @@ export const receiveErrors = (error: Error): Action => ({
 // This is a thunk, meaning it is a function that immediately
 // returns a function for lazy evaluation. It is incredibly useful for
 // creating async actions, especially when combined with redux-thunk!
-export function getMoviesByTag (tag: String = 'hot-trong-thang') {
+export function getHomeMovies () {
   return (dispatch: Function, getState: Function): void => {
     if (getState().home.isFetching) {
       return
@@ -38,7 +38,13 @@ export function getMoviesByTag (tag: String = 'hot-trong-thang') {
     const creds = getState().auth.creds
     const page = getState().home.page + 1
     dispatch(requestMovies())
-    hdviet.getMoviesByTag(tag, { accessToken: creds.access_token, page })
+    const options = {
+      tag: 'hdviet de cu',
+      genre: 1,
+      accessToken: creds.access_token,
+      page
+    }
+    hdviet.getMovies(options)
       .then((data) => {
         return data.lists.map((item) => {
           return {
@@ -69,10 +75,6 @@ export function getMoviesByTag (tag: String = 'hot-trong-thang') {
         dispatch(receiveMovies(movies))
       })
   }
-}
-
-export function getHomeMovies () {
-  return getMoviesByTag('moi-cap-nhat', ...arguments)
 }
 
 export const actions = {

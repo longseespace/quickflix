@@ -198,7 +198,7 @@ export class MovieDetailView extends AuthenticatedView {
     if (condition) {
       return content
     } else {
-      return ''
+      return
     }
   }
 

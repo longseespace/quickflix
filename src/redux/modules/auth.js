@@ -98,8 +98,8 @@ const INITIAL_STATE = {
   hasError: false,
   error: {},
   isFetching: false,
-  isAuthenticated: localStorage.getItem(STORAGE_KEY),
-  creds: localStorage.getItem(STORAGE_KEY) ? JSON.parse(localStorage.getItem(STORAGE_KEY)) : {}
+  isAuthenticated: localStorage.getItem(STORAGE_KEY).length > 0,
+  creds: localStorage.getItem(STORAGE_KEY).length > 0 ? JSON.parse(localStorage.getItem(STORAGE_KEY)) : {}
 }
 
 export default function authReducer (state: Object = INITIAL_STATE, action: Action): Object {
