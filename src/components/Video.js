@@ -5,6 +5,8 @@ const vjs = window.videojs
 import _debounce from 'lodash.debounce'
 import _forEach from 'lodash.foreach'
 
+import './VideoPlaylistUI'
+
 const DEFAULT_HEIGHT = 540
 const DEFAULT_WIDTH = 960
 const DEFAULT_ASPECT_RATIO = (9 / 16)
@@ -233,6 +235,10 @@ export default class ReactVideoJsComponent extends React.Component {
     this._player = vjs(playerEl, options)
 
     const player = this._player
+
+    const playlist = this.props.playlist
+    player.PlaylistUI(playlist)
+
     const tracks = this.props.tracks
     _forEach(tracks, (track) => {
       player.addRemoteTextTrack(track)
@@ -280,6 +286,7 @@ export default class ReactVideoJsComponent extends React.Component {
 
 ReactVideoJsComponent.propTypes = {
   src: React.PropTypes.any.isRequired,
+  playlist: React.PropTypes.object,
   className: React.PropTypes.string,
   tracks: React.PropTypes.array,
   height: React.PropTypes.number,

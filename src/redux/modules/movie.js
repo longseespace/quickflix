@@ -5,8 +5,10 @@ import hdviet from '../utils/hdviet'
 // Constants
 // ------------------------------------
 export const REQUEST_MOVIES = 'MOVIE:REQUEST_MOVIES'
+export const REQUEST_EPISODE = 'MOVIE:REQUEST_EPISODE'
 export const CLEAR_MOVIES = 'MOVIE:CLEAR_MOVIES'
 export const RECEIVE_MOVIES = 'MOVIE:RECEIVE_MOVIES'
+export const RECEIVE_EPISODE = 'MOVIE:RECEIVE_EPISODE'
 export const RECEIVE_ERRORS = 'MOVIE:RECEIVE_ERRORS'
 
 // ------------------------------------
@@ -15,12 +17,19 @@ export const RECEIVE_ERRORS = 'MOVIE:RECEIVE_ERRORS'
 export const requestMovies = (): Action => ({
   type: REQUEST_MOVIES
 })
+export const requestEpisode = (): Action => ({
+  type: REQUEST_EPISODE
+})
 export const clearMovies = (): Action => ({
   type: CLEAR_MOVIES
 })
 export const receiveMovies = (movie: Object): Action => ({
   type: RECEIVE_MOVIES,
   payload: { movie }
+})
+export const receiveEpisode = (episode: Object): Action => ({
+  type: RECEIVE_EPISODE,
+  payload: { episode }
 })
 export const receiveErrors = (error: Error): Action => ({
   type: RECEIVE_ERRORS,
@@ -49,7 +58,7 @@ export function getMovie (id, episode) {
           seasons: data.seasons,
           detail: data.infoMovie
         }))
-      if (movie.seasons.length > 0 && sequence === 0) {
+      if (movie.overview.Episode > 0 && sequence === 0) {
         sequence = 1
       }
       movie.playlist = await hdviet.getPlaylist(id, { sequence, accessToken: creds.access_token })
@@ -57,6 +66,30 @@ export function getMovie (id, episode) {
     } catch (error) {
       dispatch(receiveErrors(error))
     }
+  }
+}
+
+export function getEpisode (id, episode) {
+  return async (dispatch: Function, getState: Function): void => {
+    if (getState().movie.isFetching) {
+      return
+    }
+    if (!getState().auth.isAuthenticated) {
+      // should dispatch an action that ask user to login
+      return
+    }
+    const creds = getState().auth.creds
+    dispatch(requestEpisode())
+
+    let playlist
+    try {
+      const sequence = episode <= 0 ? 1 : episode
+      playlist = await hdviet.getPlaylist(id, { sequence, accessToken: creds.access_token })
+    } catch (error) {
+      dispatch(receiveErrors(error))
+    }
+
+    dispatch(receiveEpisode(playlist))
   }
 }
 
@@ -68,6 +101,7 @@ export function clear () {
 
 export const actions = {
   getMovie,
+  getEpisode,
   clear,
   clearMovie: clearMovies
 }
@@ -82,6 +116,10 @@ const ACTION_HANDLERS = {
     isFetching: true,
     isFetched: false
   }),
+  [REQUEST_EPISODE]: (state) => ({
+    ...state,
+    isFetching: true
+  }),
   [CLEAR_MOVIES]: (state) => ({
     ...state,
     isFetching: false,
@@ -92,8 +130,19 @@ const ACTION_HANDLERS = {
     ...state,
     ...payload,
     isFetching: false,
-    error: false,
-    errorMessage: '',
+    hasError: false,
+    error: {},
+    isFetched: true
+  }),
+  [RECEIVE_EPISODE]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    hasError: false,
+    error: {},
+    movie: {
+      ...state.movie,
+      playlist: payload.episode
+    },
     isFetched: true
   }),
   [RECEIVE_ERRORS]: (state, { payload }) => ({

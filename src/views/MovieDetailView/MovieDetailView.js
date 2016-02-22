@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import range from 'lodash.range'
 
 import styles from './MovieDetailView.scss'
 import { actions as movieActions } from '../../redux/modules/movie'
 
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
-
 import TopNav from '../TopNav/TopNav'
 import Preloader from 'components/Preloader'
 import Video from 'components/Video'
@@ -20,6 +20,7 @@ export class MovieDetailView extends AuthenticatedView {
     params: PropTypes.object,
     context: PropTypes.object,
     getMovie: PropTypes.func.isRequired,
+    getEpisode: PropTypes.func.isRequired,
     clearMovie: PropTypes.func.isRequired
   };
 
@@ -31,6 +32,7 @@ export class MovieDetailView extends AuthenticatedView {
     params: { id: 0 },
     context: {},
     getMovie: () => {},
+    getEpisode: () => {},
     clearMovie: () => {}
   };
 
@@ -42,7 +44,7 @@ export class MovieDetailView extends AuthenticatedView {
     }
   }
 
-  componentDidMount () {
+  handlePlayerReady = () => {
     const $ = window.$
     const $window = $(window)
 
@@ -63,6 +65,27 @@ export class MovieDetailView extends AuthenticatedView {
     })
   }
 
+  updatePlaylist (props) {
+    const { context, params } = props
+    const { playlist } = context.movie
+    const video = this.refs.video
+    if (video) {
+      const player = video.getVideoPlayer()
+      player.autoplay(true)
+      player.src({
+        src: playlist.playList,
+        type: 'application/x-mpegURL'
+      })
+
+      const currentEpisode: Number = params.episode ? +params.episode : 1
+      const playlistOptions = {
+        currentEpisode,
+        action: 'update'
+      }
+      player.PlaylistUI(playlistOptions)
+    }
+  }
+
   componentWillUnmount () {
     const { clearMovie } = this.props
     clearMovie()
@@ -71,8 +94,30 @@ export class MovieDetailView extends AuthenticatedView {
     $window.off('resize')
   }
 
-  renderInner () {
+  componentWillReceiveProps (nextProps) {
+    const { params, context, getMovie, getEpisode } = nextProps
+    if (!context.isFetched || params.id !== this.props.params.id) {
+      getMovie(params.id, params.episode)
+    } else {
+      if (params.episode !== this.props.params.episode) {
+        getEpisode(params.id, params.episode)
+      }
+    }
+  }
+
+  shouldComponentUpdate (nextProps) {
     const { context } = this.props
+    this.updatePlaylist(nextProps)
+    return !context.isFetched && nextProps.params.id === this.props.params.id
+  }
+
+  playEpisode = (episode) => {
+    const { params } = this.props
+    this.context.router.push(`/movie/${params.id}/${episode}`)
+  }
+
+  renderInner () {
+    const { context, params } = this.props
     if (!context.isFetched) {
       return (
         <div className='valign-wrapper'>
@@ -83,7 +128,7 @@ export class MovieDetailView extends AuthenticatedView {
       )
     }
 
-    const { detail, playlist } = context.movie
+    const { overview, detail, playlist } = context.movie
     const proxy = 'https://crossorigin.me' // TODO: make this configurable
     const tracks = playlist.subtitle.map((item) => ({
       kind: 'captions',
@@ -103,6 +148,15 @@ export class MovieDetailView extends AuthenticatedView {
       width = windowWidth
       height = windowWidth / 2
     }
+    const currentEpisode: Number = params.episode ? +params.episode : 1
+    const playlistOptions = {
+      currentEpisode,
+      items: range(overview.Episode).map((index) => ({
+        episode: index + 1,
+        title: `Episode ${index + 1}`
+      })),
+      play: this.playEpisode
+    }
     const video = (
       <Video
         ref='video'
@@ -110,9 +164,11 @@ export class MovieDetailView extends AuthenticatedView {
           src: playlist.playList,
           type: 'application/x-mpegURL'
         }}
+        playlist={playlistOptions}
         tracks={tracks}
         width={width}
         height={height}
+        onReady={this.handlePlayerReady}
         options={{
           preload: 'none',
           poster: detail.background,
