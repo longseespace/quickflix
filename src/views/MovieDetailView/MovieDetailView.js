@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import DocumentTitle from 'react-document-title'
 import range from 'lodash.range'
 import capitalize from 'lodash.capitalize'
 import moment from 'moment'
@@ -326,14 +327,19 @@ export class MovieDetailView extends AuthenticatedView {
   }
 
   render () {
+    const { context } = this.props
+    const { overview } = context.movie
+    const title = context.isFetched ? overview.MovieName : 'Loading...'
     return (
-      <div className={styles.root}>
-        <TopNav/>
-        <div className={styles.content}>
-          {this.renderVideo()}
-          {this.renderInfo()}
+      <DocumentTitle title={title}>
+        <div className={styles.root}>
+          <TopNav/>
+          <div className={styles.content}>
+            {this.renderVideo()}
+            {this.renderInfo()}
+          </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 }

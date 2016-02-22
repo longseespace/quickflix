@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import DocumentTitle from 'react-document-title'
 import { actions as authActions } from '../../redux/modules/auth'
 
 import RaisedButton from 'components/RaisedButton'
@@ -77,50 +78,52 @@ export class AuthView extends React.Component {
       )
     }
     return (
-      <div className={styles.root}>
-        <div className='container'>
-          <div className='row'>
-            <div className='logo center-align'>
-              <div id={styles.logo}>
-                <img src={logo} width={150} />
+      <DocumentTitle title='Quickflix Login'>
+        <div className={styles.root}>
+          <div className='container'>
+            <div className='row'>
+              <div className='logo center-align'>
+                <div id={styles.logo}>
+                  <img src={logo} width={150} />
+                </div>
               </div>
             </div>
-          </div>
-          <div className='row'>
-            <form action='post' onSubmit={this.onSubmit} className='card grey lighten-4 col m4 push-m4 s10 push-s1'>
-              <div className='row'>
-                <div className='input-field col m10 push-m1 s10 push-s1'>
-                  <span className={styles.error}>{errorMessage}</span>
+            <div className='row'>
+              <form action='post' onSubmit={this.onSubmit} className='card grey lighten-4 col m4 push-m4 s10 push-s1'>
+                <div className='row'>
+                  <div className='input-field col m10 push-m1 s10 push-s1'>
+                    <span className={styles.error}>{errorMessage}</span>
+                  </div>
                 </div>
-              </div>
-              <div className='row'>
-                <div className='input-field col m10 push-m1 s10 push-s1'>
-                  <input id='email' ref='email' type='email' className='validate' required aria-required='true' />
-                  <label htmlFor='email' data-error='Invalid email address'>Email</label>
+                <div className='row'>
+                  <div className='input-field col m10 push-m1 s10 push-s1'>
+                    <input id='email' ref='email' type='email' className='validate' required aria-required='true' />
+                    <label htmlFor='email' data-error='Invalid email address'>Email</label>
+                  </div>
                 </div>
-              </div>
-              <div className='row'>
-                <div className='input-field col m10 push-m1 s10 push-s1'>
-                  <input
-                    id='password'
-                    ref='password'
-                    type='password'
-                    className={passwordClassName}
-                    required
-                    aria-required='true' />
-                  <label htmlFor='password'>Password</label>
+                <div className='row'>
+                  <div className='input-field col m10 push-m1 s10 push-s1'>
+                    <input
+                      id='password'
+                      ref='password'
+                      type='password'
+                      className={passwordClassName}
+                      required
+                      aria-required='true' />
+                    <label htmlFor='password'>Password</label>
+                  </div>
                 </div>
-              </div>
-              {captchaNode}
-              <div className='row'>
-                <div className='input-field col m10 push-m1 s10 push-s1'>
-                  <RaisedButton disabled={auth.isFetching} type='submit' name='action'>{buttonText}</RaisedButton>
+                {captchaNode}
+                <div className='row'>
+                  <div className='input-field col m10 push-m1 s10 push-s1'>
+                    <RaisedButton disabled={auth.isFetching} type='submit' name='action'>{buttonText}</RaisedButton>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 }

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import DocumentTitle from 'react-document-title'
 import { actions as homeActions } from '../../redux/modules/home'
 import classes from './HomeView.scss'
 
@@ -46,20 +47,22 @@ export class HomeView extends AuthenticatedView {
   render () {
     const { context } = this.props
     return (
-      <div>
-        <TopNav/>
-        <div className={classes.content}>
-          <MovieCollection
-            movies={context.movies}
-            onScrollBottom={this.loadMore}
-          />
-          <div className='valign-wrapper'>
-            <div className={classes.preloader}>
-              <Preloader show={context.isFetching} />
+      <DocumentTitle title='Quickflix'>
+        <div>
+          <TopNav/>
+          <div className={classes.content}>
+            <MovieCollection
+              movies={context.movies}
+              onScrollBottom={this.loadMore}
+            />
+            <div className='valign-wrapper'>
+              <div className={classes.preloader}>
+                <Preloader show={context.isFetching} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 }

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import DocumentTitle from 'react-document-title'
 import { actions as tagActions } from '../../redux/modules/tag'
 import classes from './TagView.scss'
 
@@ -83,20 +84,22 @@ export class TagView extends AuthenticatedView {
       )
     }
     return (
-      <div>
-        <TopNav/>
-        <div className={classes.content}>
-          <MovieCollection
-            movies={context.movies}
-            onScrollBottom={this.loadMore}
-          />
-          <div className='valign-wrapper'>
-            <div className={classes.preloader}>
-              <Preloader show={context.isFetching} />
+      <DocumentTitle title={`Category: ${params.tag} — Quickflix`}>
+        <div>
+          <TopNav/>
+          <div className={classes.content}>
+            <MovieCollection
+              movies={context.movies}
+              onScrollBottom={this.loadMore}
+            />
+            <div className='valign-wrapper'>
+              <div className={classes.preloader}>
+                <Preloader show={context.isFetching} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 }

@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import DocumentTitle from 'react-document-title'
+
 import { actions as topnavAction } from '../../redux/modules/topnav'
 import { actions as searchActions } from '../../redux/modules/search'
 import classes from '../HomeView/HomeView.scss'
@@ -59,25 +61,27 @@ export class SearchView extends AuthenticatedView {
   };
 
   render () {
-    const { context } = this.props
+    const { context, params } = this.props
     if (context.error) {
       // TODO: handle error
     }
     return (
-      <div>
-        <TopNav />
-        <div className={classes.content}>
-          <MovieCollection
-            movies={context.movies}
-            onScrollBottom={this.loadMore}
-          />
-          <div className='valign-wrapper'>
-            <div className={classes.preloader}>
-              <Preloader show={context.isFetching} />
+      <DocumentTitle title={`Search results for "${params.keyword}" — Quickflix`}>
+        <div>
+          <TopNav />
+          <div className={classes.content}>
+            <MovieCollection
+              movies={context.movies}
+              onScrollBottom={this.loadMore}
+            />
+            <div className='valign-wrapper'>
+              <div className={classes.preloader}>
+                <Preloader show={context.isFetching} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 }
