@@ -194,6 +194,14 @@ export class MovieDetailView extends AuthenticatedView {
     )
   }
 
+  renderIfTrue (condition, content) {
+    if (condition) {
+      return content
+    } else {
+      return ''
+    }
+  }
+
   renderInfo () {
     const { context } = this.props
     if (!context.isFetched) {
@@ -215,6 +223,7 @@ export class MovieDetailView extends AuthenticatedView {
       allowedTags: [],
       allowedAttributes: []
     })
+    const imdbVotesText = overview.ImdbVotes ? `(${overview.ImdbVotes} votes)` : ''
     return (
       <div className='container'>
         <div className='row'>
@@ -236,56 +245,76 @@ export class MovieDetailView extends AuthenticatedView {
               <div className='row card-content'>
                 <table>
                   <tbody>
-                    <tr>
-                      <td className={styles.label}>IMDB:</td>
-                      <td>&nbsp;</td>
-                      <td>{`${overview.ImdbRating} (${overview.ImdbVotes} votes)`}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Known As:</td>
-                      <td>&nbsp;</td>
-                      <td>{overview.KnownAs}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Director:</td>
-                      <td>&nbsp;</td>
-                      <td>{overview.Director}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Writer:</td>
-                      <td>&nbsp;</td>
-                      <td>{overview.Writer}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Cast:</td>
-                      <td>&nbsp;</td>
-                      <td>{overview.Cast}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Release Date:</td>
-                      <td>&nbsp;</td>
-                      <td>{releaseDate}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Country:</td>
-                      <td>&nbsp;</td>
-                      <td>{overview.Country}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>MPAA:</td>
-                      <td>&nbsp;</td>
-                      <td>{overview.MPAA}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Quality:</td>
-                      <td>&nbsp;</td>
-                      <td>{quality}</td>
-                    </tr>
-                    <tr>
-                      <td className={styles.label}>Tag:</td>
-                      <td>&nbsp;</td>
-                      <td>{tag}</td>
-                    </tr>
+                    {this.renderIfTrue(overview.ImdbRating, (
+                      <tr>
+                        <td className={styles.label}>IMDB:</td>
+                        <td>&nbsp;</td>
+                        <td>{`${overview.ImdbRating}${imdbVotesText}`}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(overview.KnownAs, (
+                      <tr>
+                        <td className={styles.label}>Known As:</td>
+                        <td>&nbsp;</td>
+                        <td>{overview.KnownAs}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(overview.Director, (
+                      <tr>
+                        <td className={styles.label}>Director:</td>
+                        <td>&nbsp;</td>
+                        <td>{overview.Director}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(overview.Writer, (
+                      <tr>
+                        <td className={styles.label}>Writer:</td>
+                        <td>&nbsp;</td>
+                        <td>{overview.Writer}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(overview.Cast, (
+                      <tr>
+                        <td className={styles.label}>Cast:</td>
+                        <td>&nbsp;</td>
+                        <td>{overview.Cast}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(releaseDate, (
+                      <tr>
+                        <td className={styles.label}>Release Date:</td>
+                        <td>&nbsp;</td>
+                        <td>{releaseDate}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(overview.Country, (
+                      <tr>
+                        <td className={styles.label}>Country:</td>
+                        <td>&nbsp;</td>
+                        <td>{overview.Country}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(overview.MPAA, (
+                      <tr>
+                        <td className={styles.label}>MPAA:</td>
+                        <td>&nbsp;</td>
+                        <td>{overview.MPAA}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(quality, (
+                      <tr>
+                        <td className={styles.label}>Quality:</td>
+                        <td>&nbsp;</td>
+                        <td>{quality}</td>
+                      </tr>
+                    ))}
+                    {this.renderIfTrue(tag, (
+                      <tr>
+                        <td className={styles.label}>Tag:</td>
+                        <td>&nbsp;</td>
+                        <td>{tag}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
