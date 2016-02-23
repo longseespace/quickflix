@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import DocumentTitle from 'react-document-title'
-import range from 'lodash.range'
 import capitalize from 'lodash.capitalize'
-import moment from 'moment'
-import sanitize from 'sanitize-html'
 
 import styles from './MovieDetailView.scss'
 import { actions as movieActions } from '../../redux/modules/movie'
 
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
 import TopNav from '../TopNav/TopNav'
-import Preloader from 'components/Preloader'
-import Video from 'components/Video'
+
+import Theater from 'components/Theater'
+import MovieDetailCard from 'components/MovieDetailCard'
 
 const mapStateToProps = (state) => ({
   context: state.movie,
@@ -48,27 +46,6 @@ export class MovieDetailView extends AuthenticatedView {
     }
   }
 
-  handlePlayerReady = () => {
-    const $ = window.$
-    const $window = $(window)
-
-    $window.on('resize', () => {
-      const video = this.refs.video
-      const player = video.getVideoPlayer()
-      const windowWidth = $window.width()
-      if (windowWidth >= 960) {
-        player.width(960)
-        player.height(480)
-      } else if (windowWidth >= 480) {
-        player.width(480)
-        player.height(240)
-      } else {
-        player.width(windowWidth)
-        player.height(windowWidth / 2)
-      }
-    })
-  }
-
   updatePlaylist (props) {
     const { context, params } = props
     const { playlist } = context.movie
@@ -93,9 +70,6 @@ export class MovieDetailView extends AuthenticatedView {
   componentWillUnmount () {
     const { clearMovie } = this.props
     clearMovie()
-    const $ = window.$
-    const $window = $(window)
-    $window.off('resize')
   }
 
   componentWillReceiveProps (nextProps) {
@@ -115,214 +89,128 @@ export class MovieDetailView extends AuthenticatedView {
     return !context.isFetched && nextProps.params.id === this.props.params.id
   }
 
-  playEpisode = (episode) => {
+  play = (episode) => {
     const { params } = this.props
     this.context.router.push(`/movie/${params.id}/${episode}`)
   }
 
-  renderVideo () {
-    const { context, params } = this.props
-    if (!context.isFetched) {
-      return (
-        <div className='valign-wrapper'>
-          <div className={styles.preloader}>
-            <Preloader show={context.isFetching} />
-          </div>
-        </div>
-      )
-    }
-
-    const { overview, detail, playlist } = context.movie
-    const proxy = 'https://crossorigin.me' // TODO: make this configurable
-    const tracks = playlist.subtitle.map((item) => ({
-      kind: 'captions',
-      src: `${proxy}/${item.source}`,
-      srclang: item.sub === 'VIE' ? 'vi' : 'en',
-      label: item.sub === 'VIE' ? 'Tiếng Việt' : 'English',
-      default: item.sub !== 'VIE'
-    }))
-    let width = 960
-    let height = 480
-    const $ = window.$
-    const windowWidth = $(window).width()
-    if (windowWidth < 960 && windowWidth >= 480) {
-      width = 480
-      height = 240
-    } else if (windowWidth < 480) {
-      width = windowWidth
-      height = windowWidth / 2
-    }
-    const currentEpisode: Number = params.episode ? +params.episode : 1
-    const playlistOptions = {
-      currentEpisode,
-      items: range(overview.Episode).map((index) => ({
-        episode: index + 1,
-        title: `Episode ${index + 1}`
-      })),
-      play: this.playEpisode
-    }
-    const video = (
-      <Video
-        ref='video'
-        src={{
-          src: playlist.playList,
-          type: 'application/x-mpegURL'
-        }}
-        playlist={playlistOptions}
-        tracks={tracks}
-        width={width}
-        height={height}
-        onReady={this.handlePlayerReady}
-        options={{
-          preload: 'none',
-          poster: detail.background,
-          autoplay: false,
-          plugins: {
-            // Resume: {
-            //   uuid: `${overview.MovieID}-${overview.Season}-${overview.currentSequence}`,
-            //   playbackOffset: 5, // begin playing video this number of seconds before it otherwise would.
-            // },
-          }
-        }}
-      />
-    )
-    return (
-      <div className={styles.theater}>
-        <div className={styles.placeholder}>
-          {video}
-        </div>
-      </div>
-    )
-  }
-
-  renderIfTrue (condition, content) {
-    if (condition) {
-      return content
-    } else {
-      return
-    }
-  }
-
   renderInfo () {
     const { context } = this.props
-    if (!context.isFetched) {
-      return (
-        <div></div>
-      )
-    }
     const { overview, detail } = context.movie
-    const posterUrl = `http://t.hdviet.com/thumbs/124x184/${overview.NewPoster}`
-    const releaseDate = moment(overview.ReleaseDate).format('LL')
+
+    let poster
+    let plot
+    let title
+    let imdbRating
+    let imdbVotes
+    let knownAs
+    let releaseDate
+    let director
+    let writer
+    let cast
+    let country
+    let MPAA
     let quality = 'SD'
-    if (overview.BitRate.indexOf('5700') > -1) {
-      quality = '1080p'
-    } else {
-      quality = '720p'
+    let tag
+
+    let status = 'init'
+    if (context.isFetching) {
+      status = 'loading'
+    } else if (context.isFetched) {
+      status = 'loaded'
     }
-    const tag = detail.tag.split(',').map((tag) => capitalize(tag)).join(' / ')
-    const plotText = sanitize(overview.PlotVI, {
-      allowedTags: [],
-      allowedAttributes: []
-    })
-    const imdbVotesText = overview.ImdbVotes ? `(${overview.ImdbVotes} votes)` : ''
+
+    if (overview) {
+      poster = `http://t.hdviet.com/thumbs/124x184/${overview.NewPoster}`
+      if (overview.BitRate.indexOf('5700') > -1) {
+        quality = '1080p'
+      } else {
+        quality = '720p'
+      }
+
+      plot = overview.PlotVI
+      title = overview.MovieName
+      imdbRating = overview.ImdbRating
+      imdbVotes = overview.ImdbVotes
+      knownAs = overview.KnownAs
+      releaseDate = overview.ReleaseDate
+      director = overview.Director
+      writer = overview.Writer
+      cast = overview.Cast
+      country = overview.Country
+      MPAA = overview.MPAA
+    }
+
+    if (detail) {
+      tag = detail.tag.split(',').map((tag) => capitalize(tag)).join(' / ')
+    }
+
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='col s12 m12 l8'>
-            <div className='card'>
-              <div className='row card-content'>
-                <div className='col s12 m3'>
-                  <img src={posterUrl} />
-                </div>
-                <div className='col s12 m9'>
-                  <span className='card-title'>{overview.MovieName}</span>
-                  <p>{plotText}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='col s12 m12 l4'>
-            <div className='card'>
-              <div className='row card-content'>
-                <table>
-                  <tbody>
-                    {this.renderIfTrue(overview.ImdbRating, (
-                      <tr>
-                        <td className={styles.label}>IMDB:</td>
-                        <td>&nbsp;</td>
-                        <td>{`${overview.ImdbRating}${imdbVotesText}`}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(overview.KnownAs, (
-                      <tr>
-                        <td className={styles.label}>Known As:</td>
-                        <td>&nbsp;</td>
-                        <td>{overview.KnownAs}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(overview.Director, (
-                      <tr>
-                        <td className={styles.label}>Director:</td>
-                        <td>&nbsp;</td>
-                        <td>{overview.Director}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(overview.Writer, (
-                      <tr>
-                        <td className={styles.label}>Writer:</td>
-                        <td>&nbsp;</td>
-                        <td>{overview.Writer}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(overview.Cast, (
-                      <tr>
-                        <td className={styles.label}>Cast:</td>
-                        <td>&nbsp;</td>
-                        <td>{overview.Cast}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(releaseDate, (
-                      <tr>
-                        <td className={styles.label}>Release Date:</td>
-                        <td>&nbsp;</td>
-                        <td>{releaseDate}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(overview.Country, (
-                      <tr>
-                        <td className={styles.label}>Country:</td>
-                        <td>&nbsp;</td>
-                        <td>{overview.Country}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(overview.MPAA, (
-                      <tr>
-                        <td className={styles.label}>MPAA:</td>
-                        <td>&nbsp;</td>
-                        <td>{overview.MPAA}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(quality, (
-                      <tr>
-                        <td className={styles.label}>Quality:</td>
-                        <td>&nbsp;</td>
-                        <td>{quality}</td>
-                      </tr>
-                    ))}
-                    {this.renderIfTrue(tag, (
-                      <tr>
-                        <td className={styles.label}>Tag:</td>
-                        <td>&nbsp;</td>
-                        <td>{tag}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <MovieDetailCard
+        status={status}
+        poster={poster}
+        plot={plot}
+        title={title}
+        imdbRating={imdbRating}
+        imdbVotes={imdbVotes}
+        knownAs={knownAs}
+        releaseDate={releaseDate}
+        director={director}
+        writer={writer}
+        cast={cast}
+        country={country}
+        MPAA={MPAA}
+        quality={quality}
+        tag={tag}
+      />
+    )
+  }
+
+  renderTheater () {
+    const { context, params } = this.props
+    const { overview, playlist, detail } = context.movie
+    let tracks = []
+    let src = ''
+    let poster
+    let currentEpisode = 1
+    let totalEpisode = 1
+    let status = 'init'
+    if (context.isFetching) {
+      status = 'loading'
+    } else if (context.isFetched) {
+      status = 'loaded'
+    }
+    if (playlist) {
+      const proxy = 'https://crossorigin.me' // TODO: make this configurable
+      tracks = playlist.subtitle.map((item) => ({
+        kind: 'captions',
+        src: `${proxy}/${item.source}`,
+        srclang: item.sub === 'VIE' ? 'vi' : 'en',
+        label: item.sub === 'VIE' ? 'Tiếng Việt' : 'English',
+        default: item.sub !== 'VIE'
+      }))
+      src = playlist.playList
+    }
+    if (params) {
+      currentEpisode = params.episode ? +params.episode : 1
+    }
+    if (overview) {
+      totalEpisode = overview.Episode
+    }
+    if (detail) {
+      poster = detail.background
+    }
+    return (
+      <Theater
+        ref='theater'
+        src={src}
+        play={this.play}
+        tracks={tracks}
+        currentEpisode={currentEpisode}
+        totalEpisode={totalEpisode}
+        poster={poster}
+        status={status}
+      />
     )
   }
 
@@ -330,13 +218,25 @@ export class MovieDetailView extends AuthenticatedView {
     const { context } = this.props
     const { overview } = context.movie
     const title = context.isFetched ? overview.MovieName : 'Loading...'
+
     return (
       <DocumentTitle title={title}>
         <div className={styles.root}>
           <TopNav/>
           <div className={styles.content}>
-            {this.renderVideo()}
-            {this.renderInfo()}
+            {this.renderTheater()}
+            <div className={styles.container}>
+              <div className='row'>
+                <div className='col s12 m8 l8'>
+                  {this.renderInfo()}
+                </div>
+                <div className='col s12 m4 l4'>
+                  <div className='card'>
+                    Related Movies
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </DocumentTitle>

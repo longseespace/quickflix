@@ -1,0 +1,43 @@
+.theater {
+  overflow: hidden;
+  background: black;
+  width: 100%;
+
+  .preloader {
+    margin: 0 auto;
+  }
+}
+
+.placeholder {
+  width: 960px;
+  position: relative;
+  margin: 10px auto 0;
+
+  img {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+  }
+}
+
+.preloaderWrapper {
+  min-height: 480px;
+}
+
+@media only (max-width: 960px) and (min-width: 480px) {
+  .placeholder {
+    width: 480px;
+  }
+  .preloaderWrapper {
+    min-height: 240px;
+  }
+}
+
+@media only (max-width: 480px) {
+  .placeholder {
+    width: 100%;
+  }
+  .preloaderWrapper {
+    min-height: 160px;
+  }
+}

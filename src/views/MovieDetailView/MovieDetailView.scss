@@ -6,32 +6,14 @@
   margin: 20px auto;
 }
 
-.theater {
-  overflow: hidden;
-  background: black;
+.container {
   width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.placeholder {
-  width: 960px;
-  position: relative;
-  margin: 10px auto 0;
-
-  img {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: 100%;
+@media only (min-width: 960px) {
+  .container {
+    width: 960px;
   }
-}
-
-@media only (max-width: 960px) {
-  .placeholder {
-    width: 480px;
-  }
-}
-
-.label {
-  font-weight: bold;
-  vertical-align: top;
-  width: 40%;
 }

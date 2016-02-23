@@ -74,8 +74,9 @@ class VideoNextButton extends Button {
 VideoNextButton.prototype.controlText_ = 'Next'
 videojs.registerComponent('VideoNextButton', VideoNextButton)
 
+const noop = () => {}
 const PlaylistUI = function (options) {
-  const { currentEpisode, items, play, action = 'init' } = options
+  const { currentEpisode, items, play = noop, action = 'init' } = options
   if (action === 'init') {
     if (currentEpisode !== undefined && items && items.length > 0 && play) {
       this.currentEpisode = +currentEpisode
