@@ -1,14 +1,16 @@
 /* @flow */
-import hdviet from '../utils/hdviet'
+import hdviet from 'redux/utils/hdviet'
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-const STORAGE_KEY = 'auth'
+export const STORAGE_KEY = 'auth'
 export const LOGIN = 'AUTH:LOGIN'
 export const LOGOUT = 'AUTH:LOGOUT'
 export const RECEIVE_TOKENS = 'AUTH:RECEIVE_TOKENS'
 export const RECEIVE_ERRORS = 'AUTH:RECEIVE_ERRORS'
+export const PERSIST_CREDS = 'AUTH:PERSIST_CREDS'
+export const REMOVE_CREDS = 'AUTH:REMOVE_CREDS'
 
 // ------------------------------------
 // Actions
@@ -37,9 +39,8 @@ export function login (email: String, password: String, key: String, captcha: St
       return
     }
     dispatch(requestLogin())
-    hdviet.login(email, password, key, captcha)
+    return hdviet.login(email, password, key, captcha)
       .then((creds) => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(creds))
         dispatch(receiveTokens(creds))
       })
       .catch((error) => {
@@ -50,7 +51,6 @@ export function login (email: String, password: String, key: String, captcha: St
 
 export function logout () {
   return (dispatch: Function): void => {
-    localStorage.removeItem(STORAGE_KEY)
     dispatch(requestLogout())
   }
 }
@@ -69,19 +69,26 @@ const ACTION_HANDLERS = {
     isFetching: true,
     isAuthenticated: false
   }),
-  [LOGOUT]: (state) => ({
-    ...state,
-    isFetching: false,
-    isAuthenticated: false,
-    creds: {}
-  }),
-  [RECEIVE_TOKENS]: (state, { payload }) => ({
-    ...state,
-    creds: payload.creds,
-    isFetching: false,
-    isAuthenticated: true,
-    hasError: false
-  }),
+  [LOGOUT]: (state) => {
+    localStorage.removeItem(STORAGE_KEY)
+    return {
+      ...state,
+      isFetching: false,
+      isAuthenticated: false,
+      creds: {}
+    }
+  },
+  [RECEIVE_TOKENS]: (state, { payload }) => {
+    const creds = payload.creds
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(creds))
+    return {
+      ...state,
+      creds,
+      isFetching: false,
+      isAuthenticated: true,
+      hasError: false
+    }
+  },
   [RECEIVE_ERRORS]: (state, { payload }) => ({
     ...state,
     isFetching: false,
@@ -99,7 +106,7 @@ const INITIAL_STATE = {
   hasError: false,
   error: {},
   isFetching: false,
-  isAuthenticated: persistedCreds && persistedCreds.length > 0,
+  isAuthenticated: persistedCreds !== null && persistedCreds.length > 0,
   creds: persistedCreds && persistedCreds.length > 0 ? JSON.parse(persistedCreds) : {}
 }
 
