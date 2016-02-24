@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import DocumentTitle from 'react-document-title'
+import Tooltip from 'react-tooltip'
+
 import { actions as homeActions } from '../../redux/modules/home'
 import classes from './HomeView.scss'
 
@@ -46,6 +48,7 @@ export class HomeView extends AuthenticatedView {
 
   render () {
     const { context } = this.props
+    Tooltip.rebuild()
     return (
       <DocumentTitle title='Quickflix'>
         <div>
@@ -61,6 +64,7 @@ export class HomeView extends AuthenticatedView {
               </div>
             </div>
           </div>
+          <Tooltip effect='solid' />
         </div>
       </DocumentTitle>
     )

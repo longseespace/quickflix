@@ -132,7 +132,7 @@ export default class MovieCard extends React.Component {
     const isHD = bitrate.indexOf('5700') > -1 || bitrate.indexOf('2700') > -1
     const HDText = bitrate.indexOf('5700') > -1 ? '1080p' : '720p'
     const qualityNode = isHD ? (
-      <a className='waves-effect waves-red btn-flat' title={HDText} alt={HDText}>
+      <a className='waves-effect waves-red btn-flat' data-tip={HDText}>
         <i className='material-icons'>hd</i>
       </a>
     ) : null
@@ -142,7 +142,7 @@ export default class MovieCard extends React.Component {
     ) : null
     const imdbRatingText = imdbRating ? parseFloat(imdbRating).toFixed(1) : ''
     const imdbNode = imdbRating ? (
-      <a className='waves-effect waves-red btn-flat' title={`IMDB ${imdbRatingText}`} alt={`IMDB ${imdbRatingText}`}>
+      <a className='waves-effect waves-red btn-flat' data-tip={`IMDB ${imdbRatingText}`}>
         <div className={styles.imdb}><span>{imdbRatingText}</span></div>
       </a>
     ) : null
@@ -181,8 +181,7 @@ export default class MovieCard extends React.Component {
             <Link to={`/movie/${id}`}
               style={{ opacity: hover ? 1 : 0, transition: 'none' }}
               className='btn-floating btn-large waves-effect waves-light red accent-4'
-              title='Watch'
-              alt='Watch'
+              data-tip='Watch'
             >
               <i style={{ fontSize: 36 }} className='material-icons'>play_arrow</i>
             </Link>
@@ -193,19 +192,18 @@ export default class MovieCard extends React.Component {
           <p>{truncatedPlot}</p>
         </div>
         <div style={{ bottom: hover ? 0 : -100 }} className={`${styles.actions} card-action`}>
-          <a className='waves-effect waves-red btn-flat' title='Trailer' alt='Trailer'>
+          <a className='waves-effect waves-red btn-flat' data-tip='Trailer'>
             <i className='material-icons'>ondemand_video</i>
           </a>
-          <a className='waves-effect waves-red btn-flat' title='Add to Favorite' alt='Add to Favorite'>
+          <a className='waves-effect waves-red btn-flat' data-tip='Add to Favorite'>
             <i className='material-icons'>favorite_border</i>
           </a>
           {qualityNode}
           {imdbNode}
           <a title='Show full plot' alt='Show full plot' className='activator'>
             <i
-              className='material-icons right tooltipped'
-              data-position='top'
-              data-tooltip='Show full plot'>expand_less</i>
+              className='material-icons right'
+              data-tip='Show full plot'>expand_less</i>
           </a>
         </div>
         <div className='card-reveal'>
