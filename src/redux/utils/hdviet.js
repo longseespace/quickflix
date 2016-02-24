@@ -1,15 +1,17 @@
 import { polyfill } from 'es6-promise'; polyfill()
-import fetch from 'isomorphic-fetch'
+import 'isomorphic-fetch'
 import qs from 'query-string'
 
-const API_URL = 'http://rest.hdviet.com/api/v3'
-const AUTH_API_URL = 'https://id.hdviet.com/authentication/login'
+export const API_URL = 'http://rest.hdviet.com/api/v3'
+export const AUTH_API_URL = 'https://id.hdviet.com/authentication/login'
 
 export function loginAnonymously () {
   return fetch(AUTH_API_URL, {
     method: 'POST'
   })
-  .then((response) => response.json())
+  .then((response) => {
+    return response.json()
+  })
   .then((json) => {
     if (json.error) {
       const e = new Error(json.message)
@@ -22,7 +24,7 @@ export function loginAnonymously () {
 }
 
 export function login (email: String, password: String, key: String, captcha: String) {
-  if (email.length === 0 || password.length === 0) {
+  if (!email || !password || email.length === 0 || password.length === 0) {
     throw new Error('Invalid email/password')
   }
   let body = qs.stringify({
@@ -80,6 +82,11 @@ export function search (keyword: String = '', options = { limit: 20, page: 1 }) 
 }
 
 export function favorite (id: Number, options = {}) {
+  const idNum = +id
+  if (isNaN(idNum) || idNum <= 0) {
+    throw new Error('Invalid movie_id')
+  }
+
   const { accessToken } = options
   const url = `${API_URL}/user/favorite`
   const fetchOptions = {
@@ -102,11 +109,15 @@ export function favorite (id: Number, options = {}) {
 }
 
 export function getMovie (id: Number, options = {}) {
+  const idNum = +id
+  if (isNaN(idNum) || idNum <= 0) {
+    throw new Error('Invalid movie_id')
+  }
   const { accessToken, sequence } = options
   const params = qs.stringify({
     sequence
   })
-  const url = `${API_URL}/movie/${id}?${params}`
+  const url = `${API_URL}/movie/${idNum}?${params}`
   const fetchOptions = {
     headers: {
       Authorization: accessToken
@@ -125,7 +136,11 @@ export function getMovie (id: Number, options = {}) {
     })
 }
 
-export function getPlaylist (id: Number, options = { w: 1920, sequence }) {
+export function getPlaylist (id: Number, options = { w: 1920 }) {
+  const idNum = +id
+  if (isNaN(idNum) || idNum <= 0) {
+    throw new Error('Invalid movie_id')
+  }
   const { accessToken, sequence, w = 1920 } = options
   const params = qs.stringify({
     sequence,
@@ -151,12 +166,17 @@ export function getPlaylist (id: Number, options = { w: 1920, sequence }) {
 }
 
 export function getRelatedMovies (id: Number, options = { limit: 20, page: 1 }) {
+  const idNum = +id
+  if (isNaN(idNum) || idNum <= 0) {
+    throw new Error('Invalid movie_id')
+  }
+
   const { limit, page, accessToken } = options
   const params = qs.stringify({
     page,
     limit
   })
-  const url = `${API_URL}/movie/${id}?${params}`
+  const url = `${API_URL}/movie/${id}/relations?${params}`
   const fetchOptions = {
     headers: {
       Authorization: accessToken
@@ -206,25 +226,26 @@ export function getMovies (options) {
 }
 
 export function getMoviesByTag (tag = '', options = { page: 1, limit: 20 }) {
-  return getMovies({ ...options, tag })
+  return hdviet.getMovies({ ...options, tag })
 }
 
 export function getMoviesByGenre (genre = '', options = { page: 1, limit: 20 }) {
-  return getMovies({ ...options, genre })
+  return hdviet.getMovies({ ...options, genre })
 }
 
 export function getMoviesByImdb (imdb = '', options = { page: 1, limit: 20 }) {
-  return getMovies({ ...options, imdb })
+  return hdviet.getMovies({ ...options, imdb })
 }
 
 export function getMoviesByYear (year = '', options = { page: 1, limit: 20 }) {
-  return getMovies({ ...options, year })
+  return hdviet.getMovies({ ...options, year })
 }
 
-export default {
+const hdviet = {
   loginAnonymously,
   login,
   search,
+  favorite,
   getMovie,
   getPlaylist,
   getRelatedMovies,
@@ -234,3 +255,5 @@ export default {
   getMoviesByImdb,
   getMoviesByYear
 }
+
+export default hdviet
