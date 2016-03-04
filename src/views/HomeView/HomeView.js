@@ -48,7 +48,13 @@ export class HomeView extends AuthenticatedView {
 
   render () {
     const { context } = this.props
-    Tooltip.rebuild()
+    const isOnMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    let tooltipNode
+    if (!isOnMobile) {
+      tooltipNode = (<Tooltip effect='solid' />)
+      Tooltip.rebuild()
+    }
+
     return (
       <DocumentTitle title='Quickflix'>
         <div>
@@ -64,7 +70,7 @@ export class HomeView extends AuthenticatedView {
               </div>
             </div>
           </div>
-          <Tooltip effect='solid' />
+          {tooltipNode}
         </div>
       </DocumentTitle>
     )

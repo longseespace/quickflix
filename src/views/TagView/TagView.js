@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import DocumentTitle from 'react-document-title'
+import Tooltip from 'react-tooltip'
+
 import { actions as tagActions } from '../../redux/modules/tag'
 import classes from './TagView.scss'
 
@@ -83,6 +85,12 @@ export class TagView extends AuthenticatedView {
         <div></div>
       )
     }
+    const isOnMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    let tooltipNode
+    if (!isOnMobile) {
+      tooltipNode = (<Tooltip effect='solid' />)
+      Tooltip.rebuild()
+    }
     return (
       <DocumentTitle title={`Category: ${params.tag} — Quickflix`}>
         <div>
@@ -98,6 +106,7 @@ export class TagView extends AuthenticatedView {
               </div>
             </div>
           </div>
+          {tooltipNode}
         </div>
       </DocumentTitle>
     )

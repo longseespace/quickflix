@@ -181,7 +181,6 @@ export default class MovieCard extends React.Component {
             <Link to={`/movie/${id}`}
               style={{ opacity: hover ? 1 : 0, transition: 'none' }}
               className='btn-floating btn-large waves-effect waves-light red accent-4'
-              data-tip='Watch'
             >
               <i style={{ fontSize: 36 }} className='material-icons'>play_arrow</i>
             </Link>

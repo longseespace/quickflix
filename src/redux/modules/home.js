@@ -1,5 +1,6 @@
 /* @flow */
 import hdviet from '../utils/hdviet'
+import Movie from 'models/Movie'
 
 // ------------------------------------
 // Constants
@@ -47,28 +48,7 @@ export function getHomeMovies () {
     hdviet.getMovies(options)
       .then((data) => {
         return data.lists.map((item) => {
-          return {
-            id: item.MovieID,
-            name: {
-              en: item.MovieName,
-              vi: item.KnownAs
-            },
-            trailer: item.Trailer,
-            releaseDate: item.ReleaseDate,
-            plot: {
-              vi: item.PlotVI,
-              en: item.PlotEN
-            },
-            director: item.Director,
-            imdbRating: +item.ImdbRating,
-            poster: `http://t.hdviet.com/thumbs/124x184/${item.NewPoster}`,
-            backdrop: `http://t.hdviet.com/backdrops/945x530/${item.Backdrop}`,
-            bitrate: item.BitRate,
-            season: +item.Season,
-            isTVSerie: item.Season > 0,
-            episode: +item.Episode,
-            sequence: +item.Sequence
-          }
+          return Movie.fromFilterResult(item)
         })
       })
       .then((movies) => {

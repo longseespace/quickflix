@@ -159,6 +159,12 @@ export default class ReactVideoJsComponent extends React.Component {
       this._player.pause()
     }
 
+    this._player.hotkeys({
+      volumeStep: 0.1,
+      seekStep: 5,
+      enableVolumeScroll: false
+    })
+
     this.props.onReady()
   }
 

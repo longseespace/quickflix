@@ -1,5 +1,6 @@
 /* @flow */
 import hdviet from '../utils/hdviet'
+import Movie from 'models/Movie'
 
 // ------------------------------------
 // Constants
@@ -50,27 +51,7 @@ export function searchMovies (keyword) {
     return hdviet.search(keyword, { accessToken: creds.access_token, page })
       .then((data) => {
         return data.docs.map((item) => {
-          return {
-            id: +item.id,
-            name: {
-              en: item.mo_name,
-              vi: item.mo_known_as
-            },
-            releaseDate: item.mo_release_date,
-            plot: {
-              vi: item.mo_plot_vi,
-              en: item.mo_plot_en
-            },
-            director: item.mo_director,
-            imdbRating: +item.mo_imdb_rating,
-            poster: `http://t.hdviet.com/thumbs/124x184/${item.mo_new_poster}`,
-            backdrop: `http://t.hdviet.com/backdrops/945x530/${item.mo_backdrop}`,
-            bitrate: item.mo_bit_rate,
-            season: +item.mo_season,
-            isTVSerie: item.mo_season > 0,
-            episode: +item.mo_episode,
-            sequence: +item.mo_sequence
-          }
+          return Movie.fromSearchResult(item)
         })
       })
       .then((movies) => {
