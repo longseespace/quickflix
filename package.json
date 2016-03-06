@@ -15,7 +15,7 @@
     "start": "better-npm-run start",
     "dev": "better-npm-run dev",
     "dev:nw": "npm run dev -- --nw",
-    "dev:no-debug": "npm run dev -- --no_debug",
+    "dev:nd": "npm run dev -- --no_debug",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
     "deploy": "better-npm-run deploy",
@@ -97,6 +97,7 @@
     "redux-thunk": "^1.0.0",
     "sanitize-html": "^1.11.3",
     "url": "^0.11.0",
+    "webfontloader": "^1.6.22",
     "yargs": "^3.18.0"
   },
   "devDependencies": {

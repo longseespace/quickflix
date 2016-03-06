@@ -1,6 +1,13 @@
 import React, { PropTypes } from 'react'
 import '../../styles/core.scss'
 
+import WebFont from 'webfontloader'
+WebFont.load({
+  google: {
+    families: ['Roboto:400,300,700:latin,vietnamese', 'Material Icons']
+  }
+})
+
 // Note: Stateless/function components *will not* hot reload!
 // react-transform *only* works on component classes.
 //
