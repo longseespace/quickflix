@@ -40,7 +40,7 @@ export function getHomeMovies () {
     const page = getState().home.page + 1
     dispatch(requestMovies())
     const options = {
-      tag: 'hdviet de cu',
+      tag: 'moi-cap-nhat',
       genre: 1,
       accessToken: creds.access_token,
       page

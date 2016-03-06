@@ -165,7 +165,7 @@ export default class MovieCard extends React.Component {
         ref='card'
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
-        className='card hoverable medium'
+        className={`${styles.root} card medium`}
         id={`movie-${id}`}
         style={{
           overflow: 'hidden',
@@ -190,7 +190,7 @@ export default class MovieCard extends React.Component {
         <div style={{ maxHeight: hover ? '40%' : '60%' }} className='card-content' onTouchTap={this.onTouchTap}>
           <p>{truncatedPlot}</p>
         </div>
-        <div style={{ bottom: hover ? 0 : -100 }} className={`${styles.actions} card-action`}>
+        <div className={`${styles.actions} card-action`}>
           <a className='waves-effect waves-red btn-flat' data-tip='Trailer'>
             <i className='material-icons'>ondemand_video</i>
           </a>
