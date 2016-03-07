@@ -41,11 +41,10 @@ export function getMovies (filters) {
     if (!isEqual(getState().filter.filters, filters)) {
       dispatch(clear())
     }
-    if (!getState().auth.isAuthenticated) {
-      // should dispatch an action that ask user to login
+    const creds = getState().auth.creds
+    if (!creds.access_token) {
       return
     }
-    const creds = getState().auth.creds
     // after dispatching `clearResults()` we got new state
     const page = getState().filter.page + 1
     dispatch(requestMovies(filters))
@@ -59,7 +58,6 @@ export function getMovies (filters) {
         dispatch(receiveMovies(movies))
       })
       .catch((error) => {
-        console.error(error)
         dispatch(receiveErrors(error))
       })
   }

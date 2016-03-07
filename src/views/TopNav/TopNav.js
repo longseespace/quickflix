@@ -108,6 +108,20 @@ export class TopNav extends React.Component {
     // const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : ''
     const token = Base64.encode(accessToken)
+    const isAuthenticated = auth.isAuthenticated
+    const moreButton = (
+      <a
+        id={styles.moreActivator}
+        data-activates={styles.moreMenu}
+        data-beloworigin='true'
+        data-constrainwidth='false'
+      >
+        <i className='material-icons'>more_vert</i>
+      </a>
+    )
+    const loginButton = (
+      <Link to='/auth'><i className='material-icons'>assignment_ind</i></Link>
+    )
     return (
       <div className={styles.root}>
         <div className='navbar-fixed z-depth-2'>
@@ -150,14 +164,7 @@ export class TopNav extends React.Component {
                   </a>
                 </li>
                 <li className={searching ? 'hide' : ''}>
-                  <a
-                    id={styles.moreActivator}
-                    data-activates={styles.moreMenu}
-                    data-beloworigin='true'
-                    data-constrainwidth='false'
-                  >
-                    <i className='material-icons'>more_vert</i>
-                  </a>
+                  {isAuthenticated ? moreButton : loginButton}
                 </li>
               </ul>
             </div>

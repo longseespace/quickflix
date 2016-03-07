@@ -29,14 +29,14 @@ export const receiveErrors = (error: Error): Action => ({
 // creating async actions, especially when combined with redux-thunk!
 export function getHomeMovies () {
   return (dispatch: Function, getState: Function): void => {
+    const creds = getState().auth.creds
     if (getState().home.isFetching) {
       return
     }
-    if (!getState().auth.isAuthenticated) {
-      // should dispatch an action that ask user to login
+    if (!creds.access_token) {
       return
     }
-    const creds = getState().auth.creds
+
     const page = getState().home.page + 1
     dispatch(requestMovies())
     const options = {
@@ -53,6 +53,9 @@ export function getHomeMovies () {
       })
       .then((movies) => {
         dispatch(receiveMovies(movies))
+      })
+      .catch((error) => {
+        dispatch(receiveErrors(error))
       })
   }
 }

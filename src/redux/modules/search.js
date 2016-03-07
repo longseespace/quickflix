@@ -40,11 +40,10 @@ export function searchMovies (keyword) {
     if (getState().search.keyword !== keyword) {
       dispatch(clearResults())
     }
-    if (!getState().auth.isAuthenticated) {
-      // should dispatch an action that ask user to login
+    const creds = getState().auth.creds
+    if (!creds.access_token) {
       return
     }
-    const creds = getState().auth.creds
     // after dispatching `clearResults()` we got new state
     const page = getState().search.page + 1
     dispatch(requestMovies(keyword))

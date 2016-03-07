@@ -49,6 +49,22 @@ export function login (email: String, password: String, key: String, captcha: St
   }
 }
 
+export function loginAnon () {
+  return (dispatch: Function, getState: Function): void => {
+    if (getState().auth.isFetching) {
+      return
+    }
+    dispatch(requestLogin())
+    return hdviet.loginAnonymously()
+      .then((creds) => {
+        dispatch(receiveTokens(creds))
+      })
+      .catch((error) => {
+        dispatch(receiveErrors(error))
+      })
+  }
+}
+
 export function logout () {
   return (dispatch: Function): void => {
     dispatch(requestLogout())
@@ -56,6 +72,7 @@ export function logout () {
 }
 
 export const actions = {
+  loginAnon,
   login,
   logout
 }
@@ -80,12 +97,13 @@ const ACTION_HANDLERS = {
   },
   [RECEIVE_TOKENS]: (state, { payload }) => {
     const creds = payload.creds
+    const isAuthenticated = creds.anonymous === false
     localStorage.setItem(STORAGE_KEY, JSON.stringify(creds))
     return {
       ...state,
       creds,
       isFetching: false,
-      isAuthenticated: true,
+      isAuthenticated,
       hasError: false
     }
   },
@@ -106,7 +124,7 @@ const INITIAL_STATE = {
   hasError: false,
   error: {},
   isFetching: false,
-  isAuthenticated: persistedCreds !== null && persistedCreds.length > 0,
+  isAuthenticated: persistedCreds !== null && persistedCreds.anonymous === false,
   creds: persistedCreds && persistedCreds.length > 0 ? JSON.parse(persistedCreds) : {}
 }
 

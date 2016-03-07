@@ -44,11 +44,10 @@ export function getMovie (id, episode) {
     if (getState().movie.isFetching) {
       return
     }
-    if (!getState().auth.isAuthenticated) {
-      // should dispatch an action that ask user to login
+    const creds = getState().auth.creds
+    if (!creds.access_token) {
       return
     }
-    const creds = getState().auth.creds
     dispatch(requestMovies())
     try {
       let sequence = episode || 0
@@ -74,11 +73,10 @@ export function getEpisode (id, episode) {
     if (getState().movie.isFetching) {
       return
     }
-    if (!getState().auth.isAuthenticated) {
-      // should dispatch an action that ask user to login
+    const creds = getState().auth.creds
+    if (!creds.access_token) {
       return
     }
-    const creds = getState().auth.creds
     dispatch(requestEpisode())
 
     let playlist

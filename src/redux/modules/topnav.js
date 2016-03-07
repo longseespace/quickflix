@@ -1,6 +1,7 @@
 /* @flow */
 import hdviet from '../utils/hdviet'
 import debounce from 'lodash.debounce'
+import Movie from 'models/Movie'
 
 // ------------------------------------
 // Constants
@@ -44,31 +45,15 @@ export const receiveErrors = (error: Error): Action => ({
 })
 
 const doFetch: Function = (dispatch: Function, getState: Function, keyword: String): Promise => {
-  if (!getState().auth.isAuthenticated) {
-    // should dispatch an action that ask user to login
+  const creds = getState().auth.creds
+  if (!creds.access_token) {
     return
   }
-  const creds = getState().auth.creds
   dispatch(requestSuggestions())
   return hdviet.search(keyword, { accessToken: creds.access_token, limit: 5 })
     .then((data) => {
       return data.docs.map((item) => {
-        return {
-          id: item.id,
-          name: {
-            en: item.mo_name,
-            vi: item.mo_known_as
-          },
-          releaseDate: item.mo_release_date,
-          plot: {
-            vi: item.mo_plot_vi,
-            en: item.mo_plot_en
-          },
-          director: item.mo_director,
-          imdbRating: item.mo_imdb_rating,
-          poster: `http://t.hdviet.com/thumbs/124x184/${item.mo_new_poster}`,
-          backdrop: `http://t.hdviet.com/backdrops/945x530/${item.mo_backdrop}`
-        }
+        return Movie.fromSearchResult(item)
       })
     })
     .then((movies: Array) => {
