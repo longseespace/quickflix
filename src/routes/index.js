@@ -13,6 +13,7 @@ import NotFoundView from 'views/NotFoundView/NotFoundView'
 import AuthView from 'views/AuthView/AuthView'
 import MovieDetailView from 'views/MovieDetailView/MovieDetailView'
 import TagView from 'views/TagView/TagView'
+import FilterView from 'views/FilterView/FilterView'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
@@ -22,6 +23,7 @@ export default (store) => (
       <Route path=':keyword' component={SearchView} />
     </Route>
     <Route path='/category/:tag' component={TagView} />
+    <Route path='/movies/:tag(/:genre)' component={FilterView} />
     <Route path='/movie/:id' component={MovieDetailView} />
     <Route path='/movie/:id/:episode' component={MovieDetailView} />
     <Route path='/404' component={NotFoundView} />

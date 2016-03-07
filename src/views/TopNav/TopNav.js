@@ -6,6 +6,8 @@ import { Base64 } from 'js-base64'
 import { actions as topnavActions } from '../../redux/modules/topnav'
 import { actions as authActions } from '../../redux/modules/auth'
 
+import SideNav from 'components/SideNav'
+import AppMenu from 'components/AppMenu'
 import SearchBar from 'components/SearchBar'
 import SearchSuggestionList from 'components/SearchSuggestionList'
 import styles from './TopNav.scss'
@@ -60,7 +62,6 @@ export class TopNav extends React.Component {
   componentDidMount () {
     if (window.$) {
       window.$(`#${styles.moreActivator}`).dropdown()
-      window.$(`#${styles.moreActivatorMobile}`).dropdown()
       window.$(`#${styles.sidenavActivator}`).sideNav({
         closeOnClick: true
       })
@@ -107,11 +108,6 @@ export class TopNav extends React.Component {
     // const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : ''
     const token = Base64.encode(accessToken)
-    const tags = 'xu-huong|hanh-dong|co-trang|hinh-su-toi-pham|hai|tinh-cam|kinh-di|khoa-hoc-vien-tuong|vo-thuat|chien-tranh|than-thoai|hoat-hinh|anime|am-nhac|the-thao|tam-ly|bat-ky|au-my|trung-quoc|hong-kong|han-quoc|an-do|viet-nam|thai-lan|nuoc-khac'.split('|')
-    const titles = 'Xu Hướng|Hành Động|Cổ Trang|Hình Sự Tội Phạm|Hài|Tình Cảm|Kinh Dị|Khoa Học Viễn Tưởng|Võ Thuật|Chiến Tranh|Thần Thoại|Hoạt Hình|Anime|Âm Nhạc|Thể Thao|Tâm Lý|Bất Kỳ|Âu Mỹ|Trung Quốc|Hồng Kông|Hàn Quốc|Ấn Độ|Việt Nam|Thái Lan|Nước Khác'.split('|')
-    const catNodes = tags.map((tag, key) => (
-      <li key={key}><Link to={`/category/${tag}`}>{titles[key]}</Link></li>
-    ))
     return (
       <div className={styles.root}>
         <div className='navbar-fixed z-depth-2'>
@@ -167,16 +163,8 @@ export class TopNav extends React.Component {
             </div>
           </nav>
         </div>
-        <ul id={styles.moreMenu} className='dropdown-content'>
-          <li><a href={`https://id.hdviet.com/cap-nhat-thong-tin/?token=${token}`} target='_blank'>Profile</a></li>
-          <li><a href={`https://id.hdviet.com/lich-su-giao-dich/?token=${token}`} target='_blank'>Transactions</a></li>
-          <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target='_blank'>Password</a></li>
-          <li className='divider'></li>
-          <li><a onClick={logout}>Logout</a></li>
-        </ul>
-        <ul id={styles.sidenav} className='side-nav'>
-          {catNodes}
-        </ul>
+        <AppMenu id={styles.moreMenu} token={token} logout={logout} />
+        <SideNav id={styles.sidenav} />
       </div>
     )
   }

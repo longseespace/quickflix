@@ -31,3 +31,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.side-nav li:hover, .side-nav li.active {
+  background-color: #eee;
+}
