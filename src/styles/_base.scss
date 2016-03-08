@@ -35,3 +35,12 @@ body {
 .side-nav li:hover, .side-nav li.active {
   background-color: #eee;
 }
+
+.vjs-icon-captions,
+.video-js .vjs-captions-button,
+.vjs-resolution-button .vjs-resolution-button-label,
+.vjs-resolution-button .vjs-menu li,
+.vjs-icon-circle, .video-js .vjs-mouse-display, .video-js .vjs-play-progress, .video-js .vjs-volume-level,
+{
+  font-family: VideoJS, Roboto;
+}

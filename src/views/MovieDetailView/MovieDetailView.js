@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import capitalize from 'lodash.capitalize'
+import url from 'url'
 
 import styles from './MovieDetailView.scss'
 import { actions as movieActions } from '../../redux/modules/movie'
@@ -165,11 +166,45 @@ export class MovieDetailView extends AuthenticatedView {
     )
   }
 
+  getSourceUrl (src, tags) {
+    const directory = src.replace(/\/\//g, '/').split('/').reverse().splice(1).shift()
+    const baseUrl = url.resolve(src, directory)
+    let data = `#EXTM3U
+    #EXT-X-VERSION:3`
+    const q360 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=800000,CODECS="avc1.77.31,mp4a.40.2",RESOLUTION=640x360
+    ${baseUrl}_640/playlist.m3u8`
+    const q480 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1300000,CODECS="avc1.77.31,mp4a.40.2",RESOLUTION=800x450
+    ${baseUrl}_800/playlist.m3u8`
+    const q720 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2500000,CODECS="avc1.100.41,mp4a.40.2",RESOLUTION=1280x720
+    ${baseUrl}_1024/playlist.m3u8`
+    const q1080 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=5500000,CODECS="avc1.100.41,mp4a.40.2",RESOLUTION=1920x1080
+    ${baseUrl}_1792/playlist.m3u8`
+    if (tags.indexOf('360p') > -1) {
+      data = `${data}
+      ${q360}`
+    }
+    if (tags.indexOf('480p') > -1) {
+      data = `${data}
+      ${q480}`
+    }
+    if (tags.indexOf('720p') > -1) {
+      data = `${data}
+      ${q720}`
+    }
+    if (tags.indexOf('1080p') > -1) {
+      data = `${data}
+      ${q1080}`
+    }
+    const blob = new Blob([data], { type: 'application/vnd.apple.mpegurl' })
+    return URL.createObjectURL(blob)
+  }
+
   renderTheater () {
     const { context, params } = this.props
     const { overview, playlist, detail } = context.movie
     let tracks = []
     let src = ''
+    let sources = []
     let poster
     let currentEpisode = 1
     let totalEpisode = 1
@@ -195,6 +230,39 @@ export class MovieDetailView extends AuthenticatedView {
     }
     if (overview) {
       totalEpisode = overview.Episode
+      const has1080p = overview.BitRate.indexOf('5700') > -1
+      const has720p = overview.BitRate.indexOf('2700') > -1
+      let tags = '360p,480p'
+      sources = [{
+        src: this.getSourceUrl(src, '360p'),
+        type: 'application/x-mpegURL',
+        label: '360p'
+      }, {
+        src: this.getSourceUrl(src, '480p'),
+        type: 'application/x-mpegURL',
+        label: '480p'
+      }]
+      if (has720p) {
+        sources.push({
+          src: this.getSourceUrl(src, '720p'),
+          type: 'application/x-mpegURL',
+          label: '720p'
+        })
+        tags = `${tags},720p`
+      }
+      if (has1080p) {
+        sources.push({
+          src: this.getSourceUrl(src, '1080p'),
+          type: 'application/x-mpegURL',
+          label: '1080p'
+        })
+        tags = `${tags},1080p`
+      }
+      sources.push({
+        src,
+        type: 'application/x-mpegURL',
+        label: 'auto'
+      })
     }
     if (detail) {
       poster = detail.background
@@ -202,7 +270,7 @@ export class MovieDetailView extends AuthenticatedView {
     return (
       <Theater
         ref='theater'
-        src={src}
+        sources={sources}
         play={this.play}
         tracks={tracks}
         currentEpisode={currentEpisode}
