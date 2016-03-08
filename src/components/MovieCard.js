@@ -119,8 +119,8 @@ export default class MovieCard extends Component {
       </LazyLoad>
     ) : (<Image src={backdrop} />)
     const maskClassName = hover ? `${styles.maskHover}  center-inside` : `${styles.mask} center-inside`
-    const isHD = bitrate.indexOf('5700') > -1 || bitrate.indexOf('2700') > -1
-    const HDText = bitrate.indexOf('5700') > -1 ? '1080p' : '720p'
+    const isHD = bitrate && (bitrate.indexOf('5700') > -1 || bitrate.indexOf('2700') > -1)
+    const HDText = bitrate && bitrate.indexOf('5700') > -1 ? '1080p' : '720p'
     const qualityNode = isHD ? (
       <a className='waves-effect waves-red btn-flat' data-tip={HDText}>
         <i className='material-icons'>hd</i>
