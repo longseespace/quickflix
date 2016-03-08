@@ -7,7 +7,7 @@ cd dist
 git init
 
 # add CNAME record
-echo "quickflix.long.ninja" > CNAME
+echo "myflix.pw" > CNAME
 
 # inside this git repo we'll pretend to be a new user
 git config user.name "Travis CI"
