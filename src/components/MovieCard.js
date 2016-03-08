@@ -1,34 +1,23 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import shallowCompare from 'react-addons-shallow-compare'
 import truncate from 'lodash.truncate'
 import LazyLoad from 'react-lazy-load'
 import sanitize from 'sanitize-html'
+import Movie from 'models/Movie'
 
 import Image from './Image'
 import styles from './MovieCard.scss'
 
-export default class MovieCard extends React.Component {
+export default class MovieCard extends Component {
   static propTypes = {
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    plot: PropTypes.string,
-    backdrop: PropTypes.string,
-    bitrate: PropTypes.string,
     lazyload: PropTypes.bool,
-    season: PropTypes.number,
-    sequence: PropTypes.number,
-    imdbRating: PropTypes.number
+    movie: PropTypes.shape(Movie.propTypes)
   };
 
   static defaultProps = {
-    id: 0,
-    name: '',
-    bitrate: '',
     lazyload: true,
-    season: 0,
-    sequence: 0,
-    imdbRating: 0
+    movie: Movie.defaultProps
   };
 
   constructor (props) {
@@ -121,7 +110,8 @@ export default class MovieCard extends React.Component {
   };
 
   render () {
-    const { id, plot, backdrop, name, bitrate, season, sequence, lazyload, imdbRating } = this.props
+    const { lazyload, movie } = this.props
+    const { id, plot, backdrop, name, bitrate, season, sequence, imdbRating } = movie
     const { hover, withinViewport, placeholderHeight } = this.state
     const imageNode = lazyload ? (
       <LazyLoad height={placeholderHeight}>

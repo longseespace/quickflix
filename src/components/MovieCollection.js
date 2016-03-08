@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import MovieCard from './MovieCard'
+import Movie from 'models/Movie'
 
-export default class MovieCollection extends React.Component {
+export default class MovieCollection extends Component {
   static propTypes = {
-    movies: PropTypes.array,
+    movies: PropTypes.arrayOf(PropTypes.shape(Movie.propTypes)),
     onScrollTop: PropTypes.func,
     onScrollBottom: PropTypes.func
   };
@@ -78,20 +79,11 @@ export default class MovieCollection extends React.Component {
     const { cardSize } = this.state
     let cards
     if (movies.length > 0) {
-      cards = movies.map((item, key) => {
-        const { id, plot, backdrop, name, bitrate, season, episode, sequence, imdbRating } = item
+      cards = movies.map((movie, key) => {
         return (
           <div key={key} className={`col s12 ${cardSize}`}>
             <MovieCard
-              bitrate={bitrate}
-              id={id}
-              plot={plot.vi}
-              backdrop={backdrop}
-              name={name.en}
-              season={season}
-              episode={episode}
-              sequence={sequence}
-              imdbRating={imdbRating}
+              movie={movie}
             />
           </div>
         )

@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react'
+import { Component, PropTypes } from 'react'
 
-export default class Movie extends React.Component {
+export default class Movie extends Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
@@ -17,19 +17,18 @@ export default class Movie extends React.Component {
     imdbRating: PropTypes.number
   }
 
+  static defaultProps = {
+    id: 0,
+    name: ''
+  }
+
   static fromSearchResult (searchResult) {
     const base = new Movie()
     const movie = { ...base,
       id: +searchResult.id,
-      name: {
-        en: searchResult.mo_name,
-        vi: searchResult.mo_known_as
-      },
+      name: searchResult.mo_name,
       releaseDate: searchResult.mo_release_date,
-      plot: {
-        vi: searchResult.mo_plot_vi,
-        en: searchResult.mo_plot_en
-      },
+      plot: searchResult.mo_plot_vi,
       director: searchResult.mo_director,
       imdbRating: +searchResult.mo_imdb_rating,
       poster: `http://t.hdviet.com/thumbs/124x184/${searchResult.mo_new_poster}`,
@@ -48,16 +47,10 @@ export default class Movie extends React.Component {
     const base = new Movie()
     const movie = { ...base,
       id: filterResult.MovieID,
-      name: {
-        en: filterResult.MovieName,
-        vi: filterResult.KnownAs
-      },
+      name: filterResult.MovieName,
       trailer: filterResult.Trailer,
       releaseDate: filterResult.ReleaseDate,
-      plot: {
-        vi: filterResult.PlotVI,
-        en: filterResult.PlotEN
-      },
+      plot: filterResult.PlotVI,
       director: filterResult.Director,
       imdbRating: +filterResult.ImdbRating,
       poster: `http://t.hdviet.com/thumbs/124x184/${filterResult.NewPoster}`,
