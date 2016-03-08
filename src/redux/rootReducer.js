@@ -7,6 +7,7 @@ import search from './modules/search'
 import auth from './modules/auth'
 import movie from './modules/movie'
 import filter from './modules/filter'
+import favorite from './modules/favorite'
 
 export default combineReducers({
   router,
@@ -15,5 +16,6 @@ export default combineReducers({
   search,
   auth,
   movie,
-  filter
+  filter,
+  favorite
 })

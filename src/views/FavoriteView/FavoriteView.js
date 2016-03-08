@@ -2,12 +2,12 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import Tooltip from 'react-tooltip'
-import isEqual from 'lodash.isequal'
 
-import { actions as filterActions } from '../../redux/modules/filter'
-import classes from './FilterView.scss'
+import { actions as favoriteActions } from '../../redux/modules/favorite'
+import classes from './FavoriteView.scss'
 
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
+
 import MovieCollection from 'components/MovieCollection'
 import Preloader from 'components/Preloader'
 import TopNav from '../TopNav/TopNav'
@@ -18,14 +18,14 @@ import TopNav from '../TopNav/TopNav'
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  context: state.filter,
+  context: state.favorite,
   auth: state.auth
 })
-export class FilterView extends AuthenticatedView {
+export class FavoriteView extends AuthenticatedView {
   static propTypes = {
     getMovies: PropTypes.func,
-    itemsPerPage: PropTypes.number,
-    context: PropTypes.object
+    context: PropTypes.object,
+    itemsPerPage: PropTypes.number
   };
 
   static defaultProps = {
@@ -34,46 +34,36 @@ export class FilterView extends AuthenticatedView {
     itemsPerPage: 20
   };
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  };
-
-  componentWillReceiveProps (nextProps) {
-    const { getMovies, params, context } = nextProps
-    if ((context && context.status === 'init') || !isEqual(params, this.props.params)) {
-      getMovies(params)
-    }
-  }
-
   componentDidMount () {
-    const { getMovies, params, context } = this.props
-    if (context && context.status === 'init') {
-      getMovies(params)
+    const { getMovies, context } = this.props
+    if (context.movies.length === 0) {
+      getMovies()
     }
   }
 
   loadMore = () => {
-    const { getMovies, params, context } = this.props
-    if (context && context.status !== 'fullyloaded') {
-      getMovies(params)
+    const { getMovies, context } = this.props
+    if (context.status !== 'fullyloaded') {
+      getMovies()
     }
   };
 
   render () {
-    const { params, context } = this.props
-    if (!context) {
-      return (
-        <div></div>
-      )
-    }
+    const { context } = this.props
     const isOnMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     let tooltipNode
     if (!isOnMobile) {
       tooltipNode = (<Tooltip effect='solid' />)
       Tooltip.rebuild()
     }
+
+    const notfound = (context.movies.length === 0) && (context.status !== 'loading')
+    const messageNode = notfound ? (
+      <div>Không có phim nào</div>
+    ) : null
+
     return (
-      <DocumentTitle title={`Category: ${params.tag} — Quickflix`}>
+      <DocumentTitle title='Quickflix'>
         <div>
           <TopNav/>
           <div className={classes.content}>
@@ -86,6 +76,11 @@ export class FilterView extends AuthenticatedView {
                 <Preloader show={context.status === 'loading'} />
               </div>
             </div>
+            <div className='valign-wrapper'>
+              <div className={classes.preloader}>
+                {messageNode}
+              </div>
+            </div>
           </div>
           {tooltipNode}
         </div>
@@ -94,4 +89,4 @@ export class FilterView extends AuthenticatedView {
   }
 }
 
-export default connect(mapStateToProps, filterActions)(FilterView)
+export default connect(mapStateToProps, favoriteActions)(FavoriteView)

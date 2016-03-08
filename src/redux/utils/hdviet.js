@@ -241,6 +241,30 @@ export function getMoviesByYear (year = '', options = { page: 1, limit: 20 }) {
   return hdviet.getMovies({ ...options, year })
 }
 
+export function getFavoriteMovies (options) {
+  const { limit, page, accessToken } = options
+  const params = qs.stringify({
+    page,
+    limit
+  })
+  const url = `${API_URL}/user/favorite?${params}`
+  const fetchOptions = {
+    headers: {
+      Authorization: accessToken
+    }
+  }
+  return fetch(url, fetchOptions).then((response) => response.json())
+    .then((json) => {
+      if (json.error) {
+        const e = new Error(json.message)
+        e.body = json
+        throw e
+      } else {
+        return json.data
+      }
+    })
+}
+
 const hdviet = {
   loginAnonymously,
   login,
@@ -253,7 +277,8 @@ const hdviet = {
   getMoviesByTag,
   getMoviesByGenre,
   getMoviesByImdb,
-  getMoviesByYear
+  getMoviesByYear,
+  getFavoriteMovies
 }
 
 export default hdviet

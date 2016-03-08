@@ -15,6 +15,7 @@ import InitView from 'views/InitView/InitView'
 import MovieDetailView from 'views/MovieDetailView/MovieDetailView'
 import TagView from 'views/TagView/TagView'
 import FilterView from 'views/FilterView/FilterView'
+import FavoriteView from 'views/FavoriteView/FavoriteView'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
@@ -28,6 +29,7 @@ export default (store) => (
     <Route path='/movies/:tag(/:genre)' component={FilterView} />
     <Route path='/movie/:id' component={MovieDetailView} />
     <Route path='/movie/:id/:episode' component={MovieDetailView} />
+    <Route path='/yeu-thich' component={FavoriteView} />
     <Route path='/404' component={NotFoundView} />
     <Redirect from='*' to='/404' />
   </Route>
