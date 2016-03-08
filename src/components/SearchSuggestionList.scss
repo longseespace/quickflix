@@ -1,7 +1,9 @@
+@import 'variables/color';
+
 .root {
   li {
     &:hover {
-      background: #e3f2fd;
+      background: color('blue', 'lighten-5');
     }
   }
   a:hover {

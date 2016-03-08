@@ -29,36 +29,38 @@ export default class SideNav extends Component {
         <div className={styles.logo}>
           <Link to='/' className={styles.logolink}><img src={logo} /></Link>
         </div>
-        <ul className={`${styles.mainmenu}`} data-collapsible='accordion'>
-          <li className='no-padding'>
-            <Link to='/' className={styles.outerlink}><i className='material-icons'>home</i><strong>Trang Chủ</strong></Link>
-          </li>
-          <li className='no-padding'>
-            <Link to='/' className={styles.outerlink}><i className='material-icons'>star</i><strong>Phim Chọn Lọc</strong></Link>
-          </li>
-          <li className='no-padding'>
-            <a className='collapsible-header'><i className='material-icons'>movie</i><strong>Phim Lẻ</strong></a>
-            <div className='collapsible-body'>
-              <ul>
-                {movieNodes}
-              </ul>
-            </div>
-          </li>
-          <li className='no-padding'>
-            <a className='collapsible-header'><i className='material-icons'>movie_filter</i><strong>Phim Bộ</strong></a>
-            <div className='collapsible-body'>
-              <ul>
-                {serieNodes}
-              </ul>
-            </div>
-          </li>
-          <li className='no-padding'>
-            <Link to='/' className={styles.outerlink}><i className='material-icons'>favorite</i><strong>Phim Yêu Thích</strong></Link>
-          </li>
-          <li className='no-padding'>
-            <Link to='/' className={styles.outerlink}><i className='material-icons'>help</i><strong>Trợ Giúp</strong></Link>
-          </li>
-        </ul>
+        <div className={styles.menuwrapper}>
+          <ul className={`${styles.mainmenu}`} data-collapsible='accordion'>
+            <li className='no-padding'>
+              <Link to='/' className={styles.outerlink}><i className='material-icons'>home</i><strong>Trang Chủ</strong></Link>
+            </li>
+            <li className='no-padding'>
+              <Link to='/' className={styles.outerlink}><i className='material-icons'>star</i><strong>Phim Chọn Lọc</strong></Link>
+            </li>
+            <li className='no-padding'>
+              <a className='collapsible-header'><i className='material-icons'>movie</i><strong>Phim Lẻ</strong></a>
+              <div className='collapsible-body'>
+                <ul>
+                  {movieNodes}
+                </ul>
+              </div>
+            </li>
+            <li className='no-padding'>
+              <a className='collapsible-header'><i className='material-icons'>movie_filter</i><strong>Phim Bộ</strong></a>
+              <div className='collapsible-body'>
+                <ul>
+                  {serieNodes}
+                </ul>
+              </div>
+            </li>
+            <li className='no-padding'>
+              <Link to='/' className={styles.outerlink}><i className='material-icons'>favorite</i><strong>Phim Yêu Thích</strong></Link>
+            </li>
+            <li className='no-padding'>
+              <Link to='/' className={styles.outerlink}><i className='material-icons'>help</i><strong>Trợ Giúp</strong></Link>
+            </li>
+          </ul>
+        </div>
       </div>
     )
   }
