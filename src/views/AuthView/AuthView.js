@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import DocumentTitle from 'react-document-title'
 import { actions as authActions } from '../../redux/modules/auth'
 
@@ -84,7 +85,7 @@ export class AuthView extends React.Component {
             <div className='row'>
               <div className='logo center-align'>
                 <div id={styles.logo}>
-                  <img src={logo} width={150} />
+                  <Link to='/' className={styles.logolink}><img src={logo} width={150} /></Link>
                 </div>
               </div>
             </div>
