@@ -4,7 +4,6 @@ import DocumentTitle from 'react-document-title'
 import { actions as authActions } from '../../redux/modules/auth'
 
 import Preloader from 'components/Preloader'
-// import TopNav from '../TopNav/TopNav'
 
 import styles from './InitView.scss'
 

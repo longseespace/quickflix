@@ -17,18 +17,26 @@ WebFont.load({
 //
 // CoreLayout is a pure function of its props, so we can
 // define it with a plain javascript function...
-function CoreLayout ({ children }) {
-  return (
-    <div className='page-container'>
-      <div className='view-container'>
-        {children}
+function CoreLayout ({ children, main, nav }) {
+  if (nav && main) {
+    return (
+      <div>
+        {nav}
+        {main}
       </div>
+    )
+  }
+  return (
+    <div>
+      {children}
     </div>
   )
 }
 
 CoreLayout.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.element,
+  main: PropTypes.element,
+  nav: PropTypes.element
 }
 
 export default CoreLayout

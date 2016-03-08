@@ -8,7 +8,6 @@ import classes from '../HomeView/HomeView.scss'
 
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
 
-import TopNav from '../TopNav/TopNav'
 import Preloader from 'components/Preloader'
 import MovieCollection from 'components/MovieCollection'
 
@@ -68,7 +67,6 @@ export class SearchView extends AuthenticatedView {
     return (
       <DocumentTitle title={`Search results for "${params.keyword}" — Quickflix`}>
         <div>
-          <TopNav />
           <div className={classes.content}>
             <MovieCollection
               movies={context.movies}

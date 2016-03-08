@@ -32,7 +32,8 @@ export class TopNav extends React.Component {
     fetchSuggestions: PropTypes.func.isRequired,
     clearSuggestions: PropTypes.func.isRequired,
     updateKeyword: PropTypes.func.isRequired,
-    isSuggestionsActive: PropTypes.bool
+    isSuggestionsActive: PropTypes.bool,
+    location: PropTypes.object
   };
 
   static contextTypes = {
@@ -102,7 +103,8 @@ export class TopNav extends React.Component {
       clearSuggestions,
       context,
       auth,
-      logout
+      logout,
+      location
     } = this.props
     const { searching } = this.state
     // const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
@@ -119,8 +121,9 @@ export class TopNav extends React.Component {
         <i className='material-icons'>more_vert</i>
       </a>
     )
+    const next = location.pathname ? location.pathname : '/'
     const loginButton = (
-      <Link to='/auth'><i className='material-icons'>assignment_ind</i></Link>
+      <Link to={`/auth?next=${next}`}><i className='material-icons'>assignment_ind</i></Link>
     )
     return (
       <div className={styles.root}>

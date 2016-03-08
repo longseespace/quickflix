@@ -7,7 +7,6 @@ import styles from './MovieDetailView.scss'
 import { actions as movieActions } from '../../redux/modules/movie'
 
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
-import TopNav from '../TopNav/TopNav'
 
 import Theater from 'components/Theater'
 import MovieDetailCard from 'components/MovieDetailCard'
@@ -222,7 +221,6 @@ export class MovieDetailView extends AuthenticatedView {
     return (
       <DocumentTitle title={title}>
         <div className={styles.root}>
-          <TopNav/>
           <div className={styles.content}>
             {this.renderTheater()}
             <div className={styles.container}>

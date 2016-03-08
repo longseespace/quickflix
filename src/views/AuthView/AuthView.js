@@ -15,7 +15,8 @@ export class AuthView extends React.Component {
 
   static propTypes = {
     login: PropTypes.func.isRequired,
-    auth: PropTypes.object
+    auth: PropTypes.object,
+    location: PropTypes.object
   };
 
   static contextTypes = {
@@ -28,16 +29,18 @@ export class AuthView extends React.Component {
   };
 
   componentDidMount () {
-    const { auth } = this.props
-    if (auth.isAuthenticated) {
-      this.context.router.push('/')
-    }
+    this.redirectIfAuthenticated(this.props)
   }
 
   componentWillReceiveProps (nextProps) {
-    const { auth } = nextProps
+    this.redirectIfAuthenticated(nextProps)
+  }
+
+  redirectIfAuthenticated = (props) => {
+    const { auth, location } = props
+    const next = location.query.next ? location.query.next : '/'
     if (auth.isAuthenticated) {
-      this.context.router.push('/')
+      this.context.router.push(next)
     }
   }
 
