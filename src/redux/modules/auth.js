@@ -125,7 +125,7 @@ const INITIAL_STATE = {
   error: {},
   isFetching: false,
   isAuthenticated: persistedCreds !== null && persistedCreds.anonymous === false,
-  creds: persistedCreds && persistedCreds.length > 0 ? persistedCreds : {}
+  creds: persistedCreds || {}
 }
 
 export default function authReducer (state: Object = INITIAL_STATE, action: Action): Object {
