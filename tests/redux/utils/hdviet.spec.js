@@ -234,7 +234,7 @@ describe('(Utils) HDViet API', () => {
     it('calls getMovies() with correct tag', () => {
       const getMovies = sinon.stub(hdviet, 'getMovies')
       hdviet.getMoviesByTag('hanh-dong')
-      expect(getMovies.calledWith({ tag: 'hanh-dong', page: 1, limit: 20 })).to.be.true
+      expect(getMovies.calledWith({ tag: 'hanh-dong', page: 1, limit: 24 })).to.be.true
       getMovies.restore()
     })
   })
@@ -243,7 +243,7 @@ describe('(Utils) HDViet API', () => {
     it('calls getMovies() with correct genre', () => {
       const getMovies = sinon.stub(hdviet, 'getMovies')
       hdviet.getMoviesByGenre(1)
-      expect(getMovies.calledWith({ genre: 1, page: 1, limit: 20 })).to.be.true
+      expect(getMovies.calledWith({ genre: 1, page: 1, limit: 24 })).to.be.true
       getMovies.restore()
     })
   })
@@ -252,7 +252,7 @@ describe('(Utils) HDViet API', () => {
     it('calls getMovies() with correct imdb', () => {
       const getMovies = sinon.stub(hdviet, 'getMovies')
       hdviet.getMoviesByImdb('>8')
-      expect(getMovies.calledWith({ imdb: '>8', page: 1, limit: 20 })).to.be.true
+      expect(getMovies.calledWith({ imdb: '>8', page: 1, limit: 24 })).to.be.true
       getMovies.restore()
     })
   })
@@ -261,7 +261,7 @@ describe('(Utils) HDViet API', () => {
     it('calls getMovies() with correct year', () => {
       const getMovies = sinon.stub(hdviet, 'getMovies')
       hdviet.getMoviesByYear('>8')
-      expect(getMovies.calledWith({ year: '>8', page: 1, limit: 20 })).to.be.true
+      expect(getMovies.calledWith({ year: '>8', page: 1, limit: 24 })).to.be.true
       getMovies.restore()
     })
   })
