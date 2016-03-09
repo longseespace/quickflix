@@ -52,7 +52,7 @@ export function login (email: String, password: String, key: String, captcha: St
   })
 }
 
-export function search (keyword: String = '', options = { limit: 20, page: 1 }) {
+export function search (keyword: String = '', options = { limit: 24, page: 1 }) {
   if (keyword.length === 0) {
     throw new Error('Keyword must not empty')
   }
@@ -165,7 +165,7 @@ export function getPlaylist (id: Number, options = { w: 1920 }) {
     })
 }
 
-export function getRelatedMovies (id: Number, options = { limit: 20, page: 1 }) {
+export function getRelatedMovies (id: Number, options = { limit: 24, page: 1 }) {
   const idNum = +id
   if (isNaN(idNum) || idNum <= 0) {
     throw new Error('Invalid movie_id')
@@ -195,7 +195,7 @@ export function getRelatedMovies (id: Number, options = { limit: 20, page: 1 }) 
 }
 
 export function getMovies (options) {
-  const newOptions = { limit: 20, page: 1, ...options }
+  const newOptions = { limit: 24, page: 1, ...options }
   const { limit, page, accessToken, isCinema, tag, genre, imdb, year } = newOptions
   const params = qs.stringify({
     limit,
@@ -225,19 +225,19 @@ export function getMovies (options) {
     })
 }
 
-export function getMoviesByTag (tag = '', options = { page: 1, limit: 20 }) {
+export function getMoviesByTag (tag = '', options = { page: 1, limit: 24 }) {
   return hdviet.getMovies({ ...options, tag })
 }
 
-export function getMoviesByGenre (genre = '', options = { page: 1, limit: 20 }) {
+export function getMoviesByGenre (genre = '', options = { page: 1, limit: 24 }) {
   return hdviet.getMovies({ ...options, genre })
 }
 
-export function getMoviesByImdb (imdb = '', options = { page: 1, limit: 20 }) {
+export function getMoviesByImdb (imdb = '', options = { page: 1, limit: 24 }) {
   return hdviet.getMovies({ ...options, imdb })
 }
 
-export function getMoviesByYear (year = '', options = { page: 1, limit: 20 }) {
+export function getMoviesByYear (year = '', options = { page: 1, limit: 24 }) {
   return hdviet.getMovies({ ...options, year })
 }
 
