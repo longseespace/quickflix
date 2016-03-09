@@ -119,13 +119,13 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const persistedCreds = localStorage.getItem(STORAGE_KEY)
+const persistedCreds = JSON.parse(localStorage.getItem(STORAGE_KEY))
 const INITIAL_STATE = {
   hasError: false,
   error: {},
   isFetching: false,
   isAuthenticated: persistedCreds !== null && persistedCreds.anonymous === false,
-  creds: persistedCreds && persistedCreds.length > 0 ? JSON.parse(persistedCreds) : {}
+  creds: persistedCreds && persistedCreds.length > 0 ? persistedCreds : {}
 }
 
 export default function authReducer (state: Object = INITIAL_STATE, action: Action): Object {

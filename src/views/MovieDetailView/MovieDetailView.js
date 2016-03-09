@@ -177,30 +177,30 @@ export class MovieDetailView extends AuthenticatedView {
       baseUrl = url.resolve(src, parts[1])
     }
     let data = `#EXTM3U
-    #EXT-X-VERSION:3`
+#EXT-X-VERSION:3`
     const q360 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=800000,CODECS="avc1.77.31,mp4a.40.2",RESOLUTION=640x360
-    ${baseUrl}_640/playlist.m3u8`
+${baseUrl}_640/playlist.m3u8`
     const q480 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1300000,CODECS="avc1.77.31,mp4a.40.2",RESOLUTION=800x450
-    ${baseUrl}_800/playlist.m3u8`
+${baseUrl}_800/playlist.m3u8`
     const q720 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2500000,CODECS="avc1.100.41,mp4a.40.2",RESOLUTION=1280x720
-    ${baseUrl}_1024/playlist.m3u8`
+${baseUrl}_1024/playlist.m3u8`
     const q1080 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=5500000,CODECS="avc1.100.41,mp4a.40.2",RESOLUTION=1920x1080
-    ${baseUrl}_1792/playlist.m3u8`
+${baseUrl}_1792/playlist.m3u8`
     if (tags.indexOf('360p') > -1) {
       data = `${data}
-      ${q360}`
+${q360}`
     }
     if (tags.indexOf('480p') > -1) {
       data = `${data}
-      ${q480}`
+${q480}`
     }
     if (tags.indexOf('720p') > -1) {
       data = `${data}
-      ${q720}`
+${q720}`
     }
     if (tags.indexOf('1080p') > -1) {
       data = `${data}
-      ${q1080}`
+${q1080}`
     }
     const blob = new Blob([data], { type: 'application/vnd.apple.mpegurl' })
     return URL.createObjectURL(blob)
