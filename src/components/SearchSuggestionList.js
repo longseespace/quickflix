@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
+import Movie from 'models/Movie'
 import classes from './SearchSuggestionList.scss'
 
 export default class SearchSuggestionList extends React.Component {
   static propTypes = {
-    suggestions: PropTypes.array,
+    suggestions: PropTypes.arrayOf(PropTypes.shape(Movie.propTypes)),
     show: PropTypes.bool,
     isFetching: PropTypes.bool,
     keyword: PropTypes.string,
@@ -34,9 +35,9 @@ export default class SearchSuggestionList extends React.Component {
                 src={item.poster}
                 width={50}
                 alt={item.name} />
-              <span style={{ color: 'black' }} className='title'>{item.name.vi}</span>
+              <span style={{ color: 'black' }} className='title'>{item.name}</span>
               <span style={{ color: 'gray' }}>({releaseYear})</span>
-              <p style={{ color: 'gray' }} className='truncate'>{item.plot.vi}</p>
+              <p style={{ color: 'gray' }} className='truncate'>{item.plot}</p>
               <p style={{ color: 'gray' }}>{item.director}</p>
               <span className='secondary-content'>{item.imdbRating}</span>
             </Link>

@@ -104,7 +104,6 @@ export default class Theater extends React.Component {
             autoplay: false,
             plugins: {
               videoJsResolutionSwitcher: {
-                dynamicLabel: true
               }
               // Resume: {
               //   uuid: `${overview.MovieID}-${overview.Season}-${overview.currentSequence}`,

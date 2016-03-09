@@ -124,8 +124,10 @@ export class MovieDetailView extends AuthenticatedView {
       poster = `http://t.hdviet.com/thumbs/124x184/${overview.NewPoster}`
       if (overview.BitRate.indexOf('5700') > -1) {
         quality = '1080p'
-      } else {
+      } else if (overview.BitRate.indexOf('2700') > -1) {
         quality = '720p'
+      } else {
+        quality = 'SD'
       }
 
       plot = overview.PlotVI
