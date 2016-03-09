@@ -41,7 +41,6 @@ export function getHomeMovies () {
     dispatch(requestMovies())
     const options = {
       tag: 'moi-cap-nhat',
-      genre: 1,
       accessToken: creds.access_token,
       page
     }
