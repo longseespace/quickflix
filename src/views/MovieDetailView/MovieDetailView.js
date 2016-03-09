@@ -168,9 +168,14 @@ export class MovieDetailView extends AuthenticatedView {
     )
   }
 
-  getSourceUrl (src, tags) {
-    const directory = src.replace(/\/\//g, '/').split('/').reverse().splice(1).shift()
-    const baseUrl = url.resolve(src, directory)
+  getSourceUrl (src, tags, isSerie = false) {
+    const parts = src.replace(/\/\//g, '/').split('/').reverse()
+    let baseUrl
+    if (isSerie) {
+      baseUrl = url.resolve(src, `${parts[2]}_${parts[1]}`)
+    } else {
+      baseUrl = url.resolve(src, parts[1])
+    }
     let data = `#EXTM3U
     #EXT-X-VERSION:3`
     const q360 = `#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=800000,CODECS="avc1.77.31,mp4a.40.2",RESOLUTION=640x360
@@ -232,21 +237,22 @@ export class MovieDetailView extends AuthenticatedView {
     }
     if (overview) {
       totalEpisode = overview.Episode
+      const isSerie = totalEpisode > 0
       const has1080p = overview.BitRate.indexOf('5700') > -1
       const has720p = overview.BitRate.indexOf('2700') > -1
       let tags = '360p,480p'
       sources = [{
-        src: this.getSourceUrl(src, '360p'),
+        src: this.getSourceUrl(src, '360p', isSerie),
         type: 'application/x-mpegURL',
         label: '360p'
       }, {
-        src: this.getSourceUrl(src, '480p'),
+        src: this.getSourceUrl(src, '480p', isSerie),
         type: 'application/x-mpegURL',
         label: '480p'
       }]
       if (has720p) {
         sources.push({
-          src: this.getSourceUrl(src, '720p'),
+          src: this.getSourceUrl(src, '720p', isSerie),
           type: 'application/x-mpegURL',
           label: '720p'
         })
@@ -254,7 +260,7 @@ export class MovieDetailView extends AuthenticatedView {
       }
       if (has1080p) {
         sources.push({
-          src: this.getSourceUrl(src, '1080p'),
+          src: this.getSourceUrl(src, '1080p', isSerie),
           type: 'application/x-mpegURL',
           label: '1080p'
         })
