@@ -68,3 +68,9 @@
     }
   }
 }
+
+:global {
+  .side-nav li:hover, .side-nav li.active {
+    background-color: #eee;
+  }
+}

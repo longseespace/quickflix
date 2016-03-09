@@ -1,3 +1,9 @@
+:global {
+  .card-image .card-title {
+    text-shadow: 0 0 3px black;
+  }
+}
+
 .mask {
   position: absolute;
   top: 0;

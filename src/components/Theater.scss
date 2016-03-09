@@ -1,3 +1,5 @@
+@import 'variables/color';
+
 .theater {
   overflow: hidden;
   background: black;
@@ -39,5 +41,31 @@
   }
   .preloaderWrapper {
     min-height: 160px;
+  }
+}
+
+:global {
+  .vjs-big-play-centered .vjs-big-play-button {
+    height: 3em;
+    border-radius: 3em;
+    margin-top: -1.5em;
+    line-height: 3em;
+
+    &::before {
+      font-size: 2em;
+    }
+  }
+
+  .vjs-resolution-button {
+    color: white;
+  }
+
+  .vjs-icon-captions,
+  .video-js .vjs-captions-button,
+  .vjs-resolution-button .vjs-resolution-button-label,
+  .vjs-resolution-button .vjs-menu li,
+  .vjs-icon-circle, .video-js .vjs-mouse-display, .video-js .vjs-play-progress, .video-js .vjs-volume-level,
+  {
+    font-family: VideoJS, Roboto;
   }
 }
