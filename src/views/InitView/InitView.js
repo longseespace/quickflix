@@ -13,7 +13,8 @@ const mapStateToProps = (state) => ({
 export class InitView extends React.Component {
   static propTypes = {
     loginAnon: PropTypes.func.isRequired,
-    auth: PropTypes.object
+    auth: PropTypes.object,
+    location: PropTypes.object
   };
 
   static contextTypes = {
@@ -22,23 +23,24 @@ export class InitView extends React.Component {
 
   static defaultProps = {
     loginAnon: () => {},
-    auth: {}
+    auth: {},
+    location: {}
   };
 
   componentWillReceiveProps (nextProps) {
-    const { auth } = nextProps
-    if (auth && auth.creds && auth.creds.access_token && auth.creds.access_token.length > 0) {
-      setTimeout(() => {
-        this.context.router.push('/')
-      }, 0)
-    }
+    this.process(nextProps)
   }
 
   componentDidMount () {
-    const { auth, loginAnon } = this.props
+    this.process(this.props)
+  }
+
+  process = (props) => {
+    const { auth, loginAnon, location } = props
     if (auth && auth.creds && auth.creds.access_token && auth.creds.access_token.length > 0) {
+      const next = location.query.next ? location.query.next : '/'
       setTimeout(() => {
-        this.context.router.push('/')
+        this.context.router.push(next)
       }, 0)
     } else {
       loginAnon()

@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react'
 
 export default class AuthenticatedView extends React.Component {
   static propTypes = {
-    auth: PropTypes.object
+    auth: PropTypes.object,
+    location: PropTypes.object
   };
 
   static contextTypes = {
@@ -10,7 +11,8 @@ export default class AuthenticatedView extends React.Component {
   };
 
   static defaultProps = {
-    auth: {}
+    auth: {},
+    location: {}
   };
 
   componentWillMount () {
@@ -22,9 +24,10 @@ export default class AuthenticatedView extends React.Component {
   }
 
   redirectIfNotAuthenticated = (props) => {
-    const { auth } = props
+    const { auth, location } = props
     if (!auth || !auth.creds || !auth.creds.access_token) {
-      this.context.router.push('/init')
+      const next = location.pathname ? location.pathname : '/'
+      this.context.router.push(`/init?next=${next}`)
     }
   };
 }
