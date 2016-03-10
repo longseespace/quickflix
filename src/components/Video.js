@@ -151,10 +151,6 @@ export default class ReactVideoJsComponent extends React.Component {
       this.addResizeEventListener()
     }
 
-    if (this.props.sources) {
-      this._player.updateSrc(this.props.sources)
-    }
-
     if (this.props.startWithControlBar) {
       this._player.bigPlayButton.hide()
       this._player.controlBar.show()
@@ -297,7 +293,6 @@ export default class ReactVideoJsComponent extends React.Component {
 ReactVideoJsComponent.propTypes = {
   src: React.PropTypes.any.isRequired,
   playlist: React.PropTypes.object,
-  sources: React.PropTypes.array,
   className: React.PropTypes.string,
   tracks: React.PropTypes.array,
   height: React.PropTypes.number,

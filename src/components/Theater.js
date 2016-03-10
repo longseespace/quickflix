@@ -8,7 +8,7 @@ import styles from './Theater.scss'
 
 export default class Theater extends React.Component {
   static propTypes = {
-    sources: PropTypes.array.isRequired,
+    src: PropTypes.string.isRequired,
     style: PropTypes.object,
     show: PropTypes.bool,
     tracks: PropTypes.array,
@@ -78,7 +78,7 @@ export default class Theater extends React.Component {
         </div>
       )
     } else {
-      const { currentEpisode, totalEpisode, play, tracks, poster, sources } = this.props
+      const { currentEpisode, totalEpisode, play, src, tracks, poster } = this.props
       const playlistOptions = {
         currentEpisode,
         items: range(totalEpisode).map((index) => ({
@@ -87,12 +87,13 @@ export default class Theater extends React.Component {
         })),
         play
       }
-
       return (
         <Video
           ref='video'
-          sources={sources}
-          src={sources[0]}
+          src={{
+            src,
+            type: 'application/x-mpegURL'
+          }}
           playlist={playlistOptions}
           tracks={tracks}
           width={width}
@@ -103,8 +104,6 @@ export default class Theater extends React.Component {
             poster,
             autoplay: false,
             plugins: {
-              videoJsResolutionSwitcher: {
-              }
               // Resume: {
               //   uuid: `${overview.MovieID}-${overview.Season}-${overview.currentSequence}`,
               //   playbackOffset: 5, // begin playing video this number of seconds before it otherwise would.
