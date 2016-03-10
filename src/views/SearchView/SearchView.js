@@ -49,14 +49,16 @@ export class SearchView extends AuthenticatedView {
 
   componentWillReceiveProps (nextProps) {
     const { searchMovies, params, context } = nextProps
-    if (context.movies.length === 0 || params.keyword !== this.props.params.keyword) {
+    if (context.status === 'init' || params.keyword !== this.props.params.keyword) {
       searchMovies(params.keyword)
     }
   }
 
   loadMore = () => {
-    const { searchMovies, params } = this.props
-    searchMovies(params.keyword)
+    const { searchMovies, params, context } = this.props
+    if (context.status === 'loaded') {
+      searchMovies(params.keyword)
+    }
   };
 
   render () {
@@ -74,7 +76,7 @@ export class SearchView extends AuthenticatedView {
             />
             <div className='valign-wrapper'>
               <div className={classes.preloader}>
-                <Preloader show={context.isFetching} />
+                <Preloader show={context.status==='loading'} />
               </div>
             </div>
           </div>

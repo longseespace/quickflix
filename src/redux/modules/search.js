@@ -70,25 +70,24 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [REQUEST_MOVIES]: (state, { payload }) => ({ ...state, ...payload, isFetching: true }),
-  [CLEAR_RESULTS]: (state) => ({ ...state, isFetching: false, movies: [], page: 0 }),
+  [REQUEST_MOVIES]: (state, { payload }) => ({ ...state, ...payload, status: 'loading' }),
+  [CLEAR_RESULTS]: (state) => ({ ...state, status: 'init', movies: [], page: 0 }),
   [RECEIVE_MOVIES]: (state, { payload }) => {
     const movies = []
     movies.push(...state.movies)
     movies.push(...payload.movies)
+    const status = payload.movies.length === 0 ? 'fullyloaded' : 'loaded'
     return {
       ...state,
       page: state.page + 1,
       movies,
-      isFetching: false,
-      hasError: false,
+      status,
       error: {}
     }
   },
   [RECEIVE_ERRORS]: (state, { payload }) => ({
     ...state,
-    isFetching: false,
-    hasError: true,
+    status: 'error',
     error: payload.error
   })
 }
@@ -97,9 +96,8 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const INITIAL_STATE = {
   keyword: '',
-  hasError: false,
+  status: 'init', // ['init', 'loading', 'loaded', 'fullyloaded', 'error']
   error: {},
-  isFetching: false,
   page: 0,
   limit: 20,
   movies: []
