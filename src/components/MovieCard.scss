@@ -2,6 +2,32 @@
   .card-image .card-title {
     text-shadow: 0 0 3px black;
   }
+
+  .card-reveal .card-action {
+    transform: translateY(0);
+    top: 0; bottom: inherit !important;
+    border-bottom: 1px solid rgba(160,160,160,0.2);
+    position: absolute;
+  }
+
+  .card .card-reveal {
+    overflow: hidden;
+  }
+
+  .card .card-reveal .card-content {
+    width: 100%;
+    max-height: calc(100% - 40px);
+    overflow: auto;
+    padding: 0;
+    margin-top: 40px;
+  }
+
+  .card .card-reveal .card-content .card-title i {
+    position: absolute;
+    top: 18px;
+    z-index: 3;
+    right: 15px;
+  }
 }
 
 .mask {
@@ -55,7 +81,7 @@
 
 .root {
   &:hover {
-    .actions {
+    > .actions {
       animation: slidein 0.3s forwards;
       -webkit-animation: slidein 0.3s forwards;
     }

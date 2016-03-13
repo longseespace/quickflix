@@ -196,10 +196,22 @@ export default class MovieCard extends Component {
           </a>
         </div>
         <div className='card-reveal'>
-          <span className='card-title grey-text text-darken-4'>
-            {name}<i className='material-icons right'>close</i>
-          </span>
-          <p>{plotText}</p>
+          <div className={`${styles.actions} card-action`}>
+            <a className='waves-effect waves-red btn-flat' data-tip='Trailer'>
+              <i className='material-icons'>ondemand_video</i>
+            </a>
+            <a className='waves-effect waves-red btn-flat' data-tip='Add to Favorite'>
+              <i className='material-icons'>favorite_border</i>
+            </a>
+            {qualityNode}
+            {imdbNode}
+          </div>
+          <div className='card-content'>
+            <span className='card-title grey-text text-darken-4'>
+              {name}<i className='material-icons right'>close</i>
+            </span>
+            <p>{plotText}</p>
+          </div>
         </div>
       </div>
     )
