@@ -126,7 +126,7 @@ export default class MovieCard extends Component {
         <i className='material-icons'>hd</i>
       </a>
     ) : null
-    const serieText = season > 0 ? `${sequence}` : ''
+    const serieText = season > 0 ? sequence : ''
     const serieNode = season > 0 ? (
       <span>{serieText}</span>
     ) : null
@@ -144,6 +144,7 @@ export default class MovieCard extends Component {
       length: hover ? 200 : 300,
       separator: ' '
     })
+    const playLink = season > 0 ? `/movie/${id}/${sequence}` : `/movie/${id}`
 
     // const infoNode = (
     //   <Link to={`/movie/${id}`} className="waves-effect waves-red btn-flat" title="Info" alt="Info">
@@ -168,7 +169,7 @@ export default class MovieCard extends Component {
             {serieNode}
           </div>
           <div className={maskClassName}>
-            <Link to={`/movie/${id}`}
+            <Link to={playLink}
               style={{ opacity: hover ? 1 : 0, transition: 'none' }}
               className='btn-floating btn-large waves-effect waves-light red accent-4'
             >
