@@ -37,7 +37,9 @@ export class InitView extends React.Component {
 
   process = (props) => {
     const { auth, loginAnon, location } = props
-    if (auth && auth.creds && auth.creds.access_token && auth.creds.access_token.length > 0) {
+    const hasCreds = auth && auth.creds && auth.creds.access_token
+    const reauthRequired = hasCreds && (Date.now()/1000 - auth.creds.last_login > 3*60*60)
+    if (hasCreds && !reauthRequired) {
       const next = location.query.next ? location.query.next : '/'
       setTimeout(() => {
         this.context.router.push(next)

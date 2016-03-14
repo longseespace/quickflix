@@ -25,7 +25,9 @@ export default class AuthenticatedView extends React.Component {
 
   redirectIfNotAuthenticated = (props) => {
     const { auth, location } = props
-    if (!auth || !auth.creds || !auth.creds.access_token) {
+    const hasCreds = auth && auth.creds && auth.creds.access_token
+    const reauthRequired = hasCreds && (Date.now()/1000 - auth.creds.last_login > 3*60*60)
+    if (!hasCreds || reauthRequired) {
       const next = location.pathname ? location.pathname : '/'
       this.context.router.push(`/init?next=${next}`)
     }
