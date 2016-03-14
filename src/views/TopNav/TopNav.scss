@@ -1,3 +1,9 @@
+:global {
+  .navbar-fixed {
+    z-index: 994;
+  }
+}
+
 .root {
   nav i {
     font-size: 24px;
