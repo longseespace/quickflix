@@ -9,6 +9,8 @@ import { actions as authActions } from '../../redux/modules/auth'
 import SideNav from 'components/SideNav'
 import AppMenu from 'components/AppMenu'
 import SearchBar from 'components/SearchBar'
+import BackButton from 'components/BackButton'
+import ForwardButton from 'components/ForwardButton'
 import SearchSuggestionList from 'components/SearchSuggestionList'
 import styles from './TopNav.scss'
 import logo from './logo.png'
@@ -125,6 +127,7 @@ export class TopNav extends React.Component {
     const loginButton = (
       <Link to={`/auth?next=${next}`}><i className='material-icons'>assignment_ind</i></Link>
     )
+    const { router } = this.context
     return (
       <div className={styles.root}>
         <div className='navbar-fixed z-depth-2'>
@@ -139,7 +142,13 @@ export class TopNav extends React.Component {
                     <img src={logo} />
                   </Link>
                 </li>
-                <li className={searching ? styles.searchbar : `col s12 m7 hide-on-small-only ${styles.searchbar}`}>
+                <li className={searching ? 'hide' : `hide-on-small-only ${styles.back}`}>
+                  <BackButton goBack={router.goBack} />
+                </li>
+                <li className={searching ? 'hide' : `hide-on-small-only ${styles.forward}`}>
+                  <ForwardButton goForward={router.goForward} />
+                </li>
+                <li className={searching ? styles.searchbar : `col s12 m6 hide-on-small-only ${styles.searchbar}`}>
                   <SearchBar
                     requestFocus={searching}
                     placeholder='Find Movies or TV Show...'
