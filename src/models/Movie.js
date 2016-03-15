@@ -23,8 +23,7 @@ export default class Movie extends Component {
   }
 
   static fromSearchResult (searchResult) {
-    const base = new Movie()
-    const movie = { ...base,
+    const movie = {
       id: +searchResult.id,
       name: searchResult.mo_name,
       releaseDate: searchResult.mo_release_date,
@@ -35,7 +34,7 @@ export default class Movie extends Component {
       backdrop: `http://t.hdviet.com/backdrops/945x530/${searchResult.mo_backdrop}`,
       bitrate: searchResult.mo_bit_rate,
       season: +searchResult.mo_season,
-      isTVSerie: searchResult.mo_season > 0,
+      isTVSerie: searchResult.mo_season > 0 || searchResult.mo_episode > 1,
       episode: +searchResult.mo_episode,
       sequence: +searchResult.mo_sequence
     }
@@ -44,8 +43,7 @@ export default class Movie extends Component {
   }
 
   static fromFilterResult (filterResult) {
-    const base = new Movie()
-    const movie = { ...base,
+    const movie = {
       id: filterResult.MovieID,
       name: filterResult.MovieName,
       trailer: filterResult.Trailer,
@@ -57,7 +55,7 @@ export default class Movie extends Component {
       backdrop: `http://t.hdviet.com/backdrops/945x530/${filterResult.Backdrop}`,
       bitrate: filterResult.BitRate,
       season: +filterResult.Season,
-      isTVSerie: filterResult.Season > 0,
+      isTVSerie: filterResult.Season > 0 || filterResult.Episode > 1,
       episode: +filterResult.Episode,
       sequence: +filterResult.Sequence
     }

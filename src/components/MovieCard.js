@@ -111,7 +111,7 @@ export default class MovieCard extends Component {
 
   render () {
     const { lazyload, movie } = this.props
-    const { id, plot, backdrop, name, bitrate, season, sequence, imdbRating } = movie
+    const { id, plot, backdrop, name, bitrate, sequence, imdbRating, isTVSerie } = movie
     const { hover, withinViewport, placeholderHeight } = this.state
     const imageNode = lazyload ? (
       <LazyLoad height={placeholderHeight}>
@@ -126,8 +126,8 @@ export default class MovieCard extends Component {
         <i className='material-icons'>hd</i>
       </a>
     ) : null
-    const serieText = season > 0 ? sequence : ''
-    const serieNode = season > 0 ? (
+    const serieText = isTVSerie ? sequence : ''
+    const serieNode = isTVSerie ? (
       <span>{serieText}</span>
     ) : null
     const imdbRatingText = imdbRating ? parseFloat(imdbRating).toFixed(1) : ''
@@ -144,7 +144,7 @@ export default class MovieCard extends Component {
       length: hover ? 200 : 300,
       separator: ' '
     })
-    const playLink = season > 0 ? `/movie/${id}/${sequence}` : `/movie/${id}`
+    const playLink = isTVSerie ? `/movie/${id}/${sequence}` : `/movie/${id}`
 
     // const infoNode = (
     //   <Link to={`/movie/${id}`} className="waves-effect waves-red btn-flat" title="Info" alt="Info">
