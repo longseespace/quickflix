@@ -8,6 +8,10 @@ export default class SideNav extends Component {
     id: PropTypes.string.isRequired
   }
 
+  static defaultProps = {
+    id: styles.defaultId
+  }
+
   componentDidMount () {
     if (window.$) {
       window.$(`.${styles.mainmenu}`).collapsible()
@@ -62,6 +66,35 @@ export default class SideNav extends Component {
           </ul>
         </div>
       </div>
+    )
+  }
+}
+
+export class SideNavActivator extends Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    navId: PropTypes.string.isRequired,
+    children: PropTypes.element
+  }
+
+  static defaultProps = {
+    id: styles.defaultActivatorId,
+    navId: styles.defaultId
+  }
+
+  componentDidMount () {
+    const { id } = this.props
+    if (window.$) {
+      window.$(`#${id}`).sideNav({
+        closeOnClick: true
+      })
+    }
+  }
+
+  render () {
+    const { id, navId, children } = this.props
+    return (
+      <a id={id} data-activates={navId}>{children}</a>
     )
   }
 }

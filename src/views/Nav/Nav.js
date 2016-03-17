@@ -6,11 +6,11 @@ import { Base64 } from 'js-base64'
 import { actions as navActions } from '../../redux/modules/nav'
 import { actions as authActions } from '../../redux/modules/auth'
 
-import SideNav from 'components/SideNav'
+import SideNav, { SideNavActivator } from 'components/SideNav'
 import AppMenu from 'components/AppMenu'
 import SearchBar from 'components/SearchBar'
-import BackButton from 'components/BackButton'
-import ForwardButton from 'components/ForwardButton'
+// import BackButton from 'components/BackButton'
+// import ForwardButton from 'components/ForwardButton'
 import SearchSuggestionList from 'components/SearchSuggestionList'
 import styles from './Nav.scss'
 import logo from './logo.png'
@@ -27,7 +27,6 @@ export class Nav extends React.Component {
   static propTypes = {
     context: PropTypes.object,
     auth: PropTypes.object,
-    login: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     showSuggestions: PropTypes.func.isRequired,
     hideSuggestions: PropTypes.func.isRequired,
@@ -45,7 +44,6 @@ export class Nav extends React.Component {
   static defaultProps = {
     context: {},
     auth: {},
-    login: () => {},
     logout: () => {},
     showSuggestions: () => {},
     hideSuggestions: () => {},
@@ -65,9 +63,6 @@ export class Nav extends React.Component {
   componentDidMount () {
     if (window.$) {
       window.$(`#${styles.moreActivator}`).dropdown()
-      window.$(`#${styles.sidenavActivator}`).sideNav({
-        closeOnClick: true
-      })
     }
   }
 
@@ -109,7 +104,6 @@ export class Nav extends React.Component {
       location
     } = this.props
     const { searching } = this.state
-    // const displayName = auth.creds && auth.creds.display_name ? auth.creds.display_name : 'Anonymous';
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : ''
     const token = Base64.encode(accessToken)
     const isAuthenticated = auth.isAuthenticated
@@ -127,7 +121,13 @@ export class Nav extends React.Component {
     const loginButton = (
       <Link to={`/auth?next=${next}`}><i className='material-icons'>assignment_ind</i></Link>
     )
-    const { router } = this.context
+    // const { router } = this.context
+    // <li className={searching ? 'hide' : `hide-on-small-only ${styles.back}`}>
+    //   <BackButton goBack={router.goBack} />
+    // </li>
+    // <li className={searching ? 'hide' : `hide-on-small-only ${styles.forward}`}>
+    //   <ForwardButton goForward={router.goForward} />
+    // </li>
     return (
       <div className={styles.root}>
         <div className='navbar-fixed z-depth-2'>
@@ -135,20 +135,14 @@ export class Nav extends React.Component {
             <div className='nav-wrapper row'>
               <ul>
                 <li className={searching ? 'hide' : ''}>
-                  <a id={styles.sidenavActivator} data-activates={styles.sidenav}><i className='material-icons'>menu</i></a>
+                  <SideNavActivator><i className='material-icons'>menu</i></SideNavActivator>
                 </li>
                 <li className={searching ? 'hide' : styles.logo}>
                   <Link to='/'>
                     <img src={logo} />
                   </Link>
                 </li>
-                <li className={searching ? 'hide' : `hide-on-small-only ${styles.back}`}>
-                  <BackButton goBack={router.goBack} />
-                </li>
-                <li className={searching ? 'hide' : `hide-on-small-only ${styles.forward}`}>
-                  <ForwardButton goForward={router.goForward} />
-                </li>
-                <li className={searching ? styles.searchbar : `col s12 m6 hide-on-small-only ${styles.searchbar}`}>
+                <li className={searching ? styles.searchbar : `col s12 m7 hide-on-small-only ${styles.searchbar}`}>
                   <SearchBar
                     requestFocus={searching}
                     placeholder='Find Movies or TV Show...'
@@ -183,7 +177,7 @@ export class Nav extends React.Component {
           </nav>
         </div>
         <AppMenu id={styles.moreMenu} token={token} logout={logout} />
-        <SideNav id={styles.sidenav} />
+        <SideNav />
       </div>
     )
   }
