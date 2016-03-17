@@ -13,20 +13,20 @@ import NotFoundView from 'views/NotFoundView/NotFoundView'
 import AuthView from 'views/AuthView/AuthView'
 import InitView from 'views/InitView/InitView'
 import MovieDetailView from 'views/MovieDetailView/MovieDetailView'
-import TopNav from 'views/TopNav/TopNav'
+import Nav from 'views/Nav/Nav'
 import FilterView from 'views/FilterView/FilterView'
 import FavoriteView from 'views/FavoriteView/FavoriteView'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
-    <IndexRoute components={{nav: TopNav, main: HomeView}} />
+    <IndexRoute components={{nav: Nav, main: HomeView}} />
     <Route path='/init' component={InitView} />
     <Route path='/auth' component={AuthView} />
-    <Route path='/search/:keyword' components={{nav: TopNav, main: SearchView}} />
-    <Route path='/movies/:tag(/:genre)' components={{nav: TopNav, main: FilterView}} />
-    <Route path='/movie/:id' components={{nav: TopNav, main: MovieDetailView}} />
-    <Route path='/movie/:id/:episode' components={{nav: TopNav, main: MovieDetailView}} />
-    <Route path='/yeu-thich' components={{nav: TopNav, main: FavoriteView}} />
+    <Route path='/search/:keyword' components={{nav: Nav, main: SearchView}} />
+    <Route path='/movies/:tag(/:genre)' components={{nav: Nav, main: FilterView}} />
+    <Route path='/movie/:id' components={{nav: Nav, main: MovieDetailView}} />
+    <Route path='/movie/:id/:episode' components={{nav: Nav, main: MovieDetailView}} />
+    <Route path='/yeu-thich' components={{nav: Nav, main: FavoriteView}} />
     <Route path='/404' component={NotFoundView} />
     <Redirect from='*' to='/404' />
   </Route>

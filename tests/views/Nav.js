@@ -1,6 +1,6 @@
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
-import { TopNav } from 'views/TopNav/TopNav'
+import { Nav } from 'views/Nav/Nav'
 
 function shallowRender (component) {
   const renderer = TestUtils.createRenderer()
@@ -9,12 +9,12 @@ function shallowRender (component) {
 }
 
 function renderWithProps (props = {}) {
-  return TestUtils.renderIntoDocument(<TopNav {...props} />)
+  return TestUtils.renderIntoDocument(<Nav {...props} />)
 }
 
 function shallowRenderWithProps (props = {}) {
-  return shallowRender(<TopNav {...props} />)
+  return shallowRender(<Nav {...props} />)
 }
 
-describe('(View) TopNav', () => {
+describe('(View) Nav', () => {
 })

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import DocumentTitle from 'react-document-title'
 
-import { actions as topnavAction } from '../../redux/modules/topnav'
+import { actions as topnavAction } from '../../redux/modules/nav'
 import { actions as searchActions } from '../../redux/modules/search'
 import classes from '../HomeView/HomeView.scss'
 

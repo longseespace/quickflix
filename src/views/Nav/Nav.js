@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Base64 } from 'js-base64'
 
-import { actions as topnavActions } from '../../redux/modules/topnav'
+import { actions as navActions } from '../../redux/modules/nav'
 import { actions as authActions } from '../../redux/modules/auth'
 
 import SideNav from 'components/SideNav'
@@ -12,18 +12,18 @@ import SearchBar from 'components/SearchBar'
 import BackButton from 'components/BackButton'
 import ForwardButton from 'components/ForwardButton'
 import SearchSuggestionList from 'components/SearchSuggestionList'
-import styles from './TopNav.scss'
+import styles from './Nav.scss'
 import logo from './logo.png'
 
 const mapStateToProps = (state) => ({
-  context: state.topnav,
+  context: state.nav,
   auth: state.auth
 })
 const actions = {
-  ...topnavActions,
+  ...navActions,
   ...authActions
 }
-export class TopNav extends React.Component {
+export class Nav extends React.Component {
   static propTypes = {
     context: PropTypes.object,
     auth: PropTypes.object,
@@ -189,4 +189,4 @@ export class TopNav extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, actions)(TopNav)
+export default connect(mapStateToProps, actions)(Nav)
