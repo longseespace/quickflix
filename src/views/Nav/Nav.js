@@ -7,7 +7,7 @@ import { actions as navActions } from '../../redux/modules/nav'
 import { actions as authActions } from '../../redux/modules/auth'
 
 import SideNav, { SideNavActivator } from 'components/SideNav'
-import AppMenu from 'components/AppMenu'
+import AppMenu, { AppMenuActivator } from 'components/AppMenu'
 import SearchBar from 'components/SearchBar'
 // import BackButton from 'components/BackButton'
 // import ForwardButton from 'components/ForwardButton'
@@ -60,12 +60,6 @@ export class Nav extends React.Component {
     }
   }
 
-  componentDidMount () {
-    if (window.$) {
-      window.$(`#${styles.moreActivator}`).dropdown()
-    }
-  }
-
   onSearchBarClose = (focused) => {
     if (!focused && this.isMobile()) {
       this.toggleSearchBar()
@@ -108,14 +102,7 @@ export class Nav extends React.Component {
     const token = Base64.encode(accessToken)
     const isAuthenticated = auth.isAuthenticated
     const moreButton = (
-      <a
-        id={styles.moreActivator}
-        data-activates={styles.moreMenu}
-        data-beloworigin='true'
-        data-constrainwidth='false'
-      >
-        <i className='material-icons'>more_vert</i>
-      </a>
+      <AppMenuActivator />
     )
     const next = location.pathname ? location.pathname : '/'
     const loginButton = (
@@ -135,7 +122,7 @@ export class Nav extends React.Component {
             <div className='nav-wrapper row'>
               <ul>
                 <li className={searching ? 'hide' : ''}>
-                  <SideNavActivator><i className='material-icons'>menu</i></SideNavActivator>
+                  <SideNavActivator />
                 </li>
                 <li className={searching ? 'hide' : styles.logo}>
                   <Link to='/'>
@@ -176,7 +163,7 @@ export class Nav extends React.Component {
             </div>
           </nav>
         </div>
-        <AppMenu id={styles.moreMenu} token={token} logout={logout} />
+        <AppMenu token={token} logout={logout} />
         <SideNav />
       </div>
     )

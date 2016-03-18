@@ -8,13 +8,5 @@ function shallowRender (component) {
   return renderer.getRenderOutput()
 }
 
-function renderWithProps (props = {}) {
-  return TestUtils.renderIntoDocument(<Nav {...props} />)
-}
-
-function shallowRenderWithProps (props = {}) {
-  return shallowRender(<Nav {...props} />)
-}
-
 describe('(View) Nav', () => {
 })

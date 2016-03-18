@@ -46,21 +46,3 @@
     width: 100%;
   }
 }
-
-#moreActivator {
-  color: auto;
-}
-
-#moreActivatorMobile, #sidenavActivator, #sidenav {
-  color: auto;
-}
-
-#moreMenu, #moreMenuMobile {
-  a {
-    color: #c62828;
-    &:hover {
-      color: white;
-      background: #c62828;
-    }
-  }
-}

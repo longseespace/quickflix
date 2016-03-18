@@ -1,10 +1,15 @@
 import React, { Component, PropTypes } from 'react'
+import styles from './AppMenu.scss'
 
 export default class AppMenu extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     logout: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {
+    id: styles.defaultId
   }
 
   render () {
@@ -17,6 +22,41 @@ export default class AppMenu extends Component {
         <li className='divider'></li>
         <li><a onClick={logout}>Logout</a></li>
       </ul>
+    )
+  }
+}
+
+export class AppMenuActivator extends Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    menuId: PropTypes.string.isRequired,
+    icon: PropTypes.string
+  }
+
+  static defaultProps = {
+    menuId: styles.defaultId,
+    id: styles.defaultActivatorId,
+    icon: 'more_vert'
+  }
+
+  componentDidMount () {
+    const { id } = this.props
+    if (window.$) {
+      window.$(`#${id}`).dropdown()
+    }
+  }
+
+  render () {
+    const { id, menuId, icon } = this.props
+    return (
+      <a
+        id={id}
+        data-activates={menuId}
+        data-beloworigin='true'
+        data-constrainwidth='false'
+      >
+        <i className='material-icons'>{icon}</i>
+      </a>
     )
   }
 }

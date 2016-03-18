@@ -74,12 +74,14 @@ export class SideNavActivator extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     navId: PropTypes.string.isRequired,
-    children: PropTypes.element
+    children: PropTypes.element,
+    icon: PropTypes.string
   }
 
   static defaultProps = {
     id: styles.defaultActivatorId,
-    navId: styles.defaultId
+    navId: styles.defaultId,
+    icon: 'menu'
   }
 
   componentDidMount () {
@@ -92,9 +94,9 @@ export class SideNavActivator extends Component {
   }
 
   render () {
-    const { id, navId, children } = this.props
+    const { id, navId, icon } = this.props
     return (
-      <a id={id} data-activates={navId}>{children}</a>
+      <a id={id} data-activates={navId}><i className='material-icons'>{icon}</i></a>
     )
   }
 }
