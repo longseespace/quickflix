@@ -57,7 +57,7 @@ const doFetch: Function = (dispatch: Function, getState: Function, keyword: Stri
       })
     })
     .then((movies: Array) => {
-      const currentKeyword = getState().topnav.keyword
+      const currentKeyword = getState().nav.keyword
       if (keyword === currentKeyword) {
         dispatch(receiveSuggestions(movies))
       } else {
