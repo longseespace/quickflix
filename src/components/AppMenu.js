@@ -20,7 +20,7 @@ export default class AppMenu extends Component {
         <li><a href={`https://id.hdviet.com/lich-su-giao-dich/?token=${token}`} target='_blank'>Transactions</a></li>
         <li><a href={`https://id.hdviet.com/doi-mat-khau/?token=${token}`} target='_blank'>Password</a></li>
         <li className='divider'></li>
-        <li><a onClick={logout}>Logout</a></li>
+        <li><a className='logout' onClick={logout}>Logout</a></li>
       </ul>
     )
   }
