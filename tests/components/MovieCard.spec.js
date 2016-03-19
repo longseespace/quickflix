@@ -15,6 +15,7 @@ describe('(Component) MovieCard', () => {
   })
 
   it('subscribes/unsubscribes to window scroll event on mount/unmount', () => {
+    window.$ = jQuery
     expect(jQuery._data(window, 'events')).to.equal(undefined)
     const wrapper = mount(<MovieCard />)
     expect(jQuery._data(window, 'events').scroll.length).to.equal(1)
