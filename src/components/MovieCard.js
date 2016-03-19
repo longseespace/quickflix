@@ -122,17 +122,17 @@ export default class MovieCard extends Component {
     const isHD = bitrate && (bitrate.indexOf('5700') > -1 || bitrate.indexOf('2700') > -1)
     const HDText = bitrate && bitrate.indexOf('5700') > -1 ? '1080p' : '720p'
     const qualityNode = isHD ? (
-      <a className='waves-effect waves-red btn-flat' data-tip={HDText}>
+      <a className='waves-effect waves-red btn-flat btn-quality' data-tip={HDText}>
         <i className='material-icons'>hd</i>
       </a>
     ) : null
     const serieText = isTVSerie ? sequence : ''
     const serieNode = isTVSerie ? (
-      <span>{serieText}</span>
+      <span className='tag-episode'>{serieText}</span>
     ) : null
     const imdbRatingText = imdbRating ? parseFloat(imdbRating).toFixed(1) : ''
     const imdbNode = imdbRating ? (
-      <a className='waves-effect waves-red btn-flat' data-tip={`IMDB ${imdbRatingText}`}>
+      <a className='waves-effect waves-red btn-flat btn-imdb' data-tip={`IMDB ${imdbRatingText}`}>
         <div className={styles.imdb}><span>{imdbRatingText}</span></div>
       </a>
     ) : null
@@ -179,7 +179,7 @@ export default class MovieCard extends Component {
           <span className='card-title truncate' style={{ maxWidth: '100%' }}>{name}</span>
         </div>
         <div style={{ maxHeight: hover ? '40%' : '60%' }} className='card-content' onTouchTap={this.onTouchTap}>
-          <p>{truncatedPlot}</p>
+          <p className='truncated-plot'>{truncatedPlot}</p>
         </div>
         <div className={`${styles.actions} card-action`}>
           <a className='waves-effect waves-red btn-flat' data-tip='Trailer'>
@@ -211,7 +211,7 @@ export default class MovieCard extends Component {
             <span className='card-title grey-text text-darken-4'>
               {name}<i className='material-icons right'>close</i>
             </span>
-            <p>{plotText}</p>
+            <p className='full-plot'>{plotText}</p>
           </div>
         </div>
       </div>
