@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import MovieCollection from 'components/MovieCollection'
+import MovieGrid from 'components/MovieGrid'
 import MovieCard from 'components/MovieCard'
 import sinon from 'sinon'
 import fakeEvent from 'simulant'
@@ -8,9 +8,9 @@ import range from 'lodash.range'
 import jQuery from 'jquery'
 window.$ = jQuery
 
-describe('(Component) MovieCollection', () => {
+describe('(Component) MovieGrid', () => {
   it('renders as a <div>', () => {
-    const wrapper = shallow(<MovieCollection />)
+    const wrapper = shallow(<MovieGrid />)
     expect(wrapper.type()).to.equal('div')
   })
 
@@ -26,7 +26,7 @@ describe('(Component) MovieCollection', () => {
       sequence: 1,
       imdbRating: 8
     }))
-    const wrapper = shallow(<MovieCollection movies={movies} />)
+    const wrapper = shallow(<MovieGrid movies={movies} />)
     expect(wrapper.find(MovieCard)).to.have.length(3)
   })
 
@@ -53,7 +53,7 @@ describe('(Component) MovieCollection', () => {
       sequence: 1,
       imdbRating: 8
     }))
-    const wrapper = mount(<MovieCollection movies={movies} />)
+    const wrapper = mount(<MovieGrid movies={movies} />)
     fakeEvent.fire(window, fakeEvent('resize'))
     expect(wrapper.find('div.col.m3')).to.have.length(3)
 
@@ -83,7 +83,7 @@ describe('(Component) MovieCollection', () => {
       sequence: 1,
       imdbRating: 8
     }))
-    const wrapper = mount(<MovieCollection movies={movies} />)
+    const wrapper = mount(<MovieGrid movies={movies} />)
     fakeEvent.fire(window, fakeEvent('resize'))
     expect(wrapper.find('div.col.m4')).to.have.length(3)
 
@@ -113,7 +113,7 @@ describe('(Component) MovieCollection', () => {
       sequence: 1,
       imdbRating: 8
     }))
-    const wrapper = mount(<MovieCollection movies={movies} />)
+    const wrapper = mount(<MovieGrid movies={movies} />)
     fakeEvent.fire(window, fakeEvent('resize'))
     expect(wrapper.find('div.col.m6')).to.have.length(3)
 
@@ -122,20 +122,20 @@ describe('(Component) MovieCollection', () => {
 
   it('calls onScrollTop', () => {
     const onScrollTop = sinon.spy()
-    mount(<MovieCollection onScrollTop={onScrollTop} />)
+    mount(<MovieGrid onScrollTop={onScrollTop} />)
     fakeEvent.fire(window, fakeEvent('scroll'))
     expect(onScrollTop.called).to.be.true
   })
 
   it('calls onScrollBottom', () => {
     const onScrollBottom = sinon.spy()
-    mount(<MovieCollection onScrollBottom={onScrollBottom} />)
+    mount(<MovieGrid onScrollBottom={onScrollBottom} />)
     fakeEvent.fire(window, fakeEvent('scroll'))
     expect(onScrollBottom.called).to.be.true
   })
 
   it('unsubscribes from window events (scroll & resze)', () => {
-    const wrapper = mount(<MovieCollection />)
+    const wrapper = mount(<MovieGrid />)
     const scrollListenerCount = jQuery._data(window, 'events').scroll.length
     const resizeListenerCount = jQuery._data(window, 'events').resize.length
     wrapper.unmount()

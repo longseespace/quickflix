@@ -3,7 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import MovieCard from './MovieCard'
 import Movie from 'models/Movie'
 
-export default class MovieCollection extends Component {
+export default class MovieGrid extends Component {
   static propTypes = {
     movies: PropTypes.arrayOf(PropTypes.shape(Movie.propTypes)),
     onScrollTop: PropTypes.func,

@@ -8,7 +8,7 @@ import classes from './TagView.scss'
 
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
 
-import MovieCollection from 'components/MovieCollection'
+import MovieGrid from 'components/MovieGrid'
 import Preloader from 'components/Preloader'
 import TopNav from '../TopNav/TopNav'
 
@@ -96,7 +96,7 @@ export class TagView extends AuthenticatedView {
         <div>
           <TopNav/>
           <div className={classes.content}>
-            <MovieCollection
+            <MovieGrid
               movies={context.movies}
               onScrollBottom={this.loadMore}
             />

@@ -9,7 +9,7 @@ import classes from '../HomeView/HomeView.scss'
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
 
 import Preloader from 'components/Preloader'
-import MovieCollection from 'components/MovieCollection'
+import MovieGrid from 'components/MovieGrid'
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -70,7 +70,7 @@ export class SearchView extends AuthenticatedView {
       <DocumentTitle title={`Search results for "${params.keyword}" — Quickflix`}>
         <div>
           <div className={classes.content}>
-            <MovieCollection
+            <MovieGrid
               movies={context.movies}
               onScrollBottom={this.loadMore}
             />

@@ -8,7 +8,7 @@ import classes from './FavoriteView.scss'
 
 import AuthenticatedView from '../AuthenticatedView/AuthenticatedView'
 
-import MovieCollection from 'components/MovieCollection'
+import MovieGrid from 'components/MovieGrid'
 import Preloader from 'components/Preloader'
 
 // We define mapStateToProps where we'd normally use
@@ -65,7 +65,7 @@ export class FavoriteView extends AuthenticatedView {
       <DocumentTitle title='Quickflix'>
         <div>
           <div className={classes.content}>
-            <MovieCollection
+            <MovieGrid
               movies={context.movies}
               onScrollBottom={this.loadMore}
             />
