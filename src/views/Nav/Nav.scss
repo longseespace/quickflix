@@ -25,14 +25,14 @@
 }
 
 @media only (min-width: 601px) {
-  .logo {
-    margin-right: 5%;
+  .searchbar {
+    margin-left: 5% !important;
   }
 }
 
 @media only (min-width: 1200px) {
-  .logo {
-    margin-right: 12.5%;
+  .searchbar {
+    margin-left: 12.5% !important;
   }
 }
 

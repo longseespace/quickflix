@@ -9,9 +9,9 @@ import { actions as authActions } from '../../redux/modules/auth'
 import SideNav, { SideNavActivator } from 'components/SideNav'
 import AppMenu, { AppMenuActivator } from 'components/AppMenu'
 import SearchBar from 'components/SearchBar'
-// import BackButton from 'components/BackButton'
-// import ForwardButton from 'components/ForwardButton'
-import SearchSuggestionList from 'components/SearchSuggestionList'
+import BackButton from 'components/BackButton'
+import ForwardButton from 'components/ForwardButton'
+// import SearchSuggestionList from 'components/SearchSuggestionList'
 import styles from './Nav.scss'
 import logo from './logo.png'
 
@@ -28,13 +28,10 @@ export class Nav extends React.Component {
     context: PropTypes.object,
     auth: PropTypes.object,
     logout: PropTypes.func.isRequired,
-    showSuggestions: PropTypes.func.isRequired,
-    hideSuggestions: PropTypes.func.isRequired,
     fetchSuggestions: PropTypes.func.isRequired,
     clearSuggestions: PropTypes.func.isRequired,
-    updateKeyword: PropTypes.func.isRequired,
-    isSuggestionsActive: PropTypes.bool,
-    location: PropTypes.object
+    location: PropTypes.object,
+    enableBackForward: PropTypes.bool
   };
 
   static contextTypes = {
@@ -45,12 +42,9 @@ export class Nav extends React.Component {
     context: {},
     auth: {},
     logout: () => {},
-    showSuggestions: () => {},
-    hideSuggestions: () => {},
     fetchSuggestions: () => {},
     clearSuggestions: () => {},
-    updateKeyword: () => {},
-    isSuggestionsActive: false
+    enableBackForward: false
   };
 
   constructor (props) {
@@ -60,17 +54,24 @@ export class Nav extends React.Component {
     }
   }
 
-  onSearchBarClose = (focused) => {
-    if (!focused && this.isMobile()) {
+  handleSearchBarClose = (focused) => {
+    if (!focused && this.isNarrow()) {
       this.toggleSearchBar()
     }
   };
 
-  handleSearch = (keyword) => {
+  handleSearch = (e, keyword) => {
     this.context.router.push(`/search/${keyword}`)
   };
 
-  isMobile () {
+  handleChange = (e, keyword) => {
+    const { fetchSuggestions } = this.props
+    if (keyword.length >= 4) {
+      fetchSuggestions(keyword)
+    }
+  }
+
+  isNarrow () {
     const deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width
     return deviceWidth < 600
   }
@@ -85,17 +86,20 @@ export class Nav extends React.Component {
     })
   };
 
+  renderIf = (condition, Component) => {
+    if (condition) {
+      return Component
+    }
+    return null
+  }
+
   render () {
     const {
-      updateKeyword,
-      fetchSuggestions,
-      showSuggestions,
-      hideSuggestions,
-      clearSuggestions,
       context,
       auth,
       logout,
-      location
+      location,
+      enableBackForward
     } = this.props
     const { searching } = this.state
     const accessToken = auth.creds && auth.creds.access_token ? auth.creds.access_token : ''
@@ -108,13 +112,13 @@ export class Nav extends React.Component {
     const loginButton = (
       <Link to={`/auth?next=${next}`}><i className='material-icons'>assignment_ind</i></Link>
     )
-    // const { router } = this.context
-    // <li className={searching ? 'hide' : `hide-on-small-only ${styles.back}`}>
-    //   <BackButton goBack={router.goBack} />
-    // </li>
-    // <li className={searching ? 'hide' : `hide-on-small-only ${styles.forward}`}>
-    //   <ForwardButton goForward={router.goForward} />
-    // </li>
+    const { router } = this.context
+
+    // <SearchSuggestionList
+    //   suggestions={context.suggestions}
+    //   show={context.isSuggestionsActive}
+    //   keyword={context.keyword}
+    // />
     return (
       <div className={styles.root}>
         <div className='navbar-fixed z-depth-2'>
@@ -129,24 +133,22 @@ export class Nav extends React.Component {
                     <img src={logo} />
                   </Link>
                 </li>
+                {this.renderIf(enableBackForward, (
+                  <li className={searching ? 'hide' : `hide-on-small-only ${styles.back}`}>
+                    <BackButton goBack={router.goBack} />
+                  </li>
+                ))}
+                {this.renderIf(enableBackForward, (
+                  <li className={searching ? 'hide' : `hide-on-small-only ${styles.forward}`}>
+                    <ForwardButton goForward={router.goForward} />
+                  </li>
+                ))}
                 <li className={searching ? styles.searchbar : `col s12 m7 hide-on-small-only ${styles.searchbar}`}>
                   <SearchBar
-                    requestFocus={searching}
                     placeholder='Find Movies or TV Show...'
-                    search={this.handleSearch}
                     keyword={context.keyword}
-                    suggest={fetchSuggestions}
-                    showSuggestions={showSuggestions}
-                    hideSuggestions={hideSuggestions}
-                    updateKeyword={updateKeyword}
-                    clear={clearSuggestions}
-                    isFetching={context.isFetching}
-                    onClose={this.onSearchBarClose}
-                  />
-                  <SearchSuggestionList
-                    suggestions={context.suggestions}
-                    show={context.isSuggestionsActive}
-                    keyword={context.keyword}
+                    processing={context.isFetching}
+                    onSubmit={this.handleSearch}
                   />
                 </li>
               </ul>
