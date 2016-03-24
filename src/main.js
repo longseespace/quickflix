@@ -39,9 +39,17 @@ const history = syncHistoryWithStore(browserHistory, store, {
 // hooks such as `onEnter`.
 const routes = makeRoutes(store)
 
+// add GA tracking
+import ga from 'react-ga'
+ga.initialize('UA-24034280-5')
+
+function logPageView () {
+  ga.pageview(this.state.location.pathname)
+}
+
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!
 ReactDOM.render(
-  <Root history={history} routes={routes} store={store} />,
+  <Root history={history} routes={routes} store={store} onUpdate={logPageView} />,
   document.getElementById('root')
 )
