@@ -8,6 +8,8 @@ WebFont.load({
   }
 })
 
+import Tooltip from 'react-tooltip'
+
 // Note: Stateless/function components *will not* hot reload!
 // react-transform *only* works on component classes.
 //
@@ -18,17 +20,25 @@ WebFont.load({
 // CoreLayout is a pure function of its props, so we can
 // define it with a plain javascript function...
 function CoreLayout ({ children, main, nav }) {
+  const isOnMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  let tooltipNode
+  if (!isOnMobile) {
+    tooltipNode = (<Tooltip effect='solid' />)
+    Tooltip.rebuild()
+  }
   if (nav && main) {
     return (
       <div>
         {nav}
         {main}
+        {tooltipNode}
       </div>
     )
   }
   return (
     <div>
       {children}
+      {tooltipNode}
     </div>
   )
 }
