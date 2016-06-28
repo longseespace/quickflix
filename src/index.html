@@ -1,10 +1,77 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>React Redux Starter Kit</title>
+<!--
+                                                 ffffffffffffffff  lllllll   iiii
+                                                f::::::::::::::::f l:::::l  i::::i
+                                               f::::::::::::::::::fl:::::l   iiii
+                                               f::::::fffffff:::::fl:::::l
+   mmmmmmm    mmmmmmm yyyyyyy           yyyyyyyf:::::f       ffffff l::::l iiiiiii xxxxxxx      xxxxxxx
+ mm:::::::m  m:::::::mmy:::::y         y:::::y f:::::f              l::::l i:::::i  x:::::x    x:::::x
+m::::::::::mm::::::::::my:::::y       y:::::y f:::::::ffffff        l::::l  i::::i   x:::::x  x:::::x
+m::::::::::::::::::::::m y:::::y     y:::::y  f::::::::::::f        l::::l  i::::i    x:::::xx:::::x
+m:::::mmm::::::mmm:::::m  y:::::y   y:::::y   f::::::::::::f        l::::l  i::::i     x::::::::::x
+m::::m   m::::m   m::::m   y:::::y y:::::y    f:::::::ffffff        l::::l  i::::i      x::::::::x
+m::::m   m::::m   m::::m    y:::::y:::::y      f:::::f              l::::l  i::::i      x::::::::x
+m::::m   m::::m   m::::m     y:::::::::y       f:::::f              l::::l  i::::i     x::::::::::x
+m::::m   m::::m   m::::m      y:::::::y       f:::::::f            l::::::li::::::i   x:::::xx:::::x
+m::::m   m::::m   m::::m       y:::::y        f:::::::f            l::::::li::::::i  x:::::x  x:::::x
+m::::m   m::::m   m::::m      y:::::y         f:::::::f            l::::::li::::::i x:::::x    x:::::x
+mmmmmm   mmmmmm   mmmmmm     y:::::y          fffffffff            lllllllliiiiiiiixxxxxxx      xxxxxxx
+                            y:::::y
+                           y:::::y
+                          y:::::y
+                         y:::::y
+                        yyyyyyy
+ -->
+  <title>myflix</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- jQuery -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+  <!-- Materialize -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
+  <!-- video.js  -->
+  <link href="//vjs.zencdn.net/5.7.1/video-js.css" rel="stylesheet">
+  <script src="//vjs.zencdn.net/5.7.1/video.js"></script>
+
+  <!-- store.js -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/store.js/1.3.20/store.min.js"></script>
+
+  <!-- videojs-resume -->
+  <link href="//cdn.rawgit.com/sprice/videojs-resume/master/dist/videojs-resume.min.css" rel="stylesheet">
+  <script src="//cdn.rawgit.com/sprice/videojs-resume/master/dist/videojs-resume.min.js"></script>
+
+  <!-- videojs-hotkey -->
+  <script src="//cdn.rawgit.com/ctd1500/videojs-hotkeys/v0.2.14/videojs.hotkeys.min.js"></script>
+
+  <!-- videojs-resolution-switcher -->
+  <link href="//cdn.rawgit.com/kmoskwiak/videojs-resolution-switcher/v0.3.2/lib/videojs-resolution-switcher.css" rel="stylesheet">
+  <script src="//cdn.rawgit.com/kmoskwiak/videojs-resolution-switcher/v0.3.2/lib/videojs-resolution-switcher.js"></script>
+
+  <!-- videojs-hls -->
+  <script src="/libs/videojs.hls.min.js"></script>
 </head>
 <body>
   <div id="root" style="height: 100%"></div>

@@ -1,0 +1,80 @@
+@import 'variables/color';
+
+#defaultId, #defaultActivatorId {
+  color: auto;
+}
+
+.logo {
+  text-align: center;
+  position: absolute;
+  overflow: hidden;
+  top: 0; left: 0; right: 0; height: 180px;
+
+  a {
+    padding: 15px;
+  }
+  img {
+    width: 150px;
+  }
+}
+
+.menuwrapper {
+  position: absolute;
+  overflow: hidden;
+  top: 180px; left: 0; right: 0; bottom: 0;
+  padding-bottom: 60px;
+}
+
+.mainmenu {
+  position: relative;
+  overflow: scroll;
+  height: 100%;
+  margin: 0 !important;
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    height: 0;
+    overflow: visible;
+    visibility: visible;
+    width: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .5);
+  }
+
+  strong {
+    font-weight: 500;
+    font-family: Roboto;
+  }
+
+  ul > li > a {
+    padding: 0;
+  }
+
+  li:hover {
+    a > i {
+      color: color('red', 'darken-2');
+    }
+  }
+
+  .outerlink {
+    margin: 0 1rem;
+    i {
+      width: 2rem;
+      font-size: 1.6rem;
+      line-height: inherit;
+      display: block;
+      float: left;
+      text-align: center;
+      margin-right: 1rem;
+    }
+  }
+}
+
+:global {
+  .side-nav li:hover, .side-nav li.active {
+    background-color: #eee;
+  }
+}

@@ -1,0 +1,19 @@
+.root {
+
+}
+
+.preloader {
+  margin: 20px auto;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media only (min-width: 960px) {
+  .container {
+    width: 960px;
+  }
+}

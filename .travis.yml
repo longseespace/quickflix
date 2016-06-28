@@ -3,6 +3,11 @@ language: node_js
 node_js:
   - "5.0"
 
+env:
+  global:
+    - GH_REF: github.com/longseespace/quickflix.git
+    - secure: "VT9UVx0z4PqJgkpBEgkDOh8nlKNQK8qaZFrKSzFg4U1+2GLdm9kDLmJg4cUFjcAvMphoGzFpzp71SNcqZVrsrjK4JNUIGuVVGCVEs4DllGt+NkmU2KAdkOl4S2ggA95rgFTA1LDV3mrRsnVrsF8/5o691+FCCH8qt8xnpw5xGN5Xg9mM6kg4ixm8dYuPhj9p0cryZj80lI2qrYrPQKye/m+J5JctviClOyOTDvBHV53UWjgavI9X7662sZO0PXmfGmay9DKJr/Tr3AGOuN4uzGZ+YHrRagLZdX089gum7rs0eyA8upJzOJklxR1+XCbtcyECJ9OoFLw8aRaLdv8ZMcl6aPgBlhZ3KK+RdgwEyN/EmVCYHHUUEw8/2ay/sHHdgA1LyyDlmpKQqS/n4TJ85AxonqwJq9RJiZ2gwFKQCd7NnENy3zXenz6fm619j7U1GGR+vRHAdBLajPQQhYYRtsYA5g5WczGxyKvBrbwlIsYQCOcJZRrl/H9HA6xv8PslOfvuUMA7WG5ar2haxeqgkye5CJ/OEvSmm+NkXoOQXaRh6onRaMpD13IiPDB55n5AJ3JSAr7jwFBCN4bXu6Ze3fRBKyuzyiY6mIO3xODYDeXnwQnG3rSixl4aahlhom1w46PsH2fW2bxRPwM0S7XCAGtXiOL7ARH6WKTwMVuGy88="
+
 cache:
   directories:
     - node_modules
@@ -20,3 +25,4 @@ script:
 
 after_success:
   - npm run codecov
+  - chmod +x ./deploy.sh && ./deploy.sh

@@ -1,0 +1,60 @@
+.root {
+  height: 100%;
+  background: white;
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding-top: 30px;
+
+  #logo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+  }
+
+  form {
+    .error {
+      color: #F44336;
+    }
+    .captcha {
+      input {
+        width: 50%;
+      }
+      img {
+        float: right;
+      }
+    }
+    /* label color */
+    label {
+     color: #000;
+     width: 100%;
+    }
+    /* label focus color */
+    input[type=text]:focus + label {
+     color: #000;
+    }
+    /* label underline focus color */
+    input[type=text]:focus {
+     border-bottom: 1px solid #000;
+     box-shadow: 0 1px 0 0 #000;
+    }
+    /* valid color */
+    input[type=text].valid {
+     border-bottom: 1px solid #000;
+     box-shadow: 0 1px 0 0 #000;
+    }
+    /* invalid color */
+    input[type=text].invalid {
+     border-bottom: 1px solid #000;
+     box-shadow: 0 1px 0 0 #000;
+    }
+    /* icon prefix focus color */
+    .prefix.active {
+     color: #000;
+    }
+
+    button[type=submit] {
+     width: 100%;
+    }
+  }
+}

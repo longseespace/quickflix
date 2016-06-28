@@ -1,0 +1,13 @@
+#defaultId, #defaultActivatorId {
+  color: auto;
+}
+
+#defaultId {
+  a {
+    color: #c62828;
+    &:hover {
+      color: white;
+      background: #c62828;
+    }
+  }
+}

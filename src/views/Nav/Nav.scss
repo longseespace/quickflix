@@ -1,0 +1,48 @@
+:global {
+  .navbar-fixed {
+    z-index: 994;
+  }
+}
+
+.root {
+  nav i {
+    font-size: 24px;
+  }
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.logo {
+
+  &:hover img {
+    animation: spin 4s linear infinite;
+  }
+
+  img {
+    height: 46px;
+    vertical-align: middle;
+  }
+}
+
+@media only (min-width: 601px) {
+  .searchbar {
+    margin-left: 5% !important;
+  }
+}
+
+@media only (min-width: 1200px) {
+  .searchbar {
+    margin-left: 12.5% !important;
+  }
+}
+
+.searchbar {
+  margin-top: 10px;
+}
+
+@media only (max-width: 600px) {
+  .searchbar {
+    margin-top: 0;
+    width: 100%;
+  }
+}

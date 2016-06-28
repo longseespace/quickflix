@@ -1,66 +1,78 @@
-/* @flow */
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { increment, doubleAsync } from '../../redux/modules/counter'
-import DuckImage from './Duck.jpg'
-import classes from './HomeView.scss'
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import DocumentTitle from 'react-document-title';
+import Tooltip from 'react-tooltip';
 
-// We can use Flow (http://flowtype.org/) to type our component's props
-// and state. For convenience we've included both regular propTypes and
-// Flow types, but if you want to try just using Flow you'll want to
-// disable the eslint rule `react/prop-types`.
-// NOTE: You can run `npm run flow:check` to check for any errors in your
-// code, or `npm i -g flow-bin` to have access to the binary globally.
-// Sorry Windows users :(.
-type Props = {
-  counter: number,
-  doubleAsync: Function,
-  increment: Function
-};
+import { actions as homeActions } from '../../redux/modules/home';
+import classes from './HomeView.scss';
 
-// We avoid using the `@connect` decorator on the class definition so
-// that we can export the undecorated component for testing.
+import AuthenticatedView from '../AuthenticatedView/AuthenticatedView';
+
+import MovieGrid from 'components/MovieGrid';
+import Preloader from 'components/Preloader';
+
+// We define mapStateToProps where we'd normally use
+// the @connect decorator so the data requirements are clear upfront, but then
+// export the decorated component after the main class definition so
+// the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
-export class HomeView extends React.Component {
-  props: Props;
+const mapStateToProps = (state) => ({
+  context: state.home,
+  auth: state.auth
+});
+export class HomeView extends AuthenticatedView {
   static propTypes = {
-    counter: PropTypes.number.isRequired,
-    doubleAsync: PropTypes.func.isRequired,
-    increment: PropTypes.func.isRequired
+    getHomeMovies: PropTypes.func,
+    context: PropTypes.object,
+    itemsPerPage: PropTypes.number
+  };
+
+  static defaultProps = {
+    getHomeMovies: () => {},
+    context: {},
+    itemsPerPage: 20
+  };
+
+  componentDidMount () {
+    const { getHomeMovies, context } = this.props;
+    if (context.movies.length === 0) {
+      getHomeMovies();
+    }
+  }
+
+  loadMore = () => {
+    const { getHomeMovies } = this.props;
+    getHomeMovies();
   };
 
   render () {
+    const { context } = this.props;
+    const isOnMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    let tooltipNode;
+    if (!isOnMobile) {
+      tooltipNode = (<Tooltip effect='solid' />);
+      Tooltip.rebuild();
+    }
+
     return (
-      <div className='container text-center'>
-        <div className='row'>
-          <div className='col-xs-2 col-xs-offset-5'>
-            <img className={classes.duck}
-              src={DuckImage}
-              alt='This is a duck, because Redux.' />
+      <DocumentTitle title='Quickflix'>
+        <div>
+          <div className={classes.content}>
+            <MovieGrid
+              movies={context.movies}
+              onScrollBottom={this.loadMore}
+            />
+            <div className='valign-wrapper'>
+              <div className={classes.preloader}>
+                <Preloader show={context.isFetching} />
+              </div>
+            </div>
           </div>
+          {tooltipNode}
         </div>
-        <h1>Welcome to the React Redux Starter Kit</h1>
-        <h2>
-          Sample Counter:
-          {' '}
-          <span className={classes['counter--green']}>{this.props.counter}</span>
-        </h2>
-        <button className='btn btn-default' onClick={this.props.increment}>
-          Increment
-        </button>
-        {' '}
-        <button className='btn btn-default' onClick={this.props.doubleAsync}>
-          Double (Async)
-        </button>
-      </div>
-    )
+      </DocumentTitle>
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
-  counter: state.counter
-})
-export default connect(mapStateToProps, {
-  increment: () => increment(1),
-  doubleAsync
-})(HomeView)
+export default connect(mapStateToProps, homeActions)(HomeView);

@@ -1,33 +1,41 @@
-import React from 'react'
-import TestUtils from 'react-addons-test-utils'
+import React, { Component } from 'react'
+import { shallow } from 'enzyme'
+
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
-
-function shallowRender (component) {
-  const renderer = TestUtils.createRenderer()
-
-  renderer.render(component)
-  return renderer.getRenderOutput()
-}
-
-function shallowRenderWithProps (props = {}) {
-  return shallowRender(<CoreLayout {...props} />)
-}
+import Tooltip from 'react-tooltip'
 
 describe('(Layout) Core', function () {
-  let _component
-  let _props
-  let _child
-
-  beforeEach(function () {
-    _child = <h1 className='child'>Child</h1>
-    _props = {
-      children: _child
-    }
-
-    _component = shallowRenderWithProps(_props)
+  it('renders as a <div>', () => {
+    const wrapper = shallow(<CoreLayout />)
+    expect(wrapper.type()).to.equal('div')
   })
 
-  it('Should render as a <div>.', function () {
-    expect(_component.type).to.equal('div')
+  it('should render a <Tooltip /> on desktop', () => {
+    const wrapper = shallow(<CoreLayout />)
+    expect(wrapper.find(Tooltip)).to.have.length(1)
+  })
+
+  it('should not render <Tooltip /> on mobile', () => {
+    navigator = {
+      userAgent: 'iPhone'
+    }
+    const wrapper = shallow(<CoreLayout />)
+    expect(wrapper.find(Tooltip)).to.have.length(0)
+  })
+
+  it('renders Single Child', () => {
+    class Content extends Component {}
+    const wrapper = shallow(<CoreLayout><Content/></CoreLayout>)
+    expect(wrapper.find(Content)).to.have.length(1)
+  })
+
+  it('renders Nav and Main if exist', () => {
+    class Nav extends Component {}
+    class Main extends Component {}
+    const nav = (<Nav/>)
+    const main = (<Main/>)
+    const wrapper = shallow(<CoreLayout nav={nav} main={main} />)
+    expect(wrapper.find(Nav)).to.have.length(1)
+    expect(wrapper.find(Main)).to.have.length(1)
   })
 })

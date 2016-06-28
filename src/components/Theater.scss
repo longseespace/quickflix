@@ -1,0 +1,71 @@
+@import 'variables/color';
+
+.theater {
+  overflow: hidden;
+  background: black;
+  width: 100%;
+
+  .preloader {
+    margin: 0 auto;
+  }
+}
+
+.placeholder {
+  width: 960px;
+  position: relative;
+  margin: 10px auto 0;
+
+  img {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+  }
+}
+
+.preloaderWrapper {
+  min-height: 480px;
+}
+
+@media only (max-width: 960px) and (min-width: 480px) {
+  .placeholder {
+    width: 480px;
+  }
+  .preloaderWrapper {
+    min-height: 240px;
+  }
+}
+
+@media only (max-width: 480px) {
+  .placeholder {
+    width: 100%;
+  }
+  .preloaderWrapper {
+    min-height: 160px;
+  }
+}
+
+:global {
+  .vjs-big-play-centered .vjs-big-play-button {
+    height: 3em;
+    border-radius: 3em;
+    margin-top: -1.5em;
+    line-height: 3em;
+
+    &::before {
+      font-size: 2em;
+    }
+  }
+
+  .vjs-resolution-button {
+    color: white;
+  }
+
+  .vjs-icon-captions,
+  .video-js .vjs-captions-button,
+  .vjs-resolution-button .vjs-resolution-button-label,
+  .vjs-resolution-button .vjs-menu li,
+  .vjs-icon-circle, .video-js .vjs-mouse-display, .video-js .vjs-play-progress, .video-js .vjs-volume-level,
+  {
+    font-family: VideoJS, Roboto;
+  }
+}

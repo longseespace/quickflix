@@ -1,0 +1,23 @@
+.iconPrev {
+  &:before {
+    content: 'skip_previous';
+  }
+}
+
+.iconNext {
+  &:before {
+    content: 'skip_next';
+  }
+}
+
+.disabled {
+  &:hover {
+    cursor: default;
+    &:before {
+      text-shadow: none !important;
+    }
+  }
+  &:before {
+    color: gray;
+  }
+}

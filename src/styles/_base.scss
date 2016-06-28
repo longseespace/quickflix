@@ -6,7 +6,24 @@ can easily be swapped out without `core.scss` ever having to know.
 
 For example:
 
-@import './variables/colors';
-@import './variables/components';
-@import './themes/default';
+@import './variables/colors'
+@import './variables/components'
+@import './themes/default'
 */
+
+body {
+  background: #eee;
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
+
+.center-inside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
