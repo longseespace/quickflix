@@ -1,10 +1,10 @@
 {
-  "name": "react-redux-starter-kit",
-  "version": "2.0.0",
-  "description": "Get started with React, Redux, and React-Router!",
-  "main": "index.js",
+  "name": "myflix",
+  "version": "0.1.0",
+  "description": "your personal flix collection",
+  "private": true,
   "engines": {
-    "node": ">=4.2.0",
+    "node": ">=5.0",
     "npm": "^3.0.0"
   },
   "scripts": {
@@ -15,7 +15,7 @@
     "start": "better-npm-run start",
     "dev": "better-npm-run dev",
     "dev:nw": "npm run dev -- --nw",
-    "dev:no-debug": "npm run dev -- --no_debug",
+    "dev:nd": "npm run dev -- --no_debug",
     "test": "better-npm-run test",
     "test:dev": "npm run test -- --watch",
     "deploy": "better-npm-run deploy",
@@ -74,9 +74,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
+    "url": "git+https://github.com/longseespace/quickflix.git"
   },
-  "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
+  "author": "Long Nguyen <long@wpvampire.com> (https://long.ninja)",
   "license": "MIT",
   "dependencies": {
     "babel-cli": "^6.5.1",
