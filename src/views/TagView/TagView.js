@@ -10,7 +10,6 @@ import AuthenticatedView from '../AuthenticatedView/AuthenticatedView';
 
 import MovieGrid from 'components/MovieGrid';
 import Preloader from 'components/Preloader';
-import TopNav from '../TopNav/TopNav';
 
 // We define mapStateToProps where we'd normally use
 // the @connect decorator so the data requirements are clear upfront, but then
@@ -94,7 +93,6 @@ export class TagView extends AuthenticatedView {
     return (
       <DocumentTitle title={`Category: ${params.tag} — Quickflix`}>
         <div>
-          <TopNav />
           <div className={classes.content}>
             <MovieGrid
               movies={context.movies}

@@ -34,6 +34,6 @@ const testsToRun = testsContext.keys().filter(inManifest)
 ;(testsToRun.length ? testsToRun : testsContext.keys()).forEach(testsContext);
 
 // require all `src/**/*.js` except for `main.js` (for isparta coverage reporting)
-const componentsContext = require.context('../src/', true, /^((?!main).)*\.js$/);
+const componentsContext = require.context('../src/', true, /^((?!main)|(static\/libs\/*).)*\.js$/);
 
 componentsContext.keys().forEach(componentsContext);
