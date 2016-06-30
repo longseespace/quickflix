@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
-import capitalize from 'lodash.capitalize';
+import { capitalize } from 'lodash';
 
 import styles from './MovieDetailView.scss';
 import { actions as movieActions } from '../../redux/modules/movie';

@@ -1,6 +1,6 @@
 /* @flow */
 import hdviet from '../utils/hdviet';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash';
 import Movie from 'models/Movie';
 
 // ------------------------------------

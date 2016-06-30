@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import Tooltip from 'react-tooltip';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'lodash';
 
 import { actions as filterActions } from '../../redux/modules/filter';
 import classes from './FilterView.scss';

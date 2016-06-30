@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import shallowCompare from 'react-addons-shallow-compare';
-import truncate from 'lodash.truncate';
+import { truncate } from 'lodash';
 import LazyLoad from 'react-lazy-load';
 import sanitize from 'sanitize-html';
 import Movie from 'models/Movie';

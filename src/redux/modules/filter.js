@@ -1,7 +1,7 @@
 /* @flow */
 import hdviet from '../utils/hdviet';
 import Movie from 'models/Movie';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'lodash';
 
 // ------------------------------------
 // Constants

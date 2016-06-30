@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import isEqual from 'lodash.isequal';
+import { isEqual } from 'lodash';
 
 import Query from 'models/Query';
 import Movie from 'models/Movie';

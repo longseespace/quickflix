@@ -4,7 +4,7 @@ import MovieGrid from 'components/MovieGrid'
 import MovieCard from 'components/MovieCard'
 import sinon from 'sinon'
 import fakeEvent from 'simulant'
-import range from 'lodash.range'
+import { range } from 'lodash'
 import jQuery from 'jquery'
 window.$ = jQuery
 

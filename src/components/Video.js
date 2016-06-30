@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
 const vjs = window.videojs;
-import _debounce from 'lodash.debounce';
-import _forEach from 'lodash.foreach';
+import { debounce as _debounce, forEach as _forEach } from 'lodash';
 
 import './VideoPlaylistUI';
 

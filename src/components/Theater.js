@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import range from 'lodash.range';
+import { range } from 'lodash';
 
 import Preloader from 'components/Preloader';
 import Video from 'components/Video';
