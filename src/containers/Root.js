@@ -6,12 +6,13 @@ export default class Root extends React.Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     routes: PropTypes.element.isRequired,
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func
   };
 
   get content () {
     return (
-      <Router history={this.props.history}>
+      <Router history={this.props.history} onUpdate={this.props.onUpdate}>
         {this.props.routes}
       </Router>
     );

@@ -9,6 +9,9 @@ git init
 # add CNAME record
 echo "phimhd.pw" > CNAME
 
+# hack GitHub Pages so browserhistory would work
+cp index.html 404.html
+
 # inside this git repo we'll pretend to be a new user
 git config user.name "Travis CI"
 git config user.email "travis@long.ninja"

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
-import createHashHistory from 'history/lib/createHashHistory';
+import createHistory from 'history/lib/createBrowserHistory';
 import { useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import makeRoutes from './routes';
@@ -18,13 +17,6 @@ require('react-tap-event-plugin')();
 // react-router-redux of its location.
 const initialState = window.__INITIAL_STATE__;
 const store = configureStore(initialState);
-
-let createHistory;
-if (__DEV__) {
-  createHistory = createBrowserHistory;
-} else {
-  createHistory = createHashHistory;
-}
 
 // Configure history for react-router
 const browserHistory = useRouterHistory(createHistory)({
